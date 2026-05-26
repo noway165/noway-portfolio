@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Liên Hệ | Tăng Thoại Lâm</title>
+    <!-- Thư viện FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #ff4d00;
+            --bg-color: #0a0a0c; 
+            --text-main: #ffffff;
+            --text-muted: #a0a0a0;
+            --nav-bg: rgba(10, 10, 12, 0.85);
+            --overlay-edge: rgba(10, 10, 12, 1);
+        }
+
+        body.light-mode {
+            --primary-color: #d94300; 
+            --bg-color: #f4f1ea; 
+            --text-main: #1a1a1a; 
+            --text-muted: #555555;
+            --nav-bg: rgba(244, 241, 234, 0.85);
+            --overlay-edge: rgba(244, 241, 234, 1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        /* ÉP CHUỘT ẨN ĐI TRÊN MÁY TÍNH ĐỂ DÙNG CHUỘT CUSTOM */
+        @media (pointer: fine) {
+            body, a, button, .social-card, .btn-back {
+                cursor: none !important;
+            }
+        }
+
+        /* CSS CHO CON CHUỘT TÂM NGẮM SÚNG */
+        .custom-cursor {
+            position: fixed; top: 0; left: 0;
+            width: 30px; height: 30px;
+            color: var(--primary-color);
+            font-size: 24px;
+            pointer-events: none; z-index: 100000; 
+            transform: translate(-50%, -50%); 
+            display: none; justify-content: center; align-items: center;
+            text-shadow: 0 0 10px var(--primary-color);
+            transition: transform 0.15s ease-out; 
+        }
+        
+        .custom-cursor.aiming {
+            transform: translate(-50%, -50%) scale(1.5) rotate(45deg);
+            color: #ffffff;
+            text-shadow: 0 0 15px var(--primary-color), 0 0 30px var(--primary-color);
+        }
+
+        /* ÉP TẤT CẢ DÙNG TIMES NEW ROMAN */
+        body, html, h1, h2, h3, h4, h5, h6, p, a, span, div, button {
+            font-family: 'Times New Roman', Times, serif !important; 
+        }
+
+        body, html {
+            width: 100%; height: 100%;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            overflow: hidden;
+            transition: background-color 0.5s ease, color 0.5s ease;
+        }
+
+        .smoke-overlay {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle at center, rgba(255, 77, 0, 0.05) 0%, var(--overlay-edge) 70%);
+            z-index: 1; pointer-events: none;
+            transition: background 0.5s ease;
+        }
+
+        #sparks-canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 2; pointer-events: none; }
+
+        .ui-layer {
+            position: relative; z-index: 10;
+            width: 100%; height: 100%;
+            display: flex; flex-direction: column;
+        }
+
+        .nav-right { display: flex; align-items: center; gap: 30px; }
+        .theme-toggle {
+            background: transparent; border: 1px solid var(--primary-color);
+            color: var(--primary-color); padding: 5px 15px; border-radius: 20px;
+            font-weight: bold; font-size: 1.2rem; transition: 0.3s;
+        }
+        .theme-toggle:hover { background: var(--primary-color); color: var(--bg-color); }
+
+        nav {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 20px 50px; background: var(--nav-bg);
+            border-bottom: 1px solid rgba(255, 77, 0, 0.3); backdrop-filter: blur(5px);
+        }
+        
+        .logo { font-size: 2rem; font-weight: bold; color: var(--primary-color); text-shadow: 0 0 15px rgba(255, 77, 0, 0.4); letter-spacing: 2px; text-transform: uppercase; }
+        
+        nav ul { list-style: none; display: flex; gap: 30px; }
+        nav ul li a { color: var(--text-main); text-decoration: none; font-size: 1.2rem; text-transform: uppercase; letter-spacing: 1px; transition: 0.3s; padding-bottom: 5px; border-bottom: 2px solid transparent; font-weight: bold; }
+        nav ul li a:hover, nav ul li a.active { color: var(--primary-color); border-bottom: 2px solid var(--primary-color); text-shadow: 0 0 8px rgba(255, 77, 0, 0.4); }
+
+        .contact-content {
+            flex: 1; display: flex; flex-direction: column;
+            justify-content: center; align-items: center; text-align: center; padding: 20px;
+            animation: fadeIn 1s ease-out;
+        }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+        .contact-content h1 { font-size: 4rem; font-weight: bold; letter-spacing: 2px; margin-bottom: 40px; text-shadow: 2px 4px 10px rgba(0,0,0,0.5); }
+
+        .social-grid {
+            display: flex; flex-wrap: wrap; justify-content: center; gap: 25px;
+            max-width: 800px; width: 100%;
+        }
+
+        .social-card {
+            background: rgba(10, 10, 12, 0.6);
+            border: 1px solid var(--primary-color);
+            padding: 25px 20px; border-radius: 15px; width: 220px;
+            text-decoration: none; color: var(--text-main);
+            display: flex; flex-direction: column; align-items: center;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            backdrop-filter: blur(5px);
+        }
+
+        body.light-mode .social-card { background: rgba(244, 241, 234, 0.6); color: var(--text-main); }
+
+        /* Font Awesome (I) được loại trừ khỏi luật Times New Roman */
+        .social-card i { font-family: "Font Awesome 6 Brands", "Font Awesome 6 Free" !important; font-size: 2.5rem; color: var(--primary-color); margin-bottom: 15px; transition: transform 0.3s; font-weight: 900; }
+        
+        .social-card h3 { font-size: 1.5rem; margin-bottom: 5px; font-weight: bold; letter-spacing: 1px; }
+        .social-card span { font-size: 1.1rem; color: var(--text-muted); font-style: italic; }
+
+        .social-card:hover { 
+            transform: translateY(-10px) scale(1.05); 
+            box-shadow: 0 15px 30px rgba(255, 77, 0, 0.3);
+            background: rgba(255, 77, 0, 0.1);
+        }
+        .social-card:hover i { transform: scale(1.2); text-shadow: 0 0 15px var(--primary-color); }
+        
+        .btn-back {
+            display: inline-block; margin-top: 50px; padding: 10px 30px; background: transparent; color: var(--text-muted); font-size: 1.2rem; text-decoration: none; border: 1px solid var(--text-muted); transition: 0.3s;
+        }
+        .btn-back:hover { color: var(--primary-color); border-color: var(--primary-color); }
+    </style>
+</head>
+<body>
+
+    <!-- CON CHUỘT TÂM NGẮM -->
+    <div class="custom-cursor" id="customCursor">
+        <i class="fas fa-crosshairs"></i>
+    </div>
+
+    <div class="smoke-overlay"></div>
+    <canvas id="sparks-canvas"></canvas>
+
+    <div class="ui-layer">
+        <nav>
+            <div class="logo">Contact</div>
+            <div class="nav-right">
+                <!-- Đã sửa lỗi HTML lồng nhau và Active đúng Contact -->
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="music.html">Music</a></li>
+                    <li><a href="contact.html" class="active">Contact</a></li>
+                </ul>
+                <button class="theme-toggle" id="themeBtn">☀️</button>
+            </div>
+        </nav>
+
+        <div class="contact-content">
+            <h1>Get In Touch</h1>
+            
+            <div class="social-grid">
+                
+                <a href="https://www.facebook.com/tanglam1605/" target="_blank" class="social-card">
+                    <i class="fab fa-facebook-f"></i>
+                    <h3>Facebook</h3>
+                    <span>Tang Lam</span>
+                </a>
+
+                <a href="https://www.instagram.com/tlam_1605/" target="_blank" class="social-card">
+                    <i class="fab fa-instagram"></i>
+                    <h3>Instagram</h3>
+                    <span>Tang Lam</span>
+                </a>
+
+                <a href="https://www.tiktok.com/@tlam_1605" target="_blank" class="social-card">
+                    <i class="fab fa-tiktok"></i>
+                    <h3>TikTok</h3>
+                    <span>Noway16</span>
+                </a>
+
+                <a class="social-card">
+                    <i class="fab fa-discord"></i>
+                    <h3>Discord</h3>
+                    <span>Noway#7373</span>
+                </a>
+
+                <div class="social-card">
+                    <i class="fas fa-crosshairs"></i>
+                    <h3>PUBG Mobile</h3>
+                    <span>ID: 5189112695</span>
+                </div>
+
+                <div class="social-card">
+                    <i class="fas fa-chess-knight"></i>
+                    <h3>TFT</h3>
+                    <span>Yêu Cô Ấy#0615</span>
+                </div>
+
+            </div>
+
+            <a href="index.html" class="btn-back">Trang Chủ</a>
+        </div>
+    </div>
+
+    <script>
+        /* SCRIPT XỬ LÝ CON CHUỘT TÂM NGẮM */
+        const customCursor = document.getElementById('customCursor');
+        if (window.matchMedia("(pointer: fine)").matches) {
+            customCursor.style.display = 'flex';
+            document.addEventListener('mousemove', (e) => {
+                customCursor.style.left = e.clientX + 'px';
+                customCursor.style.top = e.clientY + 'px';
+            });
+            // Khóa mục tiêu khi rê vào link, thẻ mxh
+            const interactiveElements = document.querySelectorAll('a, button, .social-card, .btn-back');
+            interactiveElements.forEach(el => {
+                el.addEventListener('mouseenter', () => customCursor.classList.add('aiming'));
+                el.addEventListener('mouseleave', () => customCursor.classList.remove('aiming'));
+            });
+        }
+
+        // SCRIPT SÁNG/TỐI ĐÃ FIX LỖI TEXT
+        const themeBtn = document.getElementById('themeBtn');
+        const body = document.body;
+        if (localStorage.getItem('theme') === 'light') {
+            body.classList.add('light-mode'); themeBtn.innerText = '🌙';
+        } else {
+            themeBtn.innerText = '☀️';
+        }
+        
+        themeBtn.addEventListener('click', () => {
+            body.classList.toggle('light-mode');
+            if (body.classList.contains('light-mode')) {
+                themeBtn.innerText = '🌙'; localStorage.setItem('theme', 'light');
+            } else {
+                themeBtn.innerText = '☀️'; localStorage.setItem('theme', 'dark');
+            }
+        });
+
+        // SCRIPT HẠT LỬA BAY
+        const canvas = document.getElementById('sparks-canvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+        let particlesArray = []; const mouse = { x: null, y: null, radius: 100 };
+        window.addEventListener('mousemove', (e) => { mouse.x = e.x; mouse.y = e.y; });
+        window.addEventListener('mouseout', () => { mouse.x = null; mouse.y = null; });
+        window.addEventListener('resize', () => { canvas.width = window.innerWidth; canvas.height = window.innerHeight; init(); });
+        
+        class Particle {
+            constructor(x, y, size, weight) {
+                this.x = x; this.y = y; this.size = size; this.weight = weight; 
+                const colors = ['#ff4d00', '#ff7300', '#ff9900', '#ffcc00'];
+                this.color = colors[Math.floor(Math.random() * colors.length)]; this.opacity = Math.random() * 0.8 + 0.2;
+            }
+            update() {
+                this.x += (Math.random() - 0.5) * 1.5; this.y -= this.weight; this.opacity -= 0.002; 
+                if (mouse.x != null) {
+                    let dx = mouse.x - this.x; let dy = mouse.y - this.y;
+                    let distance = Math.sqrt(dx * dx + dy * dy);
+                    if (distance < mouse.radius) { this.x -= dx / 20; this.y -= dy / 20; }
+                }
+                if (this.y < 0 || this.opacity <= 0) {
+                    this.y = canvas.height + Math.random() * 50; this.x = Math.random() * canvas.width;
+                    this.weight = Math.random() * 2 + 0.5; this.opacity = Math.random() * 0.8 + 0.2;
+                }
+            }
+            draw() {
+                ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fillStyle = this.color; ctx.globalAlpha = this.opacity; ctx.fill(); ctx.globalAlpha = 1; 
+            }
+        }
+        function init() {
+            particlesArray = []; let numberOfParticles = (canvas.width * canvas.height) / 7000;
+            for (let i = 0; i < numberOfParticles; i++) {
+                let x = Math.random() * canvas.width; let y = Math.random() * canvas.height;
+                let size = Math.random() * 2.5 + 0.5; let weight = Math.random() * 2 + 0.5;
+                particlesArray.push(new Particle(x, y, size, weight));
+            }
+        }
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            for (let i = 0; i < particlesArray.length; i++) { particlesArray[i].update(); particlesArray[i].draw(); }
+            requestAnimationFrame(animate);
+        }
+        init(); animate();
+    </script>
+</body>
+</html>
