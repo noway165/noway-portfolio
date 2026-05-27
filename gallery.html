@@ -26,24 +26,16 @@
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
-        /* ÉP CHUỘT ẨN ĐI ĐỂ DÙNG CHUỘT CUSTOM */
         @media (pointer: fine) {
-            body, a, button, .gallery-item {
-                cursor: none !important;
-            }
+            body, a, button, .gallery-item { cursor: none !important; }
         }
 
-        /* CON CHUỘT TÂM NGẮM SÚNG */
         .custom-cursor {
-            position: fixed; top: 0; left: 0;
-            width: 30px; height: 30px;
-            color: var(--primary-color);
-            font-size: 24px;
+            position: fixed; top: 0; left: 0; width: 30px; height: 30px;
+            color: var(--primary-color); font-size: 24px;
             pointer-events: none; z-index: 100000; 
-            transform: translate(-50%, -50%); 
-            display: none; justify-content: center; align-items: center;
-            text-shadow: 0 0 10px var(--primary-color);
-            transition: transform 0.15s ease-out; 
+            transform: translate(-50%, -50%); display: none; justify-content: center; align-items: center;
+            text-shadow: 0 0 10px var(--primary-color); transition: transform 0.15s ease-out; 
         }
         
         .custom-cursor.aiming {
@@ -77,37 +69,52 @@
         @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
         .gallery-content h1 { font-size: 4rem; font-weight: bold; letter-spacing: 2px; margin-bottom: 10px; text-shadow: 2px 4px 10px rgba(0,0,0,0.5); text-transform: uppercase;}
-        .gallery-content p { font-size: 1.5rem; color: var(--text-muted); margin-bottom: 40px; font-style: italic; }
+        
+        /* THANH CHỌN ALBUM */
+        .album-tabs {
+            display: flex; gap: 15px; margin-top: 10px; margin-bottom: 40px;
+            flex-wrap: wrap; justify-content: center;
+        }
 
-        /* LƯỚI ẢNH (GALLERY GRID) */
+        .album-btn {
+            background: rgba(10, 10, 12, 0.8); border: 1px solid var(--primary-color);
+            color: var(--text-main); padding: 10px 25px; border-radius: 30px;
+            font-size: 1.2rem; cursor: pointer; transition: 0.3s;
+            box-shadow: 0 0 10px rgba(255, 77, 0, 0.2);
+        }
+
+        body.light-mode .album-btn { background: rgba(244, 241, 234, 0.8); color: var(--text-main); }
+
+        /* Nút Album đang được chọn */
+        .album-btn.active, .album-btn:hover {
+            background: var(--primary-color); color: var(--bg-color) !important;
+            font-weight: bold; box-shadow: 0 0 20px var(--primary-color);
+        }
+
+        /* LƯỚI ẢNH */
         .gallery-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
             gap: 20px; max-width: 1200px; width: 100%;
         }
 
         .gallery-item {
             position: relative; overflow: hidden; border-radius: 12px;
-            border: 2px solid transparent; transition: 0.3s ease;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
-            /* Ép khung ảnh bằng nhau */
-            aspect-ratio: 1 / 1; 
+            border: 2px solid transparent; transition: 0.4s ease;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.5); aspect-ratio: 1 / 1; 
+            /* Mặc định hiện tất cả */
+            display: block;
         }
 
-        .gallery-item img {
-            width: 100%; height: 100%; object-fit: cover;
-            transition: transform 0.5s ease;
-        }
+        /* Hiệu ứng mượt khi lọc ảnh */
+        .gallery-item.hide { display: none; }
+        .gallery-item.show { animation: popIn 0.5s ease-out forwards; }
+        @keyframes popIn { 0% { opacity: 0; transform: scale(0.8); } 100% { opacity: 1; transform: scale(1); } }
 
-        .gallery-item:hover {
-            border-color: var(--primary-color);
-            box-shadow: 0 0 20px rgba(255, 77, 0, 0.5);
-            transform: translateY(-5px);
-        }
-
+        .gallery-item img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
+        .gallery-item:hover { border-color: var(--primary-color); box-shadow: 0 0 20px rgba(255, 77, 0, 0.5); z-index: 2;}
         .gallery-item:hover img { transform: scale(1.1); filter: brightness(0.7); }
 
-        /* MODAL PHÓNG TO ẢNH (LIGHTBOX) */
+        /* MODAL PHÓNG TO ẢNH */
         .lightbox-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0, 0, 0, 0.95); backdrop-filter: blur(5px);
@@ -115,24 +122,12 @@
             opacity: 0; pointer-events: none; transition: opacity 0.3s ease;
         }
         .lightbox-overlay.active { opacity: 1; pointer-events: auto; }
-
-        .lightbox-content {
-            position: relative; max-width: 90vw; max-height: 90vh;
-            transform: scale(0.8); transition: transform 0.3s ease;
-        }
+        .lightbox-content { position: relative; max-width: 90vw; max-height: 90vh; transform: scale(0.8); transition: transform 0.3s ease; }
         .lightbox-overlay.active .lightbox-content { transform: scale(1); }
-
-        .lightbox-content img {
-            max-width: 100%; max-height: 90vh; border-radius: 8px;
-            border: 2px solid var(--primary-color); box-shadow: 0 0 30px rgba(255, 77, 0, 0.5);
-        }
-
+        .lightbox-content img { max-width: 100%; max-height: 90vh; border-radius: 8px; border: 2px solid var(--primary-color); box-shadow: 0 0 30px rgba(255, 77, 0, 0.5); }
         .close-lightbox {
-            position: absolute; top: -20px; right: -20px;
-            background: rgba(0,0,0,0.8); border: 2px solid var(--primary-color);
-            color: var(--primary-color); font-size: 1.5rem; font-weight: bold;
-            border-radius: 50%; width: 45px; height: 45px; z-index: 10;
-            transition: 0.3s;
+            position: absolute; top: -20px; right: -20px; background: rgba(0,0,0,0.8); border: 2px solid var(--primary-color);
+            color: var(--primary-color); font-size: 1.5rem; font-weight: bold; border-radius: 50%; width: 45px; height: 45px; z-index: 10; transition: 0.3s;
         }
         .close-lightbox:hover { background: var(--primary-color); color: #fff; transform: scale(1.1) rotate(90deg); }
     </style>
@@ -171,39 +166,37 @@
 
         <div class="gallery-content">
             <h1>My Gallery</h1>
-            <p>"Khoảnh khắc đẹp nhất"</p>
             
-            <div class="gallery-grid">
+            <!-- CÁC NÚT CHỌN ALBUM -->
+            <div class="album-tabs">
+                <button class="album-btn active" data-filter="all">Tất cả</button>
+                <button class="album-btn" data-filter="album-1">Me</button>
+                <button class="album-btn" data-filter="album-2">View</button>
+                <button class="album-btn" data-filter="album-3">Friends</button>
+            </div>
+            
+            <!-- LƯỚI ẢNH -->
+            <div class="gallery-grid" id="galleryGrid">
                 
-                <!-- ẢNH SỐ 1 -->
-                <!-- Sếp ghi tên ảnh vào chỗ src="..." bên dưới nhé -->
-                <div class="gallery-item" onclick="openLightbox(this)">
-                    <img src="z7870230747566_aa8bc19aef718cb339132273f03cb1b9.jpg" alt="Photo 1">
+                <div class="gallery-item album-1" onclick="openLightbox(this)">
+                    <img src="z7870230747566_aa8bc19aef718cb339132273f03cb1b9.jpg" alt="Me Photo 1">
+                </div>
+                <div class="gallery-item album-1" onclick="openLightbox(this)">
+                    <img src="z7870230763886_026701a4401625119045fcd2bfc9df9b.jpg" alt="Me Photo 2">
                 </div>
 
-                <!-- ẢNH SỐ 2 -->
-                <div class="gallery-item" onclick="openLightbox(this)">
-                    <img src="z7870230763886_026701a4401625119045fcd2bfc9df9b.jpg" alt="Photo 2">
+                <div class="gallery-item album-2" onclick="openLightbox(this)">
+                    <img src="z7870348037449_15bf4b33edbc3aa2d000ea119de38927.jpg" alt="View Photo 1">
+                </div>
+                <div class="gallery-item album-2" onclick="openLightbox(this)">
+                    <img src="z7870342182713_06a22b9303eaefab90f6d42fb332e8e2.jpg" alt="View Photo 2">
                 </div>
 
-                <!-- ẢNH SỐ 3 -->
-                <div class="gallery-item" onclick="openLightbox(this)">
-                    <img src="z7870230810355_a61e4f4c706c78db0711c27b1b567254.jpg" alt="Photo 3">
+                <div class="gallery-item album-3" onclick="openLightbox(this)">
+                    <img src="z7870342950412_3b16b0a2a4654662dc4060f8882e099e.jpg" alt="Friends Photo 1">
                 </div>
-
-                <!-- ẢNH SỐ 4 -->
-                <div class="gallery-item" onclick="openLightbox(this)">
-                    <img src="z7870230804851_ea015128c665f3a89501190e84f00e32.jpg" alt="Photo 4">
-                </div>
-
-                <!-- ẢNH SỐ 5 -->
-                <div class="gallery-item" onclick="openLightbox(this)">
-                    <img src="z7870230812015_2c8d88c5550d06521ed58d32b08e5fc9.jpg" alt="Photo 5">
-                </div>
-
-                <!-- ẢNH SỐ 6 -->
-                <div class="gallery-item" onclick="openLightbox(this)">
-                    <img src="z7870230820931_a7b846fe8db8a128c8c4ab2490739a4d.jpg" alt="Photo 6">
+                <div class="gallery-item album-3" onclick="openLightbox(this)">
+                    <img src="z7870342189420_385fa071d4152393b1b88c68c74d4604.jpg" alt="Friends Photo 2">
                 </div>
 
             </div>
@@ -211,26 +204,48 @@
     </div>
 
     <script>
+        /* SCRIPT LỌC ALBUM ẢNH */
+        const albumBtns = document.querySelectorAll('.album-btn');
+        const galleryItems = document.querySelectorAll('.gallery-item');
+
+        albumBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                // Đổi màu nút đang chọn
+                albumBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+
+                // Lấy tên album vừa bấm (all, album-1, album-2...)
+                const filterValue = btn.getAttribute('data-filter');
+
+                // Lọc ảnh
+                galleryItems.forEach(item => {
+                    item.classList.remove('show', 'hide'); // Reset class cũ
+                    
+                    if (filterValue === 'all' || item.classList.contains(filterValue)) {
+                        item.classList.add('show');
+                        item.style.display = 'block';
+                    } else {
+                        item.classList.add('hide');
+                        setTimeout(() => { item.style.display = 'none'; }, 300); // Đợi hiệu ứng mờ xong mới ẩn
+                    }
+                });
+            });
+        });
+
         /* MỞ / ĐÓNG LIGHTBOX PHÓNG TO ẢNH */
         const lightbox = document.getElementById('lightbox');
         const lightboxImg = document.getElementById('lightboxImg');
         const closeLightboxBtn = document.getElementById('closeLightbox');
 
         function openLightbox(element) {
-            const imgSrc = element.querySelector('img').src; // Lấy nguồn ảnh vừa bấm
-            lightboxImg.src = imgSrc; // Đút vào khung phóng to
-            lightbox.classList.add('active'); // Hiện khung lên
-            customCursor.classList.remove('aiming'); // Tắt hiệu ứng tâm ngắm
+            const imgSrc = element.querySelector('img').src; 
+            lightboxImg.src = imgSrc; 
+            lightbox.classList.add('active'); 
+            customCursor.classList.remove('aiming'); 
         }
 
-        closeLightboxBtn.addEventListener('click', () => {
-            lightbox.classList.remove('active');
-        });
-
-        // Bấm ra ngoài ảnh cũng tự đóng
-        lightbox.addEventListener('click', (e) => {
-            if (e.target === lightbox) { lightbox.classList.remove('active'); }
-        });
+        closeLightboxBtn.addEventListener('click', () => { lightbox.classList.remove('active'); });
+        lightbox.addEventListener('click', (e) => { if (e.target === lightbox) { lightbox.classList.remove('active'); } });
 
         /* SCRIPT XỬ LÝ CON CHUỘT TÂM NGẮM */
         const customCursor = document.getElementById('customCursor');
