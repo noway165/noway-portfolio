@@ -154,6 +154,56 @@
             color: var(--primary-color); font-size: 1.5rem; font-weight: bold; border-radius: 50%; width: 45px; height: 45px; z-index: 10; transition: 0.3s;
         }
         .close-lightbox:hover { background: var(--primary-color); color: #fff; transform: scale(1.1) rotate(90deg); }
+                /* =========================================
+           ĐOẠN CODE PHÉP THUẬT: ÉP KHUNG CHO ĐIỆN THOẠI
+           ========================================= */
+        @media screen and (max-width: 768px) {
+            /* 1. Thu nhỏ Menu và ép rớt dòng gọn gàng */
+            nav {
+                flex-direction: column; 
+                padding: 15px; 
+                gap: 15px;
+            }
+            .nav-right {
+                flex-direction: column;
+                gap: 15px;
+            }
+            nav ul {
+                flex-wrap: wrap; 
+                justify-content: center; 
+                gap: 15px;
+            }
+            nav ul li a { font-size: 1rem; }
+
+            /* 2. Thu nhỏ các Tiêu đề khổng lồ */
+            .hero-content h1, .contact-content h1, .gallery-content h1, .music-content h1 {
+                font-size: 2.5rem; /* Từ 5.5rem tụt xuống 2.5rem cho vừa điện thoại */
+                letter-spacing: 2px;
+            }
+            .hero-content .nickname { font-size: 2rem; letter-spacing: 5px; }
+            .hero-content .dynamic-text-container { font-size: 1.2rem; }
+            .hero-content p.slogan { font-size: 1.1rem; }
+
+            /* 3. Ép ảnh Avatar nhỏ lại chút xíu */
+            .profile-img { width: 140px; height: 140px; }
+
+            /* 4. Ép tất cả các Lưới (Spotify, Ảnh, Mạng xã hội) thành 1 Cột dọc */
+            .social-grid, .spotify-grid, .gallery-grid, .albums-view {
+                grid-template-columns: 1fr; /* 1 phân số = 1 cột duy nhất tràn viền */
+                gap: 15px;
+            }
+
+            /* 5. Căn chỉnh lại thẻ Mạng Xã Hội */
+            .social-card { width: 100%; max-width: 300px; padding: 15px; }
+
+            /* 6. Chỉnh lại Rạp chiếu phim Video cho vừa màn đt */
+            .video-content {
+                width: 95vw; 
+                height: auto; /* Tự động co giãn theo tỷ lệ 16:9 */
+            }
+            .close-video-btn { top: -15px; right: -5px; width: 35px; height: 35px; font-size: 1.2rem; }
+        }
+
     </style>
 </head>
 <body>
