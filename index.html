@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tăng Thoại Lâm | Portfolio</title>
+    <title>Tăng Thoại Lâm (Noway) | Portfolio</title>
+    <!-- Đã thêm FontAwesome để lấy Icon Tâm ngắm -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
@@ -28,6 +29,7 @@
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
+        /* ÉP CHUỘT ẨN ĐI TRÊN MÁY TÍNH ĐỂ DÙNG CHUỘT CUSTOM */
         @media (pointer: fine) {
             body, a, button, .airdrop-container, .close-video-btn {
                 cursor: none !important;
@@ -39,122 +41,71 @@
             background-color: var(--bg-color);
             color: var(--text-main);
             font-family: 'Times New Roman', Times, serif !important; 
-            overflow: hidden;
+            
+            /* TỐI ƯU MOBILE: Cho phép vuốt lên xuống */
+            overflow-x: hidden;
+            overflow-y: auto; 
+            
             transition: background-color 0.5s ease, color 0.5s ease;
             perspective: 1000px; 
         }
 
         h1, h2, h3, h4, h5, h6, p, a, span, div, button { font-family: 'Times New Roman', Times, serif !important; }
 
-        /* CON CHUỘT TÂM NGẮM SÚNG */
+        /* CSS CHO CON CHUỘT TÂM NGẮM SÚNG */
         .custom-cursor {
-            position: fixed; top: 0; left: 0;
-            width: 30px; height: 30px; color: var(--primary-color); font-size: 24px;
+            position: fixed;
+            top: 0; left: 0;
+            width: 30px; height: 30px;
+            color: var(--primary-color);
+            font-size: 24px;
             pointer-events: none; z-index: 100000; 
             transform: translate(-50%, -50%); display: none; justify-content: center; align-items: center;
             text-shadow: 0 0 10px var(--primary-color); transition: transform 0.15s ease-out; 
         }
+        
         .custom-cursor.aiming {
             transform: translate(-50%, -50%) scale(1.5) rotate(45deg);
             color: #ffffff; text-shadow: 0 0 15px var(--primary-color), 0 0 30px var(--primary-color);
         }
 
+        /* TỐI ƯU MOBILE: Dùng fixed để nền không bị trôi khi vuốt */
         .smoke-overlay {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: radial-gradient(circle at center, rgba(255, 77, 0, 0.05) 0%, var(--overlay-edge) 70%);
             z-index: 1; pointer-events: none; transition: background 0.5s ease;
         }
 
-        #sparks-canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 2; pointer-events: none; }
+        #sparks-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 2; pointer-events: none; }
 
         .ui-layer { position: relative; z-index: 10; width: 100%; height: 100%; display: flex; flex-direction: column; }
 
-        /* MENU */
+        /* MENU VIP */
         nav {
             display: flex; justify-content: space-between; align-items: center;
             padding: 20px 50px; background: var(--nav-bg);
             border-bottom: 1px solid rgba(255, 77, 0, 0.3); backdrop-filter: blur(5px);
-            transition: background 0.5s ease;
+            transition: background 0.5s ease; position: sticky; top: 0; z-index: 100;
         }
         .logo { font-size: 2rem; font-weight: bold; color: var(--primary-color); text-shadow: 0 0 15px rgba(255, 77, 0, 0.4); letter-spacing: 2px; text-transform: uppercase; }
         .nav-right { display: flex; align-items: center; gap: 40px; }
         nav ul { list-style: none; display: flex; gap: 35px; }
-        nav ul li a { 
-            color: var(--text-main); text-decoration: none; font-size: 1.1rem; 
-            text-transform: uppercase; letter-spacing: 2px; font-weight: bold; 
-            position: relative; padding-bottom: 5px; transition: color 0.3s ease; 
-        }
-        nav ul li a::after {
-            content: ''; position: absolute; width: 0; height: 2px;
-            bottom: 0; left: 50%; background-color: var(--primary-color);
-            transition: all 0.3s ease; transform: translateX(-50%); box-shadow: 0 0 10px var(--primary-color);
-        }
+        nav ul li a { color: var(--text-main); text-decoration: none; font-size: 1.1rem; text-transform: uppercase; letter-spacing: 2px; font-weight: bold; position: relative; padding-bottom: 5px; transition: color 0.3s ease; }
+        nav ul li a::after { content: ''; position: absolute; width: 0; height: 2px; bottom: 0; left: 50%; background-color: var(--primary-color); transition: all 0.3s ease; transform: translateX(-50%); box-shadow: 0 0 10px var(--primary-color); }
         nav ul li a:hover, nav ul li a.active { color: var(--primary-color); text-shadow: 0 0 10px rgba(255, 77, 0, 0.4); }
         nav ul li a:hover::after, nav ul li a.active::after { width: 100%; }
 
-        /* Nút Sáng Tối Hình Tròn */
-        .theme-toggle {
-            background: rgba(255, 77, 0, 0.1); border: 1px solid var(--primary-color);
-            color: var(--primary-color); width: 45px; height: 45px; border-radius: 50%; 
-            display: flex; justify-content: center; align-items: center;
-            cursor: pointer; font-size: 1.2rem; transition: all 0.3s ease;
-            box-shadow: 0 0 10px rgba(255, 77, 0, 0.2);
-        }
+        .theme-toggle { background: rgba(255, 77, 0, 0.1); border: 1px solid var(--primary-color); color: var(--primary-color); width: 45px; height: 45px; border-radius: 50%; display: flex; justify-content: center; align-items: center; cursor: pointer; font-size: 1.2rem; transition: all 0.3s ease; box-shadow: 0 0 10px rgba(255, 77, 0, 0.2); }
         .theme-toggle i { font-family: "Font Awesome 6 Free" !important; font-weight: 900; }
         .theme-toggle:hover { background: var(--primary-color); color: var(--bg-color); box-shadow: 0 0 20px var(--primary-color); transform: rotate(30deg); }
 
+        /* NỘI DUNG CHÍNH */
         .hero-content { flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 20px; }
 
         .profile-wrapper { margin-bottom: 15px; animation: float 4s ease-in-out infinite; perspective: 1000px; }
         .tilt-box { transition: transform 0.1s ease-out; transform-style: preserve-3d; }
-        .profile-img {
-            width: 180px; height: 180px; border-radius: 50%; object-fit: cover;
-            border: 3px solid var(--primary-color);
-            box-shadow: 0 15px 35px rgba(0,0,0,0.5), 0 0 25px rgba(255, 77, 0, 0.3), inset 0 0 10px rgba(255, 77, 0, 0.3);
-            transition: border-color 0.5s ease; transform: translateZ(20px); 
-        }
+        .profile-img { width: 180px; height: 180px; border-radius: 50%; object-fit: cover; border: 3px solid var(--primary-color); box-shadow: 0 15px 35px rgba(0,0,0,0.5), 0 0 25px rgba(255, 77, 0, 0.3), inset 0 0 10px rgba(255, 77, 0, 0.3); transition: border-color 0.5s ease; transform: translateZ(20px); }
         @keyframes float { 0% { transform: translateY(0px); } 50% { transform: translateY(-12px); } 100% { transform: translateY(0px); } }
-
-        /* AIRDROP */
-        .airdrop-container {
-            position: absolute; top: -150px; z-index: 1000;
-            display: flex; flex-direction: column; align-items: center; 
-            transition: transform 0.2s ease; transform-origin: top center;
-            pointer-events: auto !important; /* Đảm bảo luôn bấm được */
-        }
-        .airdrop-container:hover { transform: scale(1.1) !important; filter: brightness(1.2); }
-        .airdrop-img {
-            width: 120px; height: auto; filter: drop-shadow(0 15px 15px rgba(0,0,0,0.6));
-            animation: sway 2s ease-in-out infinite alternate; transform-origin: top center;
-        }
-        @keyframes sway { 0% { transform: rotate(-8deg); } 100% { transform: rotate(8deg); } }
-        .shaking .airdrop-img { animation: shake 0.4s ease-in-out infinite; filter: drop-shadow(0 0 20px var(--primary-color)); }
-        @keyframes shake { 0% { transform: rotate(0deg) scale(1.1); } 25% { transform: rotate(-10deg) scale(1.1); } 50% { transform: rotate(10deg) scale(1.1); } 75% { transform: rotate(-10deg) scale(1.1); } 100% { transform: rotate(0deg) scale(1.1); } }
-
-        /* VIDEO MODAL */
-        .video-modal-overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.95); backdrop-filter: blur(10px);
-            z-index: 9999; display: flex; justify-content: center; align-items: center;
-            opacity: 0; pointer-events: none; transition: opacity 0.4s ease;
-        }
-        .video-modal-overlay.active { opacity: 1; pointer-events: auto; }
-        .video-content {
-            position: relative; width: 85vw; max-width: 1000px; aspect-ratio: 16 / 9;
-            background: #000; border: 2px solid var(--primary-color);
-            box-shadow: 0 0 40px rgba(255, 77, 0, 0.5);
-            transform: scale(0.8) translateY(50px); transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            border-radius: 12px; overflow: hidden;
-        }
-        .video-modal-overlay.active .video-content { transform: scale(1) translateY(0); }
-        .close-video-btn {
-            position: absolute; top: -20px; right: -20px; background: rgba(0,0,0,0.8); border: 2px solid var(--primary-color);
-            color: var(--primary-color); font-size: 1.5rem; font-weight: bold;
-            transition: 0.3s; border-radius: 50%; width: 45px; height: 45px; z-index: 10;
-        }
-        .close-video-btn:hover { background: var(--primary-color); color: #fff; transform: scale(1.1) rotate(90deg); }
-        .iframe-container { position: relative; width: 100%; height: 100%; }
-        .iframe-container video { width: 100%; height: 100%; object-fit: contain; background: #000; }
 
         .hero-content h2 { color: var(--primary-color); font-size: 1.2rem; margin-bottom: 5px; letter-spacing: 3px; font-weight: bold; }
         .hero-content h1 { font-size: 5.5rem; font-weight: bold; letter-spacing: 5px; margin-bottom: 0; line-height: 1; text-shadow: 2px 4px 10px var(--shadow-color); transition: text-shadow 0.5s ease; }
@@ -164,74 +115,58 @@
         .hero-content .slogan { font-size: 1.5rem; font-style: italic; color: var(--text-muted); margin-bottom: 40px; transition: color 0.5s ease;}
         .cursor { display: inline-block; width: 8px; height: 1.5rem; background-color: var(--primary-color); vertical-align: middle; animation: blink 0.8s infinite; margin-left: 2px; }
         @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
-        .btn-fire {
-            display: inline-block; padding: 15px 40px; background: rgba(255, 77, 0, 0.1); color: var(--primary-color); font-size: 1.2rem; text-transform: uppercase; text-decoration: none; border: 1px solid var(--primary-color); position: relative; transition: 0.3s all ease; font-weight: bold; letter-spacing: 1px;
-        }
+        .btn-fire { display: inline-block; padding: 15px 40px; background: rgba(255, 77, 0, 0.1); color: var(--primary-color); font-size: 1.2rem; text-transform: uppercase; text-decoration: none; border: 1px solid var(--primary-color); position: relative; transition: 0.3s all ease; font-weight: bold; letter-spacing: 1px; margin-bottom: 40px;}
         .btn-fire:hover { background: var(--primary-color); color: var(--bg-color); box-shadow: 0 0 20px rgba(255, 77, 0, 0.5); }
-                /* =========================================
-           ĐOẠN CODE PHÉP THUẬT: ÉP KHUNG CHO ĐIỆN THOẠI
+
+        /* HÒM THÍNH & RẠP CHIẾU PHIM */
+        .airdrop-container { position: fixed; top: -150px; z-index: 1000; display: flex; flex-direction: column; align-items: center; transition: transform 0.2s ease; transform-origin: top center; pointer-events: auto !important; }
+        .airdrop-container:hover { transform: scale(1.1) !important; filter: brightness(1.2); }
+        .airdrop-img { width: 120px; height: auto; filter: drop-shadow(0 15px 15px rgba(0,0,0,0.6)); animation: sway 2s ease-in-out infinite alternate; transform-origin: top center; }
+        @keyframes sway { 0% { transform: rotate(-8deg); } 100% { transform: rotate(8deg); } }
+        .shaking .airdrop-img { animation: shake 0.4s ease-in-out infinite; filter: drop-shadow(0 0 20px var(--primary-color)); }
+        @keyframes shake { 0% { transform: rotate(0deg) scale(1.1); } 25% { transform: rotate(-10deg) scale(1.1); } 50% { transform: rotate(10deg) scale(1.1); } 75% { transform: rotate(-10deg) scale(1.1); } 100% { transform: rotate(0deg) scale(1.1); } }
+
+        .video-modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.95); backdrop-filter: blur(10px); z-index: 9999; display: flex; justify-content: center; align-items: center; opacity: 0; pointer-events: none; transition: opacity 0.4s ease; }
+        .video-modal-overlay.active { opacity: 1; pointer-events: auto; }
+        .video-content { position: relative; width: 85vw; max-width: 1000px; aspect-ratio: 16 / 9; background: #000; border: 2px solid var(--primary-color); box-shadow: 0 0 40px rgba(255, 77, 0, 0.5); transform: scale(0.8) translateY(50px); transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); border-radius: 12px; overflow: hidden; }
+        .video-modal-overlay.active .video-content { transform: scale(1) translateY(0); }
+        .close-video-btn { position: absolute; top: -20px; right: -20px; background: rgba(0,0,0,0.8); border: 2px solid var(--primary-color); color: var(--primary-color); font-size: 1.5rem; font-weight: bold; transition: 0.3s; border-radius: 50%; width: 45px; height: 45px; z-index: 10; }
+        .close-video-btn:hover { background: var(--primary-color); color: #fff; transform: scale(1.1) rotate(90deg); }
+        .iframe-container { position: relative; width: 100%; height: 100%; }
+        .iframe-container video { width: 100%; height: 100%; object-fit: contain; background: #000; }
+
+        /* =========================================
+           CODE ÉP KHUNG CHO ĐIỆN THOẠI (RESPONSIVE)
            ========================================= */
         @media screen and (max-width: 768px) {
-            /* 1. Thu nhỏ Menu và ép rớt dòng gọn gàng */
-            nav {
-                flex-direction: column; 
-                padding: 15px; 
-                gap: 15px;
-            }
-            .nav-right {
-                flex-direction: column;
-                gap: 15px;
-            }
-            nav ul {
-                flex-wrap: wrap; 
-                justify-content: center; 
-                gap: 15px;
-            }
+            nav { flex-direction: column; padding: 15px; gap: 15px; }
+            .nav-right { flex-direction: column; gap: 15px; }
+            nav ul { flex-wrap: wrap; justify-content: center; gap: 15px; }
             nav ul li a { font-size: 1rem; }
-
-            /* 2. Thu nhỏ các Tiêu đề khổng lồ */
-            .hero-content h1, .contact-content h1, .gallery-content h1, .music-content h1 {
-                font-size: 2.5rem; /* Từ 5.5rem tụt xuống 2.5rem cho vừa điện thoại */
-                letter-spacing: 2px;
-            }
+            .hero-content h1 { font-size: 2.5rem; letter-spacing: 2px; }
             .hero-content .nickname { font-size: 2rem; letter-spacing: 5px; }
             .hero-content .dynamic-text-container { font-size: 1.2rem; }
             .hero-content p.slogan { font-size: 1.1rem; }
-
-            /* 3. Ép ảnh Avatar nhỏ lại chút xíu */
             .profile-img { width: 140px; height: 140px; }
-
-            /* 4. Ép tất cả các Lưới (Spotify, Ảnh, Mạng xã hội) thành 1 Cột dọc */
-            .social-grid, .spotify-grid, .gallery-grid, .albums-view {
-                grid-template-columns: 1fr; /* 1 phân số = 1 cột duy nhất tràn viền */
-                gap: 15px;
-            }
-
-            /* 5. Căn chỉnh lại thẻ Mạng Xã Hội */
-            .social-card { width: 100%; max-width: 300px; padding: 15px; }
-
-            /* 6. Chỉnh lại Rạp chiếu phim Video cho vừa màn đt */
-            .video-content {
-                width: 95vw; 
-                height: auto; /* Tự động co giãn theo tỷ lệ 16:9 */
-            }
+            .video-content { width: 95vw; height: auto; }
             .close-video-btn { top: -15px; right: -5px; width: 35px; height: 35px; font-size: 1.2rem; }
+            .btn-fire { font-size: 1rem; padding: 12px 25px; }
         }
-
     </style>
 </head>
 <body>
 
+    <!-- CON CHUỘT TÂM NGẮM -->
     <div class="custom-cursor" id="customCursor">
         <i class="fas fa-crosshairs"></i>
     </div>
 
+    <!-- RẠP CHIẾU PHIM -->
     <div class="video-modal-overlay" id="videoModal">
         <div class="video-content">
             <button class="close-video-btn" id="closeVideoBtn">X</button>
             <div class="iframe-container">
                 <video id="highlightVideo" controls playsinline>
-                    <!-- ĐÃ XÓA CHỮ e:\ -->
                     <source src="snaptik.vn_7586355483028573447.mp4" type="video/mp4">
                     Trình duyệt của bạn không hỗ trợ phát video.
                 </video>
@@ -245,7 +180,6 @@
     <div class="ui-layer">
         <nav>
             <div class="logo">About me</div>
-            
             <div class="nav-right">
                 <ul>
                     <li><a href="index.html" class="active">Home</a></li>
@@ -262,7 +196,6 @@
         <div class="hero-content">
             <div class="profile-wrapper">
                 <div class="tilt-box" id="tiltBox">
-                    <!-- ĐÃ XÓA CHỮ e:\ -->
                     <img src="z7867355486545_8927add2849b9d923e27b3ed08b3eff2.jpg" alt="Avatar" class="profile-img">
                 </div>
             </div>
@@ -282,6 +215,7 @@
     </div>
 
     <script>
+        /* SCRIPT XỬ LÝ CON CHUỘT TÂM NGẮM */
         const customCursor = document.getElementById('customCursor');
         if (window.matchMedia("(pointer: fine)").matches) {
             customCursor.style.display = 'flex';
@@ -296,6 +230,7 @@
             });
         }
 
+        /* 3D TILT AVATAR */
         const tiltBox = document.getElementById('tiltBox');
         const profileWrapper = document.querySelector('.profile-wrapper');
         profileWrapper.addEventListener('mousemove', (e) => {
@@ -310,7 +245,7 @@
             tiltBox.style.transform = `rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`;
         });
 
-        /* ĐÃ SỬA LỖI MỤC TIÊU DI ĐỘNG Ở ĐÂY */
+        /* EASTER EGG: AIRDROP */
         const videoModal = document.getElementById('videoModal');
         const closeVideoBtn = document.getElementById('closeVideoBtn');
         const highlightVideo = document.getElementById('highlightVideo');
@@ -322,7 +257,6 @@
 
             const drop = document.createElement('div');
             drop.className = 'airdrop-container';
-            // ĐÃ XÓA CHỮ e:\
             drop.innerHTML = `<img src="z7867426889012_3eac5d1ab825ae635ab1d53c203017fb.jpg" alt="Airdrop" class="airdrop-img">`;
             drop.style.left = Math.random() * (window.innerWidth - 150) + 50 + 'px';
             document.body.appendChild(drop);
@@ -338,27 +272,18 @@
                 if (posY > window.innerHeight) { clearInterval(fallInterval); drop.remove(); }
             }, 20);
 
-            // BÍ KÍP Ở ĐÂY: Dùng 'mousedown' (hoặc 'touchstart' cho đt) thay cho 'click'
             function handleLoot() {
                 if (isLooted) return;
-                isLooted = true; 
-                hasLootedEasterEgg = true; 
-                
-                // Phải ép dừng cái máy bay lại ngay lập tức
+                isLooted = true; hasLootedEasterEgg = true; 
                 clearInterval(fallInterval); 
-                
-                drop.classList.add('shaking'); 
-                customCursor.classList.remove('aiming'); 
-                
+                drop.classList.add('shaking'); customCursor.classList.remove('aiming'); 
                 setTimeout(() => {
-                    drop.remove(); 
-                    videoModal.classList.add('active'); 
-                    highlightVideo.play(); 
+                    drop.remove(); videoModal.classList.add('active'); highlightVideo.play(); 
                 }, 800);
             }
 
             drop.addEventListener('mousedown', handleLoot);
-            drop.addEventListener('touchstart', handleLoot); // Cho xài điện thoại bấm cũng ăn
+            drop.addEventListener('touchstart', handleLoot);
         }
 
         function scheduleNextAirdrop(isFirstDrop = false) {
@@ -374,13 +299,12 @@
             videoModal.classList.remove('active'); highlightVideo.pause(); highlightVideo.currentTime = 0; 
         });
 
-        /* SCRIPT ĐỔI SÁNG/TỐI (DÙNG ICON MẶT TRỜI) */
+        /* SCRIPT SÁNG/TỐI (DÙNG ICON) */
         const themeBtn = document.getElementById('themeBtn');
         const body = document.body;
         
         if (localStorage.getItem('theme') === 'light') {
-            body.classList.add('light-mode'); 
-            themeBtn.innerHTML = '<i class="fas fa-moon"></i>';
+            body.classList.add('light-mode'); themeBtn.innerHTML = '<i class="fas fa-moon"></i>';
         } else {
             themeBtn.innerHTML = '<i class="fas fa-sun"></i>';
         }
@@ -388,14 +312,13 @@
         themeBtn.addEventListener('click', () => {
             body.classList.toggle('light-mode');
             if (body.classList.contains('light-mode')) {
-                themeBtn.innerHTML = '<i class="fas fa-moon"></i>'; 
-                localStorage.setItem('theme', 'light');
+                themeBtn.innerHTML = '<i class="fas fa-moon"></i>'; localStorage.setItem('theme', 'light');
             } else {
-                themeBtn.innerHTML = '<i class="fas fa-sun"></i>'; 
-                localStorage.setItem('theme', 'dark');
+                themeBtn.innerHTML = '<i class="fas fa-sun"></i>'; localStorage.setItem('theme', 'dark');
             }
         });
 
+        /* SCRIPT HẠT LỬA BAY */
         const canvas = document.getElementById('sparks-canvas');
         const ctx = canvas.getContext('2d');
         canvas.width = window.innerWidth; canvas.height = window.innerHeight;
@@ -441,7 +364,8 @@
         }
         init(); animate();
 
-        const words = ["IT Student", "PUBG Mobile Player", "Content Creator", "Music Lover", "Billiards Lover"];
+        /* SCRIPT GÕ CHỮ */
+        const words = ["IT Student", "PUBG Mobile Player", "Content Creator"];
         let wordIndex = 0; let charIndex = 0; let isDeleting = false;
         const typewriterElement = document.getElementById("typewriter");
         function typeEffect() {
