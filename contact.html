@@ -81,25 +81,47 @@
             display: flex; flex-direction: column;
         }
 
-        .nav-right { display: flex; align-items: center; gap: 30px; }
-        .theme-toggle {
-            background: transparent; border: 1px solid var(--primary-color);
-            color: var(--primary-color); padding: 5px 15px; border-radius: 20px;
-            font-weight: bold; font-size: 1.2rem; transition: 0.3s;
-        }
-        .theme-toggle:hover { background: var(--primary-color); color: var(--bg-color); }
-
+        /* ----- CSS MENU MỚI ĐỒNG BỘ TỪ TRANG HOME ----- */
         nav {
             display: flex; justify-content: space-between; align-items: center;
             padding: 20px 50px; background: var(--nav-bg);
             border-bottom: 1px solid rgba(255, 77, 0, 0.3); backdrop-filter: blur(5px);
+            transition: background 0.5s ease;
         }
         
         .logo { font-size: 2rem; font-weight: bold; color: var(--primary-color); text-shadow: 0 0 15px rgba(255, 77, 0, 0.4); letter-spacing: 2px; text-transform: uppercase; }
         
-        nav ul { list-style: none; display: flex; gap: 30px; }
-        nav ul li a { color: var(--text-main); text-decoration: none; font-size: 1.2rem; text-transform: uppercase; letter-spacing: 1px; transition: 0.3s; padding-bottom: 5px; border-bottom: 2px solid transparent; font-weight: bold; }
-        nav ul li a:hover, nav ul li a.active { color: var(--primary-color); border-bottom: 2px solid var(--primary-color); text-shadow: 0 0 8px rgba(255, 77, 0, 0.4); }
+        .nav-right { display: flex; align-items: center; gap: 40px; }
+        
+        nav ul { list-style: none; display: flex; gap: 35px; }
+        
+        nav ul li a { 
+            color: var(--text-main); text-decoration: none; font-size: 1.1rem; 
+            text-transform: uppercase; letter-spacing: 2px; font-weight: bold; 
+            position: relative; padding-bottom: 5px; transition: color 0.3s ease; 
+        }
+        
+        /* Hiệu ứng gạch chân chạy từ giữa ra */
+        nav ul li a::after {
+            content: ''; position: absolute; width: 0; height: 2px;
+            bottom: 0; left: 50%; background-color: var(--primary-color);
+            transition: all 0.3s ease; transform: translateX(-50%); box-shadow: 0 0 10px var(--primary-color);
+        }
+        
+        nav ul li a:hover, nav ul li a.active { color: var(--primary-color); text-shadow: 0 0 10px rgba(255, 77, 0, 0.4); }
+        nav ul li a:hover::after, nav ul li a.active::after { width: 100%; }
+
+        /* Nút Sáng Tối Hình Tròn */
+        .theme-toggle {
+            background: rgba(255, 77, 0, 0.1); border: 1px solid var(--primary-color);
+            color: var(--primary-color); width: 45px; height: 45px; border-radius: 50%; 
+            display: flex; justify-content: center; align-items: center;
+            cursor: pointer; font-size: 1.2rem; transition: all 0.3s ease;
+            box-shadow: 0 0 10px rgba(255, 77, 0, 0.2);
+        }
+        .theme-toggle i { font-family: "Font Awesome 6 Free" !important; font-weight: 900; }
+        .theme-toggle:hover { background: var(--primary-color); color: var(--bg-color); box-shadow: 0 0 20px var(--primary-color); transform: rotate(30deg); }
+        /* ------------------------------------------- */
 
         .contact-content {
             flex: 1; display: flex; flex-direction: column;
@@ -123,11 +145,11 @@
             display: flex; flex-direction: column; align-items: center;
             transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             backdrop-filter: blur(5px);
+            cursor: pointer;
         }
 
         body.light-mode .social-card { background: rgba(244, 241, 234, 0.6); color: var(--text-main); }
 
-        /* Font Awesome (I) được loại trừ khỏi luật Times New Roman */
         .social-card i { font-family: "Font Awesome 6 Brands", "Font Awesome 6 Free" !important; font-size: 2.5rem; color: var(--primary-color); margin-bottom: 15px; transition: transform 0.3s; font-weight: 900; }
         
         .social-card h3 { font-size: 1.5rem; margin-bottom: 5px; font-weight: bold; letter-spacing: 1px; }
@@ -160,14 +182,16 @@
         <nav>
             <div class="logo">Contact</div>
             <div class="nav-right">
-                <!-- Đã sửa lỗi HTML lồng nhau và Active đúng Contact -->
                 <ul>
                     <li><a href="index.html">Home</a></li>
                     <li><a href="music.html">Music</a></li>
                     <li><a href="gallery.html">Gallery</a></li>
                     <li><a href="contact.html" class="active">Contact</a></li>
                 </ul>
-                <button class="theme-toggle" id="themeBtn">☀️</button>
+                <!-- NÚT SÁNG TỐI ĐÃ SỬA -->
+                <button class="theme-toggle" id="themeBtn">
+                    <i class="fas fa-sun"></i>
+                </button>
             </div>
         </nav>
 
@@ -176,36 +200,42 @@
             
             <div class="social-grid">
                 
+                <!-- 1. FACEBOOK -->
                 <a href="https://www.facebook.com/tanglam1605/" target="_blank" class="social-card">
                     <i class="fab fa-facebook-f"></i>
                     <h3>Facebook</h3>
                     <span>Tang Lam</span>
                 </a>
 
+                <!-- 2. INSTAGRAM -->
                 <a href="https://www.instagram.com/tlam_1605/" target="_blank" class="social-card">
                     <i class="fab fa-instagram"></i>
                     <h3>Instagram</h3>
                     <span>Tang Lam</span>
                 </a>
 
+                <!-- 3. TIKTOK -->
                 <a href="https://www.tiktok.com/@tlam_1605" target="_blank" class="social-card">
                     <i class="fab fa-tiktok"></i>
                     <h3>TikTok</h3>
                     <span>Noway16</span>
                 </a>
 
+                <!-- 4. DISCORD -->
                 <a class="social-card">
                     <i class="fab fa-discord"></i>
                     <h3>Discord</h3>
                     <span>Noway#7373</span>
                 </a>
 
+                <!-- 5. PUBG MOBILE -->
                 <div class="social-card">
                     <i class="fas fa-crosshairs"></i>
                     <h3>PUBG Mobile</h3>
                     <span>ID: 5189112695</span>
                 </div>
 
+                <!-- 6. TFT  -->
                 <div class="social-card">
                     <i class="fas fa-chess-knight"></i>
                     <h3>TFT</h3>
@@ -227,29 +257,32 @@
                 customCursor.style.left = e.clientX + 'px';
                 customCursor.style.top = e.clientY + 'px';
             });
-            // Khóa mục tiêu khi rê vào link, thẻ mxh
-            const interactiveElements = document.querySelectorAll('a, button, .social-card, .btn-back');
+            const interactiveElements = document.querySelectorAll('a, button, .social-card, .btn-back, .theme-toggle');
             interactiveElements.forEach(el => {
                 el.addEventListener('mouseenter', () => customCursor.classList.add('aiming'));
                 el.addEventListener('mouseleave', () => customCursor.classList.remove('aiming'));
             });
         }
 
-        // SCRIPT SÁNG/TỐI ĐÃ FIX LỖI TEXT
+        /* SCRIPT SÁNG/TỐI (BẢN ICON) */
         const themeBtn = document.getElementById('themeBtn');
         const body = document.body;
-        if (localStorage.getItem('theme') === 'light') {
-            body.classList.add('light-mode'); themeBtn.innerText = '🌙';
-        } else {
-            themeBtn.innerText = '☀️';
-        }
         
+        if (localStorage.getItem('theme') === 'light') {
+            body.classList.add('light-mode'); 
+            themeBtn.innerHTML = '<i class="fas fa-moon"></i>';
+        } else {
+            themeBtn.innerHTML = '<i class="fas fa-sun"></i>';
+        }
+
         themeBtn.addEventListener('click', () => {
             body.classList.toggle('light-mode');
             if (body.classList.contains('light-mode')) {
-                themeBtn.innerText = '🌙'; localStorage.setItem('theme', 'light');
+                themeBtn.innerHTML = '<i class="fas fa-moon"></i>'; 
+                localStorage.setItem('theme', 'light');
             } else {
-                themeBtn.innerText = '☀️'; localStorage.setItem('theme', 'dark');
+                themeBtn.innerHTML = '<i class="fas fa-sun"></i>'; 
+                localStorage.setItem('theme', 'dark');
             }
         });
 

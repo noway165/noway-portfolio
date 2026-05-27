@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tăng Thoại Lâm (Noway) | Portfolio</title>
-    <!-- Đã thêm FontAwesome để lấy Icon Tâm ngắm -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
@@ -29,7 +28,6 @@
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
-        /* ÉP CHUỘT ẨN ĐI TRÊN MÁY TÍNH ĐỂ DÙNG CHUỘT CUSTOM */
         @media (pointer: fine) {
             body, a, button, .airdrop-container, .close-video-btn {
                 cursor: none !important;
@@ -48,60 +46,62 @@
 
         h1, h2, h3, h4, h5, h6, p, a, span, div, button { font-family: 'Times New Roman', Times, serif !important; }
 
-        /* CSS CHO CON CHUỘT TÂM NGẮM SÚNG */
+        /* CON CHUỘT TÂM NGẮM SÚNG */
         .custom-cursor {
-            position: fixed;
-            top: 0; left: 0;
-            width: 30px; height: 30px;
-            color: var(--primary-color);
-            font-size: 24px;
-            pointer-events: none; /* Rất quan trọng: Xuyên thấu để bấm được nút ở dưới */
-            z-index: 100000; /* Nằm trên cùng mọi thứ */
-            transform: translate(-50%, -50%); /* Căn giữa tâm ngắm vào mũi chuột */
-            display: none; /* Mặc định ẩn, JS sẽ gọi ra */
-            justify-content: center; align-items: center;
-            text-shadow: 0 0 10px var(--primary-color);
-            transition: transform 0.15s ease-out; /* Mượt mà khi phóng to */
+            position: fixed; top: 0; left: 0;
+            width: 30px; height: 30px; color: var(--primary-color); font-size: 24px;
+            pointer-events: none; z-index: 100000; 
+            transform: translate(-50%, -50%); display: none; justify-content: center; align-items: center;
+            text-shadow: 0 0 10px var(--primary-color); transition: transform 0.15s ease-out; 
         }
-        
-        /* Hiệu ứng khi rê chuột vào mục tiêu (Hover) */
         .custom-cursor.aiming {
             transform: translate(-50%, -50%) scale(1.5) rotate(45deg);
-            color: #ffffff;
-            text-shadow: 0 0 15px var(--primary-color), 0 0 30px var(--primary-color);
+            color: #ffffff; text-shadow: 0 0 15px var(--primary-color), 0 0 30px var(--primary-color);
         }
 
         .smoke-overlay {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
             background: radial-gradient(circle at center, rgba(255, 77, 0, 0.05) 0%, var(--overlay-edge) 70%);
-            z-index: 1; pointer-events: none;
-            transition: background 0.5s ease;
+            z-index: 1; pointer-events: none; transition: background 0.5s ease;
         }
 
         #sparks-canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 2; pointer-events: none; }
 
         .ui-layer { position: relative; z-index: 10; width: 100%; height: 100%; display: flex; flex-direction: column; }
 
-        .nav-right { display: flex; align-items: center; gap: 30px; }
-        .theme-toggle {
-            background: transparent; border: 1px solid var(--primary-color);
-            color: var(--primary-color); padding: 5px 15px; border-radius: 20px;
-            font-weight: bold; font-size: 1rem; transition: 0.3s;
-        }
-        .theme-toggle:hover { background: var(--primary-color); color: var(--bg-color); }
-
+        /* MENU */
         nav {
             display: flex; justify-content: space-between; align-items: center;
             padding: 20px 50px; background: var(--nav-bg);
             border-bottom: 1px solid rgba(255, 77, 0, 0.3); backdrop-filter: blur(5px);
             transition: background 0.5s ease;
         }
-        
         .logo { font-size: 2rem; font-weight: bold; color: var(--primary-color); text-shadow: 0 0 15px rgba(255, 77, 0, 0.4); letter-spacing: 2px; text-transform: uppercase; }
-        
-        nav ul { list-style: none; display: flex; gap: 30px; }
-        nav ul li a { color: var(--text-main); text-decoration: none; font-size: 1.2rem; text-transform: uppercase; letter-spacing: 1px; transition: 0.3s; padding-bottom: 5px; border-bottom: 2px solid transparent; font-weight: bold; }
-        nav ul li a:hover, nav ul li a.active { color: var(--primary-color); border-bottom: 2px solid var(--primary-color); text-shadow: 0 0 8px rgba(255, 77, 0, 0.4); }
+        .nav-right { display: flex; align-items: center; gap: 40px; }
+        nav ul { list-style: none; display: flex; gap: 35px; }
+        nav ul li a { 
+            color: var(--text-main); text-decoration: none; font-size: 1.1rem; 
+            text-transform: uppercase; letter-spacing: 2px; font-weight: bold; 
+            position: relative; padding-bottom: 5px; transition: color 0.3s ease; 
+        }
+        nav ul li a::after {
+            content: ''; position: absolute; width: 0; height: 2px;
+            bottom: 0; left: 50%; background-color: var(--primary-color);
+            transition: all 0.3s ease; transform: translateX(-50%); box-shadow: 0 0 10px var(--primary-color);
+        }
+        nav ul li a:hover, nav ul li a.active { color: var(--primary-color); text-shadow: 0 0 10px rgba(255, 77, 0, 0.4); }
+        nav ul li a:hover::after, nav ul li a.active::after { width: 100%; }
+
+        /* Nút Sáng Tối Hình Tròn */
+        .theme-toggle {
+            background: rgba(255, 77, 0, 0.1); border: 1px solid var(--primary-color);
+            color: var(--primary-color); width: 45px; height: 45px; border-radius: 50%; 
+            display: flex; justify-content: center; align-items: center;
+            cursor: pointer; font-size: 1.2rem; transition: all 0.3s ease;
+            box-shadow: 0 0 10px rgba(255, 77, 0, 0.2);
+        }
+        .theme-toggle i { font-family: "Font Awesome 6 Free" !important; font-weight: 900; }
+        .theme-toggle:hover { background: var(--primary-color); color: var(--bg-color); box-shadow: 0 0 20px var(--primary-color); transform: rotate(30deg); }
 
         .hero-content { flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 20px; }
 
@@ -115,10 +115,12 @@
         }
         @keyframes float { 0% { transform: translateY(0px); } 50% { transform: translateY(-12px); } 100% { transform: translateY(0px); } }
 
+        /* AIRDROP */
         .airdrop-container {
-            position: absolute; top: -150px; z-index: 100;
+            position: absolute; top: -150px; z-index: 1000;
             display: flex; flex-direction: column; align-items: center; 
             transition: transform 0.2s ease; transform-origin: top center;
+            pointer-events: auto !important; /* Đảm bảo luôn bấm được */
         }
         .airdrop-container:hover { transform: scale(1.1) !important; filter: brightness(1.2); }
         .airdrop-img {
@@ -129,6 +131,7 @@
         .shaking .airdrop-img { animation: shake 0.4s ease-in-out infinite; filter: drop-shadow(0 0 20px var(--primary-color)); }
         @keyframes shake { 0% { transform: rotate(0deg) scale(1.1); } 25% { transform: rotate(-10deg) scale(1.1); } 50% { transform: rotate(10deg) scale(1.1); } 75% { transform: rotate(-10deg) scale(1.1); } 100% { transform: rotate(0deg) scale(1.1); } }
 
+        /* VIDEO MODAL */
         .video-modal-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0, 0, 0, 0.95); backdrop-filter: blur(10px);
@@ -169,18 +172,16 @@
 </head>
 <body>
 
-    <!-- CON CHUỘT TÂM NGẮM -->
     <div class="custom-cursor" id="customCursor">
         <i class="fas fa-crosshairs"></i>
     </div>
 
-    <!-- RẠP CHIẾU PHIM -->
     <div class="video-modal-overlay" id="videoModal">
         <div class="video-content">
             <button class="close-video-btn" id="closeVideoBtn">X</button>
             <div class="iframe-container">
                 <video id="highlightVideo" controls playsinline>
-                    <!-- TÔI ĐÃ FIX LỖI Ở ĐÂY: CHỈ GHI TÊN FILE -->
+                    <!-- ĐÃ XÓA CHỮ e:\ -->
                     <source src="snaptik.vn_7586355483028573447.mp4" type="video/mp4">
                     Trình duyệt của bạn không hỗ trợ phát video.
                 </video>
@@ -194,6 +195,7 @@
     <div class="ui-layer">
         <nav>
             <div class="logo">About me</div>
+            
             <div class="nav-right">
                 <ul>
                     <li><a href="index.html" class="active">Home</a></li>
@@ -201,13 +203,16 @@
                     <li><a href="gallery.html">Gallery</a></li>
                     <li><a href="contact.html">Contact</a></li>
                 </ul>
-                <button class="theme-toggle" id="themeBtn">☀️</button>
+                <button class="theme-toggle" id="themeBtn">
+                    <i class="fas fa-sun"></i>
+                </button>
             </div>
         </nav>
+
         <div class="hero-content">
             <div class="profile-wrapper">
                 <div class="tilt-box" id="tiltBox">
-                    <!-- TÔI ĐÃ FIX LỖI Ở ĐÂY: CHỈ GHI TÊN FILE -->
+                    <!-- ĐÃ XÓA CHỮ e:\ -->
                     <img src="z7867355486545_8927add2849b9d923e27b3ed08b3eff2.jpg" alt="Avatar" class="profile-img">
                 </div>
             </div>
@@ -227,30 +232,20 @@
     </div>
 
     <script>
-        /* SCRIPT XỬ LÝ CON CHUỘT TÂM NGẮM */
         const customCursor = document.getElementById('customCursor');
-        
-        // Chỉ bật khi người dùng xài Máy tính (Có trỏ chuột)
         if (window.matchMedia("(pointer: fine)").matches) {
             customCursor.style.display = 'flex';
-
-            // Cho tâm ngắm đi theo chuột
             document.addEventListener('mousemove', (e) => {
                 customCursor.style.left = e.clientX + 'px';
                 customCursor.style.top = e.clientY + 'px';
             });
-
-            // Tự động xoay và phóng to khi rê vào bất kỳ nút bấm, link hoặc hòm thính nào
-            const interactiveElements = document.querySelectorAll('a, button, .theme-toggle, .btn-fire');
-            
+            const interactiveElements = document.querySelectorAll('a, button, .theme-toggle, .btn-fire, .airdrop-container');
             interactiveElements.forEach(el => {
                 el.addEventListener('mouseenter', () => customCursor.classList.add('aiming'));
                 el.addEventListener('mouseleave', () => customCursor.classList.remove('aiming'));
             });
         }
 
-
-        /* 3D TILT AVATAR */
         const tiltBox = document.getElementById('tiltBox');
         const profileWrapper = document.querySelector('.profile-wrapper');
         profileWrapper.addEventListener('mousemove', (e) => {
@@ -265,7 +260,7 @@
             tiltBox.style.transform = `rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`;
         });
 
-        /* EASTER EGG: AIRDROP */
+        /* ĐÃ SỬA LỖI MỤC TIÊU DI ĐỘNG Ở ĐÂY */
         const videoModal = document.getElementById('videoModal');
         const closeVideoBtn = document.getElementById('closeVideoBtn');
         const highlightVideo = document.getElementById('highlightVideo');
@@ -277,40 +272,43 @@
 
             const drop = document.createElement('div');
             drop.className = 'airdrop-container';
-            // TÔI ĐÃ FIX LỖI Ở ĐÂY: CHỈ GHI TÊN FILE
+            // ĐÃ XÓA CHỮ e:\
             drop.innerHTML = `<img src="z7867426889012_3eac5d1ab825ae635ab1d53c203017fb.jpg" alt="Airdrop" class="airdrop-img">`;
             drop.style.left = Math.random() * (window.innerWidth - 150) + 50 + 'px';
             document.body.appendChild(drop);
 
-            // Gắn hiệu ứng ngắm bắn cho thính khi nó vừa rớt ra
             drop.addEventListener('mouseenter', () => customCursor.classList.add('aiming'));
             drop.addEventListener('mouseleave', () => customCursor.classList.remove('aiming'));
 
-            let posY = -150;
-            const speed = 1.0; 
-            let isLooted = false;
+            let posY = -150; const speed = 1.0; let isLooted = false;
 
             const fallInterval = setInterval(() => {
-                if (isLooted) return;
-                posY += speed;
-                drop.style.top = posY + 'px';
-                if (posY > window.innerHeight) {
-                    clearInterval(fallInterval); drop.remove();
-                }
+                if (isLooted) return; 
+                posY += speed; drop.style.top = posY + 'px';
+                if (posY > window.innerHeight) { clearInterval(fallInterval); drop.remove(); }
             }, 20);
 
-            drop.addEventListener('click', () => {
+            // BÍ KÍP Ở ĐÂY: Dùng 'mousedown' (hoặc 'touchstart' cho đt) thay cho 'click'
+            function handleLoot() {
                 if (isLooted) return;
-                isLooted = true; hasLootedEasterEgg = true; 
+                isLooted = true; 
+                hasLootedEasterEgg = true; 
+                
+                // Phải ép dừng cái máy bay lại ngay lập tức
+                clearInterval(fallInterval); 
+                
                 drop.classList.add('shaking'); 
-                customCursor.classList.remove('aiming'); // Bắn xong tắt tâm ngắm
+                customCursor.classList.remove('aiming'); 
                 
                 setTimeout(() => {
                     drop.remove(); 
                     videoModal.classList.add('active'); 
                     highlightVideo.play(); 
                 }, 800);
-            });
+            }
+
+            drop.addEventListener('mousedown', handleLoot);
+            drop.addEventListener('touchstart', handleLoot); // Cho xài điện thoại bấm cũng ăn
         }
 
         function scheduleNextAirdrop(isFirstDrop = false) {
@@ -318,31 +316,33 @@
             let delay;
             if (isFirstDrop) { delay = Math.floor(Math.random() * (30000 - 15000 + 1)) + 15000; } 
             else { delay = Math.floor(Math.random() * (90000 - 45000 + 1)) + 45000; }
-            setTimeout(() => {
-                if (!hasLootedEasterEgg) { spawnAirdrop(); scheduleNextAirdrop(false); }
-            }, delay);
+            setTimeout(() => { if (!hasLootedEasterEgg) { spawnAirdrop(); scheduleNextAirdrop(false); } }, delay);
         }
         scheduleNextAirdrop(true);
 
         closeVideoBtn.addEventListener('click', () => {
-            videoModal.classList.remove('active');
-            highlightVideo.pause(); highlightVideo.currentTime = 0; 
+            videoModal.classList.remove('active'); highlightVideo.pause(); highlightVideo.currentTime = 0; 
         });
 
-        /* CÁC SCRIPT SÁNG/TỐI & HIỆU ỨNG NỀN */
+        /* SCRIPT ĐỔI SÁNG/TỐI (DÙNG ICON MẶT TRỜI) */
         const themeBtn = document.getElementById('themeBtn');
         const body = document.body;
+        
         if (localStorage.getItem('theme') === 'light') {
-            body.classList.add('light-mode'); themeBtn.innerText = '🌙';
+            body.classList.add('light-mode'); 
+            themeBtn.innerHTML = '<i class="fas fa-moon"></i>';
         } else {
-            themeBtn.innerText = '☀️';
+            themeBtn.innerHTML = '<i class="fas fa-sun"></i>';
         }
+
         themeBtn.addEventListener('click', () => {
             body.classList.toggle('light-mode');
             if (body.classList.contains('light-mode')) {
-                themeBtn.innerText = '🌙'; localStorage.setItem('theme', 'light');
+                themeBtn.innerHTML = '<i class="fas fa-moon"></i>'; 
+                localStorage.setItem('theme', 'light');
             } else {
-                themeBtn.innerText = '☀️'; localStorage.setItem('theme', 'dark');
+                themeBtn.innerHTML = '<i class="fas fa-sun"></i>'; 
+                localStorage.setItem('theme', 'dark');
             }
         });
 

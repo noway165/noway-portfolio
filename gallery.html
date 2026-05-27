@@ -27,9 +27,10 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         @media (pointer: fine) {
-            body, a, button, .gallery-item { cursor: none !important; }
+            body, a, button, .gallery-item, .album-card { cursor: none !important; }
         }
 
+        /* CON CHUỘT TÂM NGẮM */
         .custom-cursor {
             position: fixed; top: 0; left: 0; width: 30px; height: 30px;
             color: var(--primary-color); font-size: 24px;
@@ -55,59 +56,82 @@
 
         .ui-layer { position: relative; z-index: 10; width: 100%; min-height: 100%; display: flex; flex-direction: column; }
 
-        .nav-right { display: flex; align-items: center; gap: 30px; }
-        .theme-toggle { background: transparent; border: 1px solid var(--primary-color); color: var(--primary-color); padding: 5px 15px; border-radius: 20px; font-weight: bold; font-size: 1.2rem; transition: 0.3s; }
-        .theme-toggle:hover { background: var(--primary-color); color: var(--bg-color); }
-
-        nav { display: flex; justify-content: space-between; align-items: center; padding: 20px 50px; background: var(--nav-bg); border-bottom: 1px solid rgba(255, 77, 0, 0.3); backdrop-filter: blur(5px); position: sticky; top: 0; z-index: 100; }
+        /* MENU VIP */
+        nav { display: flex; justify-content: space-between; align-items: center; padding: 20px 50px; background: var(--nav-bg); border-bottom: 1px solid rgba(255, 77, 0, 0.3); backdrop-filter: blur(5px); position: sticky; top: 0; z-index: 100; transition: background 0.5s ease;}
         .logo { font-size: 2rem; font-weight: bold; color: var(--primary-color); text-shadow: 0 0 15px rgba(255, 77, 0, 0.4); letter-spacing: 2px; text-transform: uppercase; }
-        nav ul { list-style: none; display: flex; gap: 30px; }
-        nav ul li a { color: var(--text-main); text-decoration: none; font-size: 1.2rem; text-transform: uppercase; letter-spacing: 1px; transition: 0.3s; padding-bottom: 5px; border-bottom: 2px solid transparent; font-weight: bold; }
-        nav ul li a:hover, nav ul li a.active { color: var(--primary-color); border-bottom: 2px solid var(--primary-color); text-shadow: 0 0 8px rgba(255, 77, 0, 0.4); }
+        .nav-right { display: flex; align-items: center; gap: 40px; }
+        nav ul { list-style: none; display: flex; gap: 35px; }
+        nav ul li a { color: var(--text-main); text-decoration: none; font-size: 1.1rem; text-transform: uppercase; letter-spacing: 2px; font-weight: bold; position: relative; padding-bottom: 5px; transition: color 0.3s ease; }
+        nav ul li a::after { content: ''; position: absolute; width: 0; height: 2px; bottom: 0; left: 50%; background-color: var(--primary-color); transition: all 0.3s ease; transform: translateX(-50%); box-shadow: 0 0 10px var(--primary-color); }
+        nav ul li a:hover, nav ul li a.active { color: var(--primary-color); text-shadow: 0 0 10px rgba(255, 77, 0, 0.4); }
+        nav ul li a:hover::after, nav ul li a.active::after { width: 100%; }
+        
+        .theme-toggle { background: rgba(255, 77, 0, 0.1); border: 1px solid var(--primary-color); color: var(--primary-color); width: 45px; height: 45px; border-radius: 50%; display: flex; justify-content: center; align-items: center; cursor: pointer; font-size: 1.2rem; transition: all 0.3s ease; box-shadow: 0 0 10px rgba(255, 77, 0, 0.2); }
+        .theme-toggle i { font-family: "Font Awesome 6 Free" !important; font-weight: 900; }
+        .theme-toggle:hover { background: var(--primary-color); color: var(--bg-color); box-shadow: 0 0 20px var(--primary-color); transform: rotate(30deg); }
 
-        .gallery-content { flex: 1; display: flex; flex-direction: column; align-items: center; padding: 40px 20px 80px 20px; animation: fadeIn 1s ease-out; }
+        .gallery-content { flex: 1; display: flex; flex-direction: column; align-items: center; padding: 40px 20px 80px 20px; animation: fadeIn 1s ease-out; width: 100%; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
-        .gallery-content h1 { font-size: 4rem; font-weight: bold; letter-spacing: 2px; margin-bottom: 10px; text-shadow: 2px 4px 10px rgba(0,0,0,0.5); text-transform: uppercase;}
-        
-        /* THANH CHỌN ALBUM */
-        .album-tabs {
-            display: flex; gap: 15px; margin-top: 10px; margin-bottom: 40px;
-            flex-wrap: wrap; justify-content: center;
+        .gallery-content h1 { font-size: 4rem; font-weight: bold; letter-spacing: 2px; margin-bottom: 10px; text-shadow: 2px 4px 10px rgba(0,0,0,0.5); text-transform: uppercase; text-align: center;}
+        .subtitle { font-size: 1.5rem; color: var(--text-muted); margin-bottom: 40px; font-style: italic; text-align: center; }
+
+        /* KHUNG CHỨA 3 ALBUM BÊN NGOÀI */
+        .albums-view {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px; max-width: 1100px; width: 100%;
         }
 
-        .album-btn {
-            background: rgba(10, 10, 12, 0.8); border: 1px solid var(--primary-color);
-            color: var(--text-main); padding: 10px 25px; border-radius: 30px;
-            font-size: 1.2rem; cursor: pointer; transition: 0.3s;
-            box-shadow: 0 0 10px rgba(255, 77, 0, 0.2);
+        .album-card {
+            background: rgba(10, 10, 12, 0.6); border: 1px solid var(--primary-color);
+            border-radius: 15px; padding: 15px; cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            backdrop-filter: blur(5px); text-align: center;
+        }
+        body.light-mode .album-card { background: rgba(244, 241, 234, 0.8); }
+
+        .album-cover {
+            width: 100%; aspect-ratio: 4 / 3; /* Tỉ lệ bìa album */
+            object-fit: cover; border-radius: 10px; margin-bottom: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.5); transition: transform 0.4s ease;
         }
 
-        body.light-mode .album-btn { background: rgba(244, 241, 234, 0.8); color: var(--text-main); }
+        .album-card h3 { font-size: 2rem; color: var(--primary-color); margin-bottom: 5px; font-weight: bold; letter-spacing: 2px;}
+        .album-card p { font-size: 1.1rem; color: var(--text-muted); font-style: italic; }
 
-        /* Nút Album đang được chọn */
-        .album-btn.active, .album-btn:hover {
-            background: var(--primary-color); color: var(--bg-color) !important;
-            font-weight: bold; box-shadow: 0 0 20px var(--primary-color);
+        .album-card:hover { transform: translateY(-10px); box-shadow: 0 15px 30px rgba(255, 77, 0, 0.3); background: rgba(255, 77, 0, 0.1); }
+        .album-card:hover .album-cover { transform: scale(1.05); filter: brightness(0.8); }
+
+        /* KHUNG CHỨA ẢNH BÊN TRONG ALBUM (Mặc định ẩn) */
+        .photos-view {
+            display: none; width: 100%; max-width: 1200px; animation: fadeIn 0.5s ease-out;
         }
 
-        /* LƯỚI ẢNH */
+        .photos-header {
+            display: flex; justify-content: space-between; align-items: center; 
+            margin-bottom: 30px; flex-wrap: wrap; gap: 20px;
+        }
+
+        .btn-back {
+            background: transparent; border: 1px solid var(--primary-color);
+            color: var(--primary-color); padding: 10px 25px; border-radius: 30px;
+            font-size: 1.2rem; cursor: pointer; transition: 0.3s; font-weight: bold;
+        }
+        .btn-back:hover { background: var(--primary-color); color: var(--bg-color); box-shadow: 0 0 15px var(--primary-color); }
+        .btn-back i { font-family: "Font Awesome 6 Free" !important; margin-right: 8px; font-weight: 900;}
+
+        /* LƯỚI ẢNH BÊN TRONG */
         .gallery-grid {
-            display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 20px; max-width: 1200px; width: 100%;
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; 
         }
 
         .gallery-item {
             position: relative; overflow: hidden; border-radius: 12px;
             border: 2px solid transparent; transition: 0.4s ease;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.5); aspect-ratio: 1 / 1; 
-            /* Mặc định hiện tất cả */
-            display: block;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.5); aspect-ratio: 1 / 1; display: none; /* Ẩn hết, JS sẽ bật lên */
         }
 
-        /* Hiệu ứng mượt khi lọc ảnh */
-        .gallery-item.hide { display: none; }
-        .gallery-item.show { animation: popIn 0.5s ease-out forwards; }
+        .gallery-item.show { display: block; animation: popIn 0.5s ease-out forwards; }
         @keyframes popIn { 0% { opacity: 0; transform: scale(0.8); } 100% { opacity: 1; transform: scale(1); } }
 
         .gallery-item img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
@@ -160,77 +184,124 @@
                     <li><a href="gallery.html" class="active">Gallery</a></li>
                     <li><a href="contact.html">Contact</a></li>
                 </ul>
-                <button class="theme-toggle" id="themeBtn">☀️</button>
+                <button class="theme-toggle" id="themeBtn">
+                    <i class="fas fa-sun"></i>
+                </button>
             </div>
         </nav>
 
         <div class="gallery-content">
-            <h1>My Gallery</h1>
+            <h1 id="mainTitle">My Albums</h1>
+            <p class="subtitle" id="subTitle">"Chọn một thư mục để xem ảnh"</p>
             
-            <!-- CÁC NÚT CHỌN ALBUM -->
-            <div class="album-tabs">
-                <button class="album-btn active" data-filter="all">Tất cả</button>
-                <button class="album-btn" data-filter="album-1">Me</button>
-                <button class="album-btn" data-filter="album-2">View</button>
-                <button class="album-btn" data-filter="album-3">Friends</button>
-            </div>
-            
-            <!-- LƯỚI ẢNH -->
-            <div class="gallery-grid" id="galleryGrid">
+            <!-- MÀN HÌNH 1: HIỂN THỊ 3 CUỐN ALBUM -->
+            <div class="albums-view" id="albumsView">
                 
-                <div class="gallery-item album-1" onclick="openLightbox(this)">
-                    <img src="z7870230747566_aa8bc19aef718cb339132273f03cb1b9.jpg" alt="Me Photo 1">
-                </div>
-                <div class="gallery-item album-1" onclick="openLightbox(this)">
-                    <img src="z7870230763886_026701a4401625119045fcd2bfc9df9b.jpg" alt="Me Photo 2">
-                </div>
-
-                <div class="gallery-item album-2" onclick="openLightbox(this)">
-                    <img src="z7870348037449_15bf4b33edbc3aa2d000ea119de38927.jpg" alt="View Photo 1">
-                </div>
-                <div class="gallery-item album-2" onclick="openLightbox(this)">
-                    <img src="z7870342182713_06a22b9303eaefab90f6d42fb332e8e2.jpg" alt="View Photo 2">
+                <!-- Cuốn Album 1: Me -->
+                <div class="album-card" onclick="openAlbum('album-1', 'Bản Thân')">
+                    <img src="z7870230747566_aa8bc19aef718cb339132273f03cb1b9.jpg" class="album-cover" alt="Me Album">
+                    <h3>Me</h3>
+                    <p>Hình ảnh cá nhân</p>
                 </div>
 
-                <div class="gallery-item album-3" onclick="openLightbox(this)">
-                    <img src="z7870342950412_3b16b0a2a4654662dc4060f8882e099e.jpg" alt="Friends Photo 1">
+                <!-- Cuốn Album 2: View -->
+                <div class="album-card" onclick="openAlbum('album-2', 'Phong Cảnh')">
+                    <img src="z7870348037449_15bf4b33edbc3aa2d000ea119de38927.jpg" class="album-cover" alt="View Album">
+                    <h3>View</h3>
+                    <p>Góc nhìn và phong cảnh</p>
                 </div>
-                <div class="gallery-item album-3" onclick="openLightbox(this)">
-                    <img src="z7870342189420_385fa071d4152393b1b88c68c74d4604.jpg" alt="Friends Photo 2">
+
+                <!-- Cuốn Album 3: Friends -->
+                <div class="album-card" onclick="openAlbum('album-3', 'Bạn Bè')">
+                    <img src="z7870342950412_3b16b0a2a4654662dc4060f8882e099e.jpg" class="album-cover" alt="Friends Album">
+                    <h3>Friends</h3>
+                    <p>Những người anh em</p>
                 </div>
 
             </div>
+            
+            <!-- MÀN HÌNH 2: BÊN TRONG ALBUM (LƯỚI ẢNH) -->
+            <div class="photos-view" id="photosView">
+                
+                <div class="photos-header">
+                    <button class="btn-back" onclick="closeAlbum()">
+                        <i class="fas fa-arrow-left"></i> Quay lại
+                    </button>
+                </div>
+
+                <div class="gallery-grid">
+                    
+                    <!-- ẢNH THUỘC ALBUM 1 (Me) -->
+                    <div class="gallery-item album-1" onclick="openLightbox(this)">
+                        <img src="z7870230747566_aa8bc19aef718cb339132273f03cb1b9.jpg" alt="Me Photo 1">
+                    </div>
+                    <div class="gallery-item album-1" onclick="openLightbox(this)">
+                        <img src="z7870230763886_026701a4401625119045fcd2bfc9df9b.jpg" alt="Me Photo 2">
+                    </div>
+
+                    <!-- ẢNH THUỘC ALBUM 2 (View) -->
+                    <div class="gallery-item album-2" onclick="openLightbox(this)">
+                        <img src="z7870348037449_15bf4b33edbc3aa2d000ea119de38927.jpg" alt="View Photo 1">
+                    </div>
+                    <div class="gallery-item album-2" onclick="openLightbox(this)">
+                        <img src="z7870342182713_06a22b9303eaefab90f6d42fb332e8e2.jpg" alt="View Photo 2">
+                    </div>
+
+                    <!-- ẢNH THUỘC ALBUM 3 (Friends) -->
+                    <div class="gallery-item album-3" onclick="openLightbox(this)">
+                        <img src="z7870342950412_3b16b0a2a4654662dc4060f8882e099e.jpg" alt="Friends Photo 1">
+                    </div>
+                    <div class="gallery-item album-3" onclick="openLightbox(this)">
+                        <img src="z7870342189420_385fa071d4152393b1b88c68c74d4604.jpg" alt="Friends Photo 2">
+                    </div>
+
+                </div>
+            </div>
+
         </div>
     </div>
 
     <script>
-        /* SCRIPT LỌC ALBUM ẢNH */
-        const albumBtns = document.querySelectorAll('.album-btn');
+        /* MÀN HÌNH 1 -> MÀN HÌNH 2: CHỨC NĂNG LẬT ALBUM */
+        const albumsView = document.getElementById('albumsView');
+        const photosView = document.getElementById('photosView');
+        const mainTitle = document.getElementById('mainTitle');
+        const subTitle = document.getElementById('subTitle');
         const galleryItems = document.querySelectorAll('.gallery-item');
 
-        albumBtns.forEach(btn => {
-            btn.addEventListener('click', () => {
-                // Đổi màu nút đang chọn
-                albumBtns.forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
+        function openAlbum(albumClass, customTitle) {
+            // Ẩn 3 cái bìa album đi, mở khu vực chứa ảnh ra
+            albumsView.style.display = 'none';
+            photosView.style.display = 'block';
+            
+            // Đổi tiêu đề
+            mainTitle.innerText = customTitle;
+            subTitle.innerText = `"Khoảnh khắc tuyệt vời nhất"`;
 
-                // Lấy tên album vừa bấm (all, album-1, album-2...)
-                const filterValue = btn.getAttribute('data-filter');
-
-                // Lọc ảnh
-                galleryItems.forEach(item => {
-                    item.classList.remove('show', 'hide'); // Reset class cũ
-                    
-                    if (filterValue === 'all' || item.classList.contains(filterValue)) {
-                        item.classList.add('show');
-                        item.style.display = 'block';
-                    } else {
-                        item.classList.add('hide');
-                        setTimeout(() => { item.style.display = 'none'; }, 300); // Đợi hiệu ứng mờ xong mới ẩn
-                    }
-                });
+            // Bật những ảnh nào thuộc đúng cái Album vừa bấm
+            galleryItems.forEach(item => {
+                if (item.classList.contains(albumClass)) {
+                    item.classList.add('show');
+                } else {
+                    item.classList.remove('show');
+                }
             });
-        });
+        }
+
+        function closeAlbum() {
+            // Đóng khu vực ảnh, mở lại 3 cái bìa
+            photosView.style.display = 'none';
+            albumsView.style.display = 'grid';
+            
+            // Đổi tiêu đề về như cũ
+            mainTitle.innerText = "My Albums";
+            subTitle.innerText = `"Chọn một thư mục để xem ảnh"`;
+
+            // Tắt hết ảnh
+            galleryItems.forEach(item => {
+                item.classList.remove('show');
+            });
+        }
 
         /* MỞ / ĐÓNG LIGHTBOX PHÓNG TO ẢNH */
         const lightbox = document.getElementById('lightbox');
@@ -255,28 +326,33 @@
                 customCursor.style.left = e.clientX + 'px';
                 customCursor.style.top = e.clientY + 'px';
             });
-            // Khóa mục tiêu khi rê vào ảnh, link, nút
-            const interactiveElements = document.querySelectorAll('a, button, .gallery-item, .close-lightbox');
+            // Khóa mục tiêu khi rê vào Bìa Album, Ảnh con, nút Back, nút đóng
+            const interactiveElements = document.querySelectorAll('a, button, .album-card, .gallery-item, .close-lightbox');
             interactiveElements.forEach(el => {
                 el.addEventListener('mouseenter', () => customCursor.classList.add('aiming'));
                 el.addEventListener('mouseleave', () => customCursor.classList.remove('aiming'));
             });
         }
 
-        /* SCRIPT SÁNG/TỐI */
+        /* SCRIPT SÁNG/TỐI (BẢN ICON) */
         const themeBtn = document.getElementById('themeBtn');
         const body = document.body;
+        
         if (localStorage.getItem('theme') === 'light') {
-            body.classList.add('light-mode'); themeBtn.innerText = '🌙';
+            body.classList.add('light-mode'); 
+            themeBtn.innerHTML = '<i class="fas fa-moon"></i>';
         } else {
-            themeBtn.innerText = '☀️';
+            themeBtn.innerHTML = '<i class="fas fa-sun"></i>';
         }
+
         themeBtn.addEventListener('click', () => {
             body.classList.toggle('light-mode');
             if (body.classList.contains('light-mode')) {
-                themeBtn.innerText = '🌙'; localStorage.setItem('theme', 'light');
+                themeBtn.innerHTML = '<i class="fas fa-moon"></i>'; 
+                localStorage.setItem('theme', 'light');
             } else {
-                themeBtn.innerText = '☀️'; localStorage.setItem('theme', 'dark');
+                themeBtn.innerHTML = '<i class="fas fa-sun"></i>'; 
+                localStorage.setItem('theme', 'dark');
             }
         });
 

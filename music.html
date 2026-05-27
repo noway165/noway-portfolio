@@ -29,86 +29,77 @@
 
         /* ÉP CHUỘT ẨN ĐI ĐỂ DÙNG CHUỘT CUSTOM */
         @media (pointer: fine) {
-            body, a, button, .spotify-card {
-                cursor: none !important;
-            }
+            body, a, button, .spotify-card { cursor: none !important; }
         }
 
         /* CON CHUỘT TÂM NGẮM SÚNG */
         .custom-cursor {
-            position: fixed; top: 0; left: 0;
-            width: 30px; height: 30px;
-            color: var(--primary-color);
-            font-size: 24px;
+            position: fixed; top: 0; left: 0; width: 30px; height: 30px;
+            color: var(--primary-color); font-size: 24px;
             pointer-events: none; z-index: 100000; 
-            transform: translate(-50%, -50%); 
-            display: none; justify-content: center; align-items: center;
-            text-shadow: 0 0 10px var(--primary-color);
-            transition: transform 0.15s ease-out; 
+            transform: translate(-50%, -50%); display: none; justify-content: center; align-items: center;
+            text-shadow: 0 0 10px var(--primary-color); transition: transform 0.15s ease-out; 
         }
         
         .custom-cursor.aiming {
             transform: translate(-50%, -50%) scale(1.5) rotate(45deg);
-            color: #ffffff;
-            text-shadow: 0 0 15px var(--primary-color), 0 0 30px var(--primary-color);
+            color: #ffffff; text-shadow: 0 0 15px var(--primary-color), 0 0 30px var(--primary-color);
         }
 
         /* TIMES NEW ROMAN */
-        body, html, h1, h2, h3, h4, h5, h6, p, a, span, div, button {
-            font-family: 'Times New Roman', Times, serif !important; 
-        }
+        body, html, h1, h2, h3, h4, h5, h6, p, a, span, div, button { font-family: 'Times New Roman', Times, serif !important; }
 
         body, html {
-            width: 100%; height: 100%;
-            background-color: var(--bg-color);
-            color: var(--text-main);
-            overflow-x: hidden;
-            overflow-y: auto; 
-            transition: background-color 0.5s ease, color 0.5s ease;
+            width: 100%; height: 100%; background-color: var(--bg-color); color: var(--text-main);
+            overflow-x: hidden; overflow-y: auto; transition: background-color 0.5s ease, color 0.5s ease;
         }
 
-        .smoke-overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: radial-gradient(circle at center, rgba(255, 77, 0, 0.05) 0%, var(--overlay-edge) 70%);
-            z-index: 1; pointer-events: none;
-            transition: background 0.5s ease;
-        }
-
+        .smoke-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(circle at center, rgba(255, 77, 0, 0.05) 0%, var(--overlay-edge) 70%); z-index: 1; pointer-events: none; transition: background 0.5s ease; }
         #sparks-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 2; pointer-events: none; }
 
-        .ui-layer {
-            position: relative; z-index: 10;
-            width: 100%; min-height: 100%;
-            display: flex; flex-direction: column;
-        }
+        .ui-layer { position: relative; z-index: 10; width: 100%; min-height: 100%; display: flex; flex-direction: column; }
 
-        .nav-right { display: flex; align-items: center; gap: 30px; }
-        .theme-toggle {
-            background: transparent; border: 1px solid var(--primary-color);
-            color: var(--primary-color); padding: 5px 15px; border-radius: 20px;
-            cursor: pointer; font-weight: bold;
-            font-size: 1.2rem; transition: 0.3s;
-        }
-        .theme-toggle:hover { background: var(--primary-color); color: var(--bg-color); }
-
+        /* ----- CSS MENU MỚI VIP ĐỒNG BỘ ----- */
         nav {
             display: flex; justify-content: space-between; align-items: center;
             padding: 20px 50px; background: var(--nav-bg);
             border-bottom: 1px solid rgba(255, 77, 0, 0.3); backdrop-filter: blur(5px);
-            position: sticky; top: 0; z-index: 100;
+            position: sticky; top: 0; z-index: 100; transition: background 0.5s ease;
         }
-        
         .logo { font-size: 2rem; font-weight: bold; color: var(--primary-color); text-shadow: 0 0 15px rgba(255, 77, 0, 0.4); letter-spacing: 2px; text-transform: uppercase; }
         
-        nav ul { list-style: none; display: flex; gap: 30px; }
-        nav ul li a { color: var(--text-main); text-decoration: none; font-size: 1.2rem; text-transform: uppercase; letter-spacing: 1px; transition: 0.3s; padding-bottom: 5px; border-bottom: 2px solid transparent; font-weight: bold; }
-        nav ul li a:hover, nav ul li a.active { color: var(--primary-color); border-bottom: 2px solid var(--primary-color); text-shadow: 0 0 8px rgba(255, 77, 0, 0.4); }
-
-        .music-content {
-            flex: 1; display: flex; flex-direction: column;
-            align-items: center; padding: 40px 20px 80px 20px;
-            animation: fadeIn 1s ease-out;
+        .nav-right { display: flex; align-items: center; gap: 40px; }
+        
+        nav ul { list-style: none; display: flex; gap: 35px; }
+        nav ul li a { 
+            color: var(--text-main); text-decoration: none; font-size: 1.1rem; 
+            text-transform: uppercase; letter-spacing: 2px; font-weight: bold; 
+            position: relative; padding-bottom: 5px; transition: color 0.3s ease; 
         }
+        
+        /* Hiệu ứng gạch chân chạy từ giữa ra */
+        nav ul li a::after {
+            content: ''; position: absolute; width: 0; height: 2px;
+            bottom: 0; left: 50%; background-color: var(--primary-color);
+            transition: all 0.3s ease; transform: translateX(-50%); box-shadow: 0 0 10px var(--primary-color);
+        }
+        
+        nav ul li a:hover, nav ul li a.active { color: var(--primary-color); text-shadow: 0 0 10px rgba(255, 77, 0, 0.4); }
+        nav ul li a:hover::after, nav ul li a.active::after { width: 100%; }
+
+        /* Nút Sáng Tối Hình Tròn */
+        .theme-toggle {
+            background: rgba(255, 77, 0, 0.1); border: 1px solid var(--primary-color);
+            color: var(--primary-color); width: 45px; height: 45px; border-radius: 50%; 
+            display: flex; justify-content: center; align-items: center;
+            cursor: pointer; font-size: 1.2rem; transition: all 0.3s ease;
+            box-shadow: 0 0 10px rgba(255, 77, 0, 0.2);
+        }
+        .theme-toggle i { font-family: "Font Awesome 6 Free" !important; font-weight: 900; }
+        .theme-toggle:hover { background: var(--primary-color); color: var(--bg-color); box-shadow: 0 0 20px var(--primary-color); transform: rotate(30deg); }
+        /* ----- KẾT THÚC MENU ----- */
+
+        .music-content { flex: 1; display: flex; flex-direction: column; align-items: center; padding: 40px 20px 80px 20px; animation: fadeIn 1s ease-out; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
         .music-content h1 { font-size: 4rem; font-weight: bold; letter-spacing: 2px; margin-bottom: 10px; text-shadow: 2px 4px 10px rgba(0,0,0,0.5); }
@@ -116,34 +107,25 @@
 
         /* LƯỚI CHỨA CÁC BÀI HÁT LẺ CỦA SPOTIFY */
         .spotify-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
             gap: 25px; max-width: 1000px; width: 100%;
         }
 
         .spotify-card {
-            background: rgba(10, 10, 12, 0.6);
-            border: 1px solid var(--primary-color);
-            border-radius: 16px; padding: 10px;
-            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            background: rgba(10, 10, 12, 0.6); border: 1px solid var(--primary-color);
+            border-radius: 16px; padding: 10px; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             backdrop-filter: blur(5px);
         }
-
         body.light-mode .spotify-card { background: rgba(244, 241, 234, 0.6); }
 
         .spotify-card iframe {
-            border-radius: 12px; width: 100%;
-            /* TÔI ĐÃ FIX LỖI Ở ĐÂY: Chiều cao 152px là chuẩn cho 1 bài nhạc lẻ */
-            height: 152px !important; 
-            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
-            display: block;
+            border-radius: 12px; width: 100%; height: 152px !important; 
+            box-shadow: 0 5px 15px rgba(0,0,0,0.5); display: block;
         }
 
         .spotify-card:hover { 
-            transform: translateY(-8px) scale(1.02); 
-            box-shadow: 0 15px 30px rgba(255, 77, 0, 0.3);
-            background: rgba(255, 77, 0, 0.1);
-            border-color: #fff;
+            transform: translateY(-8px) scale(1.02); box-shadow: 0 15px 30px rgba(255, 77, 0, 0.3);
+            background: rgba(255, 77, 0, 0.1); border-color: #fff;
         }
     </style>
 </head>
@@ -158,6 +140,7 @@
     <canvas id="sparks-canvas"></canvas>
 
     <div class="ui-layer">
+        <!-- MENU MỚI VIP DÙNG ICON ĐÃ ĐƯỢC CHÈN VÀO ĐÂY -->
         <nav>
             <div class="logo">Music</div>
             <div class="nav-right">
@@ -167,7 +150,9 @@
                     <li><a href="gallery.html">Gallery</a></li>
                     <li><a href="contact.html">Contact</a></li>
                 </ul>
-                <button class="theme-toggle" id="themeBtn">☀️</button>
+                <button class="theme-toggle" id="themeBtn">
+                    <i class="fas fa-sun"></i>
+                </button>
             </div>
         </nav>
 
@@ -177,33 +162,21 @@
             
             <div class="spotify-grid">
                 
-                <!-- Tôi đã ép height="152" vào iframe để giao diện không bị lỗi -->
-                <!-- BÀI HÁT 1 -->
                 <div class="spotify-card">
                     <iframe src="https://open.spotify.com/embed/track/71luUs5K7N1fdf7ecMKg04?utm_source=generator" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
                 </div>
-
-                <!-- BÀI HÁT 2 -->
                 <div class="spotify-card">
                     <iframe src="https://open.spotify.com/embed/track/190jyVPHYjAqEaOGmMzdyk?utm_source=generator" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
                 </div>
-
-                <!-- BÀI HÁT 3 -->
                 <div class="spotify-card">
                     <iframe src="https://open.spotify.com/embed/track/5xVCfx47vCXuLdpfbepqEo?utm_source=generator" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
                 </div>
-
-                <!-- BÀI HÁT 4 -->
                 <div class="spotify-card">
                     <iframe src="https://open.spotify.com/embed/track/7uUuftbcr94tzGOCJSM25u?utm_source=generator" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
                 </div>
-
-                <!-- BÀI HÁT 5 -->
                 <div class="spotify-card">
                     <iframe src="https://open.spotify.com/embed/track/4nXrVH5xwN1w6TpmP7uu8n?utm_source=generator" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
                 </div>
-                
-                <!-- BÀI HÁT 6 -->
                 <div class="spotify-card">
                     <iframe src="https://open.spotify.com/embed/track/6Zoi4ue74UdUeYmHXItXnf?utm_source=generator" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
                 </div>
@@ -221,32 +194,37 @@
                 customCursor.style.left = e.clientX + 'px';
                 customCursor.style.top = e.clientY + 'px';
             });
-            // Khóa mục tiêu khi rê vào thẻ nhạc
-            const interactiveElements = document.querySelectorAll('a, button, .spotify-card');
+            // Thêm class .theme-toggle để rê chuột vào nút mặt trời nó cũng xoay
+            const interactiveElements = document.querySelectorAll('a, button, .spotify-card, .theme-toggle');
             interactiveElements.forEach(el => {
                 el.addEventListener('mouseenter', () => customCursor.classList.add('aiming'));
                 el.addEventListener('mouseleave', () => customCursor.classList.remove('aiming'));
             });
         }
 
-        // SCRIPT SÁNG/TỐI
+        /* SCRIPT SÁNG/TỐI BẢN VIP DÙNG ICON */
         const themeBtn = document.getElementById('themeBtn');
         const body = document.body;
+        
         if (localStorage.getItem('theme') === 'light') {
-            body.classList.add('light-mode'); themeBtn.innerText = '🌙';
+            body.classList.add('light-mode'); 
+            themeBtn.innerHTML = '<i class="fas fa-moon"></i>';
         } else {
-            themeBtn.innerText = '☀️';
+            themeBtn.innerHTML = '<i class="fas fa-sun"></i>';
         }
+
         themeBtn.addEventListener('click', () => {
             body.classList.toggle('light-mode');
             if (body.classList.contains('light-mode')) {
-                themeBtn.innerText = '🌙'; localStorage.setItem('theme', 'light');
+                themeBtn.innerHTML = '<i class="fas fa-moon"></i>'; 
+                localStorage.setItem('theme', 'light');
             } else {
-                themeBtn.innerText = '☀️'; localStorage.setItem('theme', 'dark');
+                themeBtn.innerHTML = '<i class="fas fa-sun"></i>'; 
+                localStorage.setItem('theme', 'dark');
             }
         });
 
-        // SCRIPT HẠT LỬA BAY
+        /* SCRIPT HẠT LỬA BAY */
         const canvas = document.getElementById('sparks-canvas');
         const ctx = canvas.getContext('2d');
         canvas.width = window.innerWidth; canvas.height = window.innerHeight;
@@ -269,7 +247,7 @@
                     if (distance < mouse.radius) { this.x -= dx / 20; this.y -= dy / 20; }
                 }
                 if (this.y < 0 || this.opacity <= 0) {
-                    this.y = canvas.height + Math.random() * 50; this.x = Math.random() * canvas.width;
+                    this.y = window.innerHeight + Math.random() * 50; this.x = Math.random() * window.innerWidth;
                     this.weight = Math.random() * 2 + 0.5; this.opacity = Math.random() * 0.8 + 0.2;
                 }
             }
@@ -279,9 +257,9 @@
             }
         }
         function init() {
-            particlesArray = []; let numberOfParticles = (canvas.width * canvas.height) / 7000;
+            particlesArray = []; let numberOfParticles = (window.innerWidth * window.innerHeight) / 7000;
             for (let i = 0; i < numberOfParticles; i++) {
-                let x = Math.random() * canvas.width; let y = Math.random() * canvas.height;
+                let x = Math.random() * window.innerWidth; let y = Math.random() * window.innerHeight;
                 let size = Math.random() * 2.5 + 0.5; let weight = Math.random() * 2 + 0.5;
                 particlesArray.push(new Particle(x, y, size, weight));
             }
