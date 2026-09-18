@@ -13,15 +13,14 @@
 
 <section class="container pb-section">
     {% if album.photos %}
-    <div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 g-3">
+    <div class="shots">
         {% for src in album.photos %}
-        <div class="col">
-            <button type="button" class="shot reveal" data-photo-index="{{ loop.index0 }}"
-                    data-delay="{{ (loop.index0 % 8) * 60 }}" aria-label="Phóng to ảnh {{ loop.index }}">
-                <img src="{{ src }}" alt="{{ album.title }}, ảnh {{ loop.index }}" loading="lazy">
-                <span class="shot-zoom"><i class="bi bi-arrows-angle-expand"></i></span>
-            </button>
-        </div>
+        <button type="button" class="shot reveal" data-photo-index="{{ loop.index0 }}"
+                data-delay="{{ (loop.index0 % 8) * 60 }}" aria-label="Phóng to ảnh {{ loop.index }}">
+            <img src="{{ src }}" alt="{{ album.title }}, ảnh {{ loop.index }}" loading="lazy">
+            <span class="shot-frame" aria-hidden="true">{{ '%02d' | format(loop.index) }}A</span>
+            <span class="shot-zoom"><i class="bi bi-arrows-angle-expand"></i></span>
+        </button>
         {% endfor %}
     </div>
     {% else %}

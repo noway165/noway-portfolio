@@ -7,6 +7,7 @@
 
 <!-- ============================================================ HERO -->
 <section class="hero">
+    <div class="hero-map" aria-hidden="true"></div>
     <div class="container">
         <div class="row align-items-center gy-5">
             <div class="col-lg-7">
@@ -36,12 +37,18 @@
             </div>
 
             <div class="col-lg-5 col-md-7 col-sm-9">
-                <figure class="portrait reveal" data-delay="200">
+                {# Khung ngắm máy quay: góc ngắm, REC, timecode #}
+                <figure class="portrait viewfinder reveal" data-delay="200">
                     {% if avatar %}
                     <img src="{{ avatar }}" alt="Chân dung {{ profile.name }}">
                     {% else %}
                     <span class="placeholder-mark">{{ profile.monogram }}</span>
                     {% endif %}
+                    <span class="hud-c" aria-hidden="true"></span>
+                    <span class="vf-rec" aria-hidden="true">REC</span>
+                    <span class="vf-tc" aria-hidden="true" data-timecode>00:00:00:00</span>
+                    <span class="vf-meta" aria-hidden="true">4K · 60 FPS · {{ profile.alias | upper }}</span>
+                    <span class="vf-cross" aria-hidden="true"></span>
                 </figure>
             </div>
         </div>
@@ -50,10 +57,11 @@
 
 <!-- ==================================================== DẢI CHỮ CHẠY -->
 {% set ticker = profile.roles + ['Photography', 'Music'] %}
+{% set ticker_icons = ['bi-code-slash', 'bi-camera-reels', 'bi-crosshair', 'bi-camera', 'bi-music-note-beamed'] %}
 <div class="ticker" aria-hidden="true">
     <div class="ticker-track">
         {% for _ in range(2) %}
-        <span>{% for t in ticker %}{{ t }}<i>◆</i>{% endfor %}</span>
+        <span>{% for t in ticker %}<i class="bi {{ ticker_icons[loop.index0 % ticker_icons | length] }}"></i>{{ t }}{% endfor %}</span>
         {% endfor %}
     </div>
 </div>
@@ -99,6 +107,7 @@
             {% for f in focus %}
             <div class="col">
                 <article class="lux-card h-100 reveal" data-delay="{{ loop.index0 * 100 }}">
+                    <i class="bi {{ f.icon }} card-icon" aria-hidden="true"></i>
                     <span class="card-num">{{ '%02d' | format(loop.index) }}</span>
                     <h3 class="font-display">{{ f.title }}</h3>
                     <p>{{ f.text }}</p>

@@ -6,8 +6,14 @@
 
 {% block content %}
 
-{{ page_head('Dự án', 'Những thứ', 'tôi đã dựng.',
-             'Từ bài tập nhỏ đến sản phẩm chạy thật — mỗi dự án là một lần học thêm điều gì đó.') }}
+<section class="container page-head">
+    <p class="term reveal" aria-label="Dự án">
+        <span class="term-user">{{ profile.alias | lower }}@portfolio</span>:<span class="term-path">~/projects</span>$
+        <span class="term-cmd" data-type>ls --all</span><span class="caret"></span>
+    </p>
+    <h1 class="page-title font-display reveal" data-delay="80">Những thứ<br><span class="serif-em">tôi đã dựng.</span></h1>
+    <p class="lede reveal" data-delay="140">Từ bài tập nhỏ đến sản phẩm chạy thật — mỗi dự án là một lần học thêm điều gì đó.</p>
+</section>
 
 <section class="container pb-section">
     <div class="projects">

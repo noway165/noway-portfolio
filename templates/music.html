@@ -9,12 +9,22 @@
 {{ page_head('Playlist', 'Nhạc tôi nghe', 'mỗi ngày',
              'Bấm play ngay tại đây. Đăng nhập Spotify để nghe trọn bài, không thì vẫn nghe được đoạn xem trước.') }}
 
+<!-- Thanh equalizer trang trí -->
+<div class="container">
+    <div class="eq eq-big reveal" aria-hidden="true">
+        {% for i in range(40) %}<span style="--d: {{ 0.7 + (i * 37 % 11) / 10 }}s; --h: {{ 25 + (i * 53 % 70) }}%"></span>{% endfor %}
+    </div>
+</div>
+
 <section class="container pb-section">
     <div class="row row-cols-1 row-cols-lg-2 g-4">
         {% for track_id in tracks %}
         <div class="col">
             <article class="track reveal" data-delay="{{ loop.index0 * 70 }}">
-                <span class="track-no">{{ '%02d' | format(loop.index) }}</span>
+                <span class="track-no">
+                    <span class="eq eq-mini" aria-hidden="true"><span></span><span></span><span></span><span></span></span>
+                    TRACK {{ '%02d' | format(loop.index) }}
+                </span>
                 <iframe src="https://open.spotify.com/embed/track/{{ track_id }}?utm_source=generator&theme=0"
                         height="152" loading="lazy" title="Bài hát {{ loop.index }}"
                         allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"

@@ -2,18 +2,20 @@
 {% from "_macros.html" import page_head, cta %}
 
 {% block title %}Gaming — {{ profile.name }}{% endblock %}
-{% block description %}Góc chơi game của {{ profile.name }} ({{ profile.alias }}): PUBG Mobile, TFT và cách kết bạn trong game.{% endblock %}
+{% block description %}{{ profile.name }} ({{ profile.alias }}) — hành trình PUBG Mobile chuyên nghiệp (PMNC, PMPL): clip highlight, TFT và cách kết bạn trong game.{% endblock %}
 
 {% block content %}
 
-{{ page_head('Gaming', 'Ngoài giờ học,', 'tôi ở trong game.',
-             'Kết bạn với tôi bằng ID bên dưới — bấm vào là chép sẵn, chỉ việc dán vào game.') }}
+{{ page_head('Gaming · PMNC · PMPL', 'Từ tuyển thủ', 'đến huấn luyện viên.',
+             'Hai năm PUBG Mobile chuyên nghiệp ở Việt Nam. Kết bạn với tôi bằng ID bên dưới — bấm vào là chép sẵn.') }}
 
 <section class="container pb-section">
     <div class="row row-cols-1 row-cols-lg-2 g-4">
         {% for g in games %}
         <div class="col">
-            <article class="game-card reveal" data-delay="{{ loop.index0 * 120 }}">
+            <article class="game-card game-{{ g.style }} reveal" data-delay="{{ loop.index0 * 120 }}">
+                <span class="hud-c" aria-hidden="true"></span>
+                {% if g.style == 'pubg' %}<span class="reticle" aria-hidden="true"></span>{% endif %}
                 <i class="bi {{ g.icon }} game-icon" aria-hidden="true"></i>
                 <span class="card-num">{{ '%02d' | format(loop.index) }} — {{ g.platform }}</span>
                 <h2 class="font-display">{{ g.name }}</h2>
@@ -40,6 +42,44 @@
     </div>
 </section>
 
+{% set pubg = games | selectattr('career') | first %}
+{% if pubg %}
+<!-- ================================================== HÀNH TRÌNH THI ĐẤU -->
+<section class="section">
+    <div class="container">
+        <div class="row gy-5 gx-lg-5">
+            <div class="col-lg-4">
+                <div class="sec-head mb-0 reveal">
+                    <span class="sec-num">Sự nghiệp</span>
+                    <h2 class="sec-title font-display">Hành trình<br>thi đấu</h2>
+                </div>
+            </div>
+            <div class="col-lg-8">
+                <ol class="timeline">
+                    {% for c in pubg.career %}
+                    <li class="tl-item{% if c.highlight %} is-highlight{% endif %} reveal" data-delay="{{ loop.index0 * 90 }}">
+                        <span class="tl-when">{{ c.when }}</span>
+                        <div>
+                            {% if c.highlight %}<span class="tl-badge"><i class="bi bi-trophy"></i> Nổi bật</span>{% endif %}
+                            <h3 class="font-display">{{ c.title }}</h3>
+                            {% if c.team or c.role %}
+                            <p class="tl-team">
+                                {% if c.role %}<span class="tl-role{% if 'luyện' in c.role %} is-coach{% endif %}">{{ c.role }}</span>{% endif %}
+                                {% if c.team %}<i class="bi bi-people"></i> {{ c.team }}{% endif %}
+                            </p>
+                            {% endif %}
+                            {% if c.text %}<p>{{ c.text }}</p>{% endif %}
+                            {% if c.note %}<p class="tl-note"><i class="bi bi-flag"></i> {{ c.note }}</p>{% endif %}
+                        </div>
+                    </li>
+                    {% endfor %}
+                </ol>
+            </div>
+        </div>
+    </div>
+</section>
+{% endif %}
+
 {% if videos %}
 <!-- =========================================================== CLIP -->
 <section class="section">
@@ -53,6 +93,7 @@
             {% for v in videos %}
             <figure class="clip reveal" data-delay="{{ (loop.index0 % 3) * 90 }}">
                 <div class="clip-frame">
+                    <span class="hud-c" aria-hidden="true"></span>
                     <iframe src="https://www.tiktok.com/player/v1/{{ v.video_id }}?music_info=0&description=0&rel=0"
                             loading="lazy" title="{{ v.title }}"
                             allow="fullscreen; encrypted-media; picture-in-picture" allowfullscreen></iframe>

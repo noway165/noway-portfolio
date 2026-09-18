@@ -4,11 +4,24 @@
 
 {% block content %}
 <section class="container page-head not-found">
-    <p class="eyebrow reveal">Lỗi 404</p>
-    <h1 class="page-title font-display reveal" data-delay="80">Trang này<br><span class="serif-em">không tồn tại.</span></h1>
-    <p class="lede reveal" data-delay="140">Có thể đường dẫn đã đổi, hoặc bị gõ nhầm.</p>
-    <div class="mt-4 reveal" data-delay="200">
-        <a href="{{ url_for('index') }}" class="btn btn-lux btn-accent">Về trang chủ <i class="bi bi-arrow-right"></i></a>
+    <div class="row align-items-center gy-5">
+        <div class="col-lg-7">
+            <p class="eyebrow reveal">Lỗi 404 · Ngoài vùng an toàn</p>
+            <h1 class="page-title font-display reveal" data-delay="80">Bạn đang<br><span class="serif-em">ở ngoài bo.</span></h1>
+            <p class="lede reveal" data-delay="140">Trang này không tồn tại — có thể đường dẫn đã đổi, hoặc bị gõ nhầm.
+                Bo đang thu hẹp, chạy về trang chủ thôi!</p>
+            <div class="mt-4 reveal" data-delay="200">
+                <a href="{{ url_for('index') }}" class="btn btn-lux btn-accent">Chạy bo về trang chủ <i class="bi bi-arrow-right"></i></a>
+            </div>
+        </div>
+        <div class="col-lg-5 d-none d-md-block">
+            {# Vòng bo thu hẹp dần, chấm nhấp nháy là "bạn" đang ở ngoài #}
+            <div class="zone reveal" data-delay="160" aria-hidden="true">
+                <span class="zone-safe"></span>
+                <span class="zone-blue"></span>
+                <span class="zone-you"></span>
+            </div>
+        </div>
     </div>
 </section>
 {% endblock %}

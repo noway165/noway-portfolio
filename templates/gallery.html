@@ -13,15 +13,17 @@
         {% for a in albums %}
         <div class="col">
             <a href="{{ url_for('album', slug=a.slug) }}" class="album reveal" data-delay="{{ loop.index0 * 100 }}">
-                <span class="album-cover">
+                <span class="album-cover film">
                     <span class="album-count">{{ '%02d' | format(a.photos | length) }} ảnh</span>
                     {% if a.cover %}
                     <img src="{{ a.cover }}" alt="Bìa album {{ a.title }}" loading="lazy">
                     {% else %}
                     <span class="placeholder-mark">{{ a.name | upper }}</span>
                     {% endif %}
+                    <span class="film-holes" aria-hidden="true"></span>
                 </span>
                 <span class="album-meta">
+                    <span class="album-frame">ROLL {{ '%02d' | format(loop.index) }} · 35MM</span>
                     <span class="album-name font-display">{{ a.name }}</span>
                     <span class="album-note">{{ a.note }}</span>
                 </span>

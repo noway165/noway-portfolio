@@ -405,6 +405,36 @@
         });
     }
 
+    /* ---------------------------------------------- 11. CHI TIẾT THEO SỞ THÍCH */
+    // Timecode trong khung ngắm máy quay (giờ:phút:giây:khung hình, 30 khung/giây)
+    function initTimecode() {
+        const el = document.querySelector('[data-timecode]');
+        if (!el) return;
+        const start = performance.now();
+        const pad = (n) => String(n).padStart(2, '0');
+        const tick = () => {
+            const f = Math.floor((performance.now() - start) / (1000 / 30));
+            const s = Math.floor(f / 30);
+            el.textContent = `${pad(Math.floor(s / 3600))}:${pad(Math.floor(s / 60) % 60)}:${pad(s % 60)}:${pad(f % 30)}`;
+            if (!reduceMotion) requestAnimationFrame(tick);
+        };
+        tick();
+    }
+
+    // Gõ lệnh terminal từng ký tự (trang Dự án)
+    function initTerminal() {
+        const el = document.querySelector('.term-cmd[data-type]');
+        if (!el || reduceMotion) return;
+        const text = el.textContent;
+        el.textContent = '';
+        let i = 0;
+        const type = () => {
+            el.textContent = text.slice(0, ++i);
+            if (i < text.length) setTimeout(type, 70 + Math.random() * 60);
+        };
+        setTimeout(type, 500);
+    }
+
     /* ---------------------------------------------------------- KHỞI ĐỘNG */
     initNavScroll();
     initReveal();
@@ -422,4 +452,6 @@
     initConfirm();
     initUpload();
     initCharCount();
+    initTimecode();
+    initTerminal();
 })();

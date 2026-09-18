@@ -13,13 +13,14 @@ PROFILE = {
     "alias": "Noway",
     "monogram": "TL",
     # Dòng chữ tự gõ ở trang chủ: "Tôi là ..."
-    "roles": ["sinh viên IT", "content creator", "PUBG Mobile player"],
+    "roles": ["cựu tuyển thủ PUBG Mobile", "sinh viên IT", "content creator"],
     "quote": "Love is the best thing we do.",
     # Ảnh đại diện: đặt file vào static/img/avatar.jpg (chưa có thì hiện chữ lồng TL)
     "avatar": "img/avatar.jpg",
     "bio": [
-        "Tôi là Tăng Thoại Lâm, mọi người hay gọi là Noway — sinh viên IT, "
-        "người làm nội dung và là một người chơi PUBG Mobile.",
+        "Tôi là Tăng Thoại Lâm, mọi người hay gọi là Noway. Tôi thi đấu PUBG Mobile "
+        "chuyên nghiệp từ cuối năm 2024 qua các mùa PMNC và PMPL, rồi chuyển sang "
+        "làm huấn luyện viên. Hiện tôi không thi đấu — là sinh viên IT và người làm nội dung.",
         "Trang này là nơi tôi gom lại những thứ mình quý: vài tấm ảnh, "
         "vài bài nhạc nghe hoài không chán, và cách để bạn tìm thấy tôi.",
     ],
@@ -29,17 +30,21 @@ PROFILE = {
 FOCUS = [
     {
         "title": "Lập trình",
+        "icon": "bi-terminal",
         "text": "Học và làm về công nghệ thông tin — web, phần mềm, "
                 "và những công cụ nhỏ giải quyết việc thật.",
     },
     {
         "title": "Sáng tạo nội dung",
+        "icon": "bi-record-circle",
         "text": "Quay dựng khoảnh khắc đời thường và những pha xử lý trong game, "
                 "chia sẻ trên TikTok và Instagram.",
     },
     {
         "title": "PUBG Mobile",
-        "text": "Nơi tôi rèn phản xạ và tinh thần đồng đội. Chơi nghiêm túc, và vui là chính.",
+        "icon": "bi-crosshair",
+        "text": "Thi đấu chuyên nghiệp từ cuối 2024 qua 4 mùa PMNC và PMPL, "
+                "nổi bật nhất là PMNC mùa Tổng kết 2025 cùng Five Brothers (FBT).",
     },
 ]
 
@@ -104,7 +109,7 @@ SKILLS = [
     {"group": "Sáng tạo", "icon": "bi-camera-reels",
      "items": ["Quay & dựng video", "Chụp ảnh", "TikTok", "Instagram"]},
     {"group": "Game", "icon": "bi-controller",
-     "items": ["PUBG Mobile", "Teamfight Tactics", "Chơi đồng đội"]},
+     "items": ["Thi đấu PUBG Mobile", "Chiến thuật đội hình", "Teamfight Tactics"]},
 ]
 
 # Dòng thời gian, mới nhất ở trên. Thêm mốc mới: chép một dòng rồi sửa.
@@ -113,6 +118,12 @@ TIMELINE = [
      "text": "Viết lại toàn bộ trang bằng Python + Flask, nội dung gom vào một file cho dễ sửa."},
     {"when": "2026", "title": "Web cá nhân đầu tiên",
      "text": "Tự dựng bản HTML/CSS/JavaScript thuần — nơi gom ảnh, nhạc và cách liên lạc."},
+    {"when": "2026", "title": "Từ tuyển thủ thành huấn luyện viên",
+     "text": "Thi đấu PMPL Spring 2026, rồi làm huấn luyện viên cho not team (not) ở PMPL Fall 2026."},
+    {"when": "2025", "title": "Ba mùa PMNC, ba đội tuyển",
+     "text": "Japan Gaming (JP), linncutii (lc) và Five Brothers (FBT) — nổi bật nhất là PMNC mùa Tổng kết 2025."},
+    {"when": "Cuối 2024", "title": "Trở thành tuyển thủ PUBG Mobile",
+     "text": "Giải chuyên nghiệp đầu tiên: PMNC 2024 cùng Vnus Royal (VR)."},
     {"when": "Hiện tại", "title": "Sinh viên Công nghệ thông tin",
      "text": "Học lập trình, làm nội dung và chơi game song song."},
 ]
@@ -191,16 +202,38 @@ GAMES = [
     {
         "name": "PUBG Mobile",
         "icon": "bi-crosshair",
+        "style": "pubg",    # giao diện thẻ: pubg = tâm ngắm, tft = lưới lục giác
         "platform": "Mobile",
         "id_label": "Character ID",
         "copy": "5189112695",
-        "text": "Game tôi chơi nhiều nhất. Rèn phản xạ, đọc bo và phối hợp đồng đội — "
-                "nhiều pha xử lý được quay lại và đăng lên TikTok.",
-        "stats": [{"label": "Nền tảng", "value": "Mobile"}, {"label": "Lối chơi", "value": "Đồng đội"}],
+        "text": "Thi đấu chuyên nghiệp từ cuối 2024 ở PMNC và PMPL Việt Nam, sau đó làm "
+                "huấn luyện viên. Giờ vẫn chơi mỗi ngày — những pha xử lý hay được đăng lên TikTok.",
+        # Thêm dòng tuỳ ý, ví dụ {"label": "Vị trí sở trường", "value": "..."}
+        "stats": [{"label": "Thi đấu từ", "value": "Cuối 2024"}, {"label": "Giải đã dự", "value": "5"},
+                  {"label": "Hiện tại", "value": "Không thi đấu"}],
+        # Hành trình thi đấu — hiện thành một mục riêng ở trang Gaming, mới nhất ở trên
+        # "role": vai trò ở giải đó; "note": ghi chú kết quả; "highlight": True = đánh dấu nổi bật
+        "career": [
+            {"when": "Hiện tại", "title": "Tạm dừng thi đấu", "team": "", "role": "",
+             "text": "Không thi đấu chuyên nghiệp — tập trung học và làm nội dung."},
+            {"when": "Fall 2026", "title": "PMPL Fall 2026", "team": "not team (not)",
+             "role": "Huấn luyện viên", "text": "Chuyển sang vai trò huấn luyện viên."},
+            {"when": "Spring 2026", "title": "PMPL Spring 2026", "team": "not team (not)",
+             "role": "Tuyển thủ", "text": "Lần đầu thi đấu ở PMPL.", "note": "Bị loại sớm"},
+            {"when": "Tổng kết 2025", "title": "PMNC mùa Tổng kết 2025", "team": "Five Brothers (FBT)",
+             "role": "Tuyển thủ", "text": "Dấu mốc nổi bật nhất sự nghiệp.", "highlight": True},
+            {"when": "Thu 2025", "title": "PMNC mùa Thu 2025", "team": "linncutii (lc)",
+             "role": "Tuyển thủ", "text": ""},
+            {"when": "Xuân 2025", "title": "PMNC mùa Xuân 2025", "team": "Japan Gaming (JP)",
+             "role": "Tuyển thủ", "text": ""},
+            {"when": "2024", "title": "PMNC 2024", "team": "Vnus Royal (VR)",
+             "role": "Tuyển thủ", "text": "Giải chuyên nghiệp đầu tiên."},
+        ],
     },
     {
         "name": "Teamfight Tactics",
-        "icon": "bi-grid-3x3-gap",
+        "icon": "bi-hexagon",
+        "style": "tft",
         "platform": "PC",
         "id_label": "Riot ID",
         "copy": "Yêu Cô Ấy#0615",
