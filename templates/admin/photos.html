@@ -1,0 +1,44 @@
+{% extends "admin/_layout.html" %}
+
+{% block admin_title %}Ảnh{% endblock %}
+{% block heading %}Album ảnh{% endblock %}
+
+{% block body %}
+<p class="form-hint mb-4">Ảnh xếp theo tên file, ảnh đầu tiên làm bìa album. Ảnh mới tải lên sẽ đứng sau các ảnh cũ.
+    Nhận JPG, PNG, WEBP, GIF, AVIF — tối đa 25 MB mỗi lần tải.</p>
+
+{% for a in albums %}
+<section class="panel mb-4" id="album-{{ a.slug }}">
+    <div class="panel-head">
+        <h2 class="font-display">{{ a.name }} <small>{{ a.title }} · {{ a.files | length }} ảnh</small></h2>
+        <a class="back-link" href="{{ url_for('album', slug=a.slug) }}" target="_blank" rel="noopener">Xem album <i class="bi bi-box-arrow-up-right"></i></a>
+    </div>
+
+    <form method="post" action="{{ url_for('admin.photo_upload', slug=a.slug) }}" enctype="multipart/form-data" class="upload-box">
+        {{ form_guard() }}
+        <label class="upload-drop">
+            <i class="bi bi-cloud-arrow-up"></i>
+            <span data-file-label>Bấm để chọn ảnh, hoặc kéo thả vào đây</span>
+            <input type="file" name="photos" accept="image/*" multiple required>
+        </label>
+        <button type="submit" class="btn btn-lux btn-accent">Tải lên</button>
+    </form>
+
+    {% if a.files %}
+    <div class="thumb-grid">
+        {% for name in a.files %}
+        <figure class="thumb">
+            <img src="{{ url_for('static', filename='img/gallery/' ~ a.slug ~ '/' ~ name) }}" alt="{{ name }}" loading="lazy">
+            {% if loop.first %}<span class="thumb-cover">Bìa</span>{% endif %}
+            <form method="post" action="{{ url_for('admin.photo_delete', slug=a.slug) }}" data-confirm="Xoá ảnh {{ name }}?">
+                {{ form_guard() }}
+                <input type="hidden" name="name" value="{{ name }}">
+                <button type="submit" class="thumb-del" aria-label="Xoá {{ name }}"><i class="bi bi-trash"></i></button>
+            </form>
+        </figure>
+        {% endfor %}
+    </div>
+    {% endif %}
+</section>
+{% endfor %}
+{% endblock %}

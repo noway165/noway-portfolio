@@ -1,0 +1,86 @@
+{% extends "admin/_layout.html" %}
+
+{% block admin_title %}Tổng quan{% endblock %}
+{% block heading %}Chào {{ profile.alias }} 👋{% endblock %}
+{% block actions %}
+<a class="btn btn-lux btn-accent" href="{{ url_for('admin.post_form') }}"><i class="bi bi-plus-lg"></i> Viết bài</a>
+{% endblock %}
+
+{% block body %}
+<div class="stats admin-stats">
+    {% for s in stats %}
+    <div class="stat"><b>{{ s.value }}</b><span>{{ s.label }}</span></div>
+    {% endfor %}
+</div>
+
+<div class="row g-4 mt-2">
+    <div class="col-lg-6">
+        <section class="panel">
+            <h2 class="font-display">Trang được xem nhiều</h2>
+            {% if top_pages %}
+            {% set peak = top_pages[0].count or 1 %}
+            <ul class="bars">
+                {% for p in top_pages %}
+                <li>
+                    <span class="bar-label">{{ p.path }}</span>
+                    <span class="bar"><span style="width: {{ (p.count / peak * 100) | round(1) }}%"></span></span>
+                    <b>{{ p.count }}</b>
+                </li>
+                {% endfor %}
+            </ul>
+            {% else %}<p class="muted">Chưa có lượt xem nào.</p>{% endif %}
+        </section>
+    </div>
+
+    <div class="col-lg-6">
+        <section class="panel">
+            <h2 class="font-display">Bài viết nổi bật</h2>
+            <table class="a-table">
+                <thead><tr><th>Bài</th><th class="num"><i class="bi bi-eye"></i></th><th class="num"><i class="bi bi-heart"></i></th></tr></thead>
+                <tbody>
+                    {% for p in top_posts %}
+                    <tr>
+                        <td><a href="{{ url_for('post', slug=p.slug) }}" target="_blank" rel="noopener">{{ p.title }}</a></td>
+                        <td class="num">{{ p.views }}</td>
+                        <td class="num">{{ p.likes }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </section>
+    </div>
+
+    <div class="col-lg-6">
+        <section class="panel">
+            <h2 class="font-display">Tin nhắn mới</h2>
+            {% for m in recent %}
+            <div class="msg-mini{% if not m.is_read %} is-unread{% endif %}">
+                <b>{{ m.name }}</b> <small>{{ m.created }}</small>
+                <p>{{ m.body | truncate(140) }}</p>
+            </div>
+            {% else %}<p class="muted">Chưa có tin nhắn nào.</p>{% endfor %}
+            <a class="back-link mt-2" href="{{ url_for('admin.messages') }}">Xem tất cả <i class="bi bi-arrow-right"></i></a>
+        </section>
+    </div>
+
+    <div class="col-lg-6">
+        <section class="panel">
+            <h2 class="font-display">Đổi mật khẩu</h2>
+            <form method="post" action="{{ url_for('admin.change_password') }}" class="lux-form">
+                {{ form_guard() }}
+                <div class="row g-3">
+                    <div class="col-sm-6">
+                        <label class="form-label" for="cur">Mật khẩu hiện tại</label>
+                        <input class="form-control" type="password" id="cur" name="current" required autocomplete="current-password">
+                    </div>
+                    <div class="col-sm-6">
+                        <label class="form-label" for="new">Mật khẩu mới</label>
+                        <input class="form-control" type="password" id="new" name="new" minlength="8" required autocomplete="new-password">
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-lux btn-line mt-3">Đổi mật khẩu</button>
+            </form>
+        </section>
+    </div>
+</div>
+{% endblock %}

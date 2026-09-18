@@ -40,6 +40,34 @@
     </div>
 </section>
 
+{% if videos %}
+<!-- =========================================================== CLIP -->
+<section class="section">
+    <div class="container">
+        <div class="sec-head reveal">
+            <span class="sec-num">Highlight</span>
+            <h2 class="sec-title font-display">Clip nổi bật</h2>
+        </div>
+
+        <div class="clip-grid">
+            {% for v in videos %}
+            <figure class="clip reveal" data-delay="{{ (loop.index0 % 3) * 90 }}">
+                <div class="clip-frame">
+                    <iframe src="https://www.tiktok.com/player/v1/{{ v.video_id }}?music_info=0&description=0&rel=0"
+                            loading="lazy" title="{{ v.title }}"
+                            allow="fullscreen; encrypted-media; picture-in-picture" allowfullscreen></iframe>
+                </div>
+                <figcaption>
+                    <span class="font-display">{{ v.title }}</span>
+                    {% if v.game %}<small>{{ v.game }}</small>{% endif %}
+                </figcaption>
+            </figure>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endif %}
+
 {% if clips or discord %}
 <section class="section">
     <div class="container">

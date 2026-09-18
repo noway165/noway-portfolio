@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% from "_macros.html" import notices, form_guard %}
+
+{% block title %}{% block admin_title %}Quản trị{% endblock %} — {{ profile.alias }}{% endblock %}
+{% block head %}<meta name="robots" content="noindex, nofollow">{% endblock %}
+
+{% block nav %}
+{% set tabs = [
+    ('admin.dashboard', 'Tổng quan', 'bi-speedometer2'),
+    ('admin.posts', 'Bài viết', 'bi-journal-text'),
+    ('admin.projects', 'Dự án', 'bi-kanban'),
+    ('admin.photos', 'Ảnh', 'bi-images'),
+    ('admin.clips', 'Clip', 'bi-play-btn'),
+    ('admin.messages', 'Tin nhắn', 'bi-envelope'),
+    ('admin.comments', 'Bình luận', 'bi-chat-left-text'),
+] %}
+<header class="admin-bar sticky-top">
+    <div class="container">
+        <div class="admin-top">
+            <a class="brand" href="{{ url_for('admin.dashboard') }}">
+                <span class="brand-mark">{{ profile.monogram }}</span>
+                <span class="brand-name">Quản trị</span>
+            </a>
+            <div class="d-flex align-items-center gap-2">
+                <a class="icon-btn" href="{{ url_for('index') }}" target="_blank" rel="noopener" aria-label="Xem trang web" title="Xem trang web"><i class="bi bi-box-arrow-up-right"></i></a>
+                <button type="button" class="icon-btn theme-toggle" id="themeToggle" aria-label="Đổi giao diện sáng / tối">
+                    <i class="bi bi-sun"></i><i class="bi bi-moon-stars"></i>
+                </button>
+                <form method="post" action="{{ url_for('admin.logout') }}">
+                    {{ form_guard() }}
+                    <button type="submit" class="icon-btn" aria-label="Đăng xuất" title="Đăng xuất"><i class="bi bi-box-arrow-right"></i></button>
+                </form>
+            </div>
+        </div>
+        <nav class="admin-tabs" aria-label="Mục quản trị">
+            {% for endpoint, label, icon in tabs %}
+            {% set on = request.endpoint == endpoint or request.endpoint.startswith(endpoint[:-1] ~ '_') %}
+            <a href="{{ url_for(endpoint) }}" class="{{ 'active' if on }}" {% if on %}aria-current="page"{% endif %}>
+                <i class="bi {{ icon }}"></i>{{ label }}
+                {% if endpoint == 'admin.messages' and unread %}<span class="count">{{ unread }}</span>{% endif %}
+            </a>
+            {% endfor %}
+        </nav>
+    </div>
+</header>
+{% endblock %}
+
+{% block content %}
+<div class="container admin-main">
+    <div class="admin-head">
+        <h1 class="font-display">{% block heading %}{% endblock %}</h1>
+        <div class="admin-actions">{% block actions %}{% endblock %}</div>
+    </div>
+    {{ notices() }}
+    {% block body %}{% endblock %}
+</div>
+{% endblock %}
+
+{% block footer %}{% endblock %}

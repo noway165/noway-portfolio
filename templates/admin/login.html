@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% from "_macros.html" import notices, form_guard %}
+
+{% block title %}Đăng nhập quản trị — {{ profile.alias }}{% endblock %}
+{% block head %}<meta name="robots" content="noindex, nofollow">{% endblock %}
+{% block footer %}{% endblock %}
+
+{% block content %}
+<section class="container login-wrap">
+    <div class="login-card">
+        <span class="brand-mark mb-4">{{ profile.monogram }}</span>
+
+        {% if setup %}
+        <h1 class="font-display">Tạo mật khẩu quản trị</h1>
+        {% if is_local %}
+        <p class="lede">Lần đầu vào trang quản trị. Đặt một mật khẩu (ít nhất 8 ký tự) — lần sau dùng nó để đăng nhập.</p>
+        {{ notices() }}
+        <form method="post" class="lux-form">
+            {{ form_guard() }}
+            <label class="form-label" for="pw">Mật khẩu</label>
+            <input class="form-control mb-3" type="password" id="pw" name="password" minlength="8" required autocomplete="new-password" autofocus>
+            <label class="form-label" for="pw2">Nhập lại</label>
+            <input class="form-control" type="password" id="pw2" name="confirm" minlength="8" required autocomplete="new-password">
+            <button type="submit" class="btn btn-lux btn-accent w-100 justify-content-center mt-4">Tạo và đăng nhập</button>
+        </form>
+        {% else %}
+        <p class="lede">Chưa có mật khẩu. Vì an toàn, chỉ tạo được khi mở trang này ngay trên máy đang chạy web
+            (<code>http://127.0.0.1:5000/admin</code>), hoặc chạy lệnh <code>flask --app app set-password</code>.</p>
+        {% endif %}
+
+        {% else %}
+        <h1 class="font-display">Đăng nhập</h1>
+        <p class="lede">Trang quản trị của {{ profile.alias }}.</p>
+        {{ notices() }}
+        <form method="post" class="lux-form">
+            {{ form_guard() }}
+            <label class="form-label" for="pw">Mật khẩu</label>
+            <input class="form-control" type="password" id="pw" name="password" required autocomplete="current-password" autofocus>
+            <button type="submit" class="btn btn-lux btn-accent w-100 justify-content-center mt-4">Vào trang quản trị <i class="bi bi-arrow-right"></i></button>
+        </form>
+        {% endif %}
+
+        <a href="{{ url_for('index') }}" class="back-link mt-4"><i class="bi bi-arrow-left"></i> Về trang chủ</a>
+    </div>
+</section>
+{% endblock %}

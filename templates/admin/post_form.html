@@ -1,0 +1,63 @@
+{% extends "admin/_layout.html" %}
+
+{% block admin_title %}{{ 'Sửa bài' if post_id else 'Bài mới' }}{% endblock %}
+{% block heading %}{{ 'Sửa bài viết' if post_id else 'Bài viết mới' }}{% endblock %}
+{% block actions %}
+<a class="btn btn-lux btn-line" href="{{ url_for('admin.posts') }}"><i class="bi bi-arrow-left"></i> Danh sách</a>
+{% if post_id and post.published %}
+<a class="btn btn-lux btn-line" href="{{ url_for('post', slug=post.slug) }}" target="_blank" rel="noopener">Xem bài <i class="bi bi-box-arrow-up-right"></i></a>
+{% endif %}
+{% endblock %}
+
+{% block body %}
+<form method="post" class="lux-form">
+    {{ form_guard() }}
+    <div class="row g-4">
+        <div class="col-lg-8">
+            <label class="form-label" for="title">Tiêu đề</label>
+            <input class="form-control form-control-lg" id="title" name="title" value="{{ post.title }}" required maxlength="160">
+
+            <label class="form-label mt-4" for="excerpt">Tóm tắt <small>(hiện ở danh sách bài)</small></label>
+            <input class="form-control" id="excerpt" name="excerpt" value="{{ post.excerpt }}" maxlength="240">
+
+            <label class="form-label mt-4" for="body">Nội dung</label>
+            <textarea class="form-control editor" id="body" name="body" rows="18" required>{{ post.body }}</textarea>
+            <p class="form-hint">
+                Các đoạn cách nhau bằng <b>một dòng trống</b>.
+                Đoạn bắt đầu bằng <code>## </code> thành tiêu đề nhỏ, bắt đầu bằng <code>&gt; </code> thành trích dẫn.
+            </p>
+        </div>
+
+        <div class="col-lg-4">
+            <div class="panel">
+                <label class="form-check form-switch mb-4">
+                    <input class="form-check-input" type="checkbox" name="published" value="1" {% if post.published %}checked{% endif %}>
+                    <span class="form-check-label">Đăng công khai</span>
+                </label>
+
+                <label class="form-label" for="date">Ngày</label>
+                <input class="form-control" type="date" id="date" name="date" value="{{ post.date }}">
+
+                <label class="form-label mt-3" for="tags">Thẻ <small>(cách nhau bằng dấu phẩy)</small></label>
+                <input class="form-control" id="tags" name="tags" value="{{ post.tags }}" placeholder="Lập trình, Game">
+
+                <label class="form-label mt-3" for="slug">Đường dẫn <small>(để trống = tự tạo từ tiêu đề)</small></label>
+                <div class="input-group">
+                    <span class="input-group-text">/blog/</span>
+                    <input class="form-control" id="slug" name="slug" value="{{ post.slug }}" pattern="[a-z0-9\-]*">
+                </div>
+
+                <button type="submit" class="btn btn-lux btn-accent w-100 justify-content-center mt-4"><i class="bi bi-check2"></i> Lưu bài</button>
+            </div>
+        </div>
+    </div>
+</form>
+
+{% if post_id %}
+<form method="post" action="{{ url_for('admin.post_delete', post_id=post_id) }}" class="danger-zone"
+      data-confirm="Xoá hẳn bài “{{ post.title }}” và toàn bộ bình luận của nó?">
+    {{ form_guard() }}
+    <button type="submit" class="btn btn-lux btn-danger-line"><i class="bi bi-trash"></i> Xoá bài viết</button>
+</form>
+{% endif %}
+{% endblock %}

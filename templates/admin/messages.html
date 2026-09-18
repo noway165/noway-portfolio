@@ -1,0 +1,38 @@
+{% extends "admin/_layout.html" %}
+
+{% block admin_title %}Tin nhắn{% endblock %}
+{% block heading %}Tin nhắn{% endblock %}
+
+{% block body %}
+{% for m in messages %}
+<article class="panel msg{% if not m.is_read %} is-unread{% endif %}">
+    <div class="msg-head">
+        <div>
+            <b>{{ m.name }}</b>
+            {% if m.contact %}<span class="muted"> · {{ m.contact }}</span>{% endif %}
+            <br><small class="muted">{{ m.created }}</small>
+        </div>
+        <div class="row-actions">
+            <form method="post" action="{{ url_for('admin.message_read', msg_id=m.id) }}">
+                {{ form_guard() }}
+                <button type="submit" class="icon-btn" aria-label="{{ 'Đánh dấu chưa đọc' if m.is_read else 'Đánh dấu đã đọc' }}"
+                        title="{{ 'Đánh dấu chưa đọc' if m.is_read else 'Đánh dấu đã đọc' }}">
+                    <i class="bi {{ 'bi-envelope' if m.is_read else 'bi-envelope-open' }}"></i>
+                </button>
+            </form>
+            <form method="post" action="{{ url_for('admin.message_delete', msg_id=m.id) }}" data-confirm="Xoá tin nhắn của {{ m.name }}?">
+                {{ form_guard() }}
+                <button type="submit" class="icon-btn" aria-label="Xoá" title="Xoá"><i class="bi bi-trash"></i></button>
+            </form>
+        </div>
+    </div>
+    <p class="msg-body">{{ m.body }}</p>
+</article>
+{% else %}
+<div class="empty-state">
+    <i class="bi bi-envelope"></i>
+    <p class="font-display">Chưa có tin nhắn nào</p>
+    <small>Tin nhắn gửi từ form ở trang Liên hệ sẽ hiện ở đây.</small>
+</div>
+{% endfor %}
+{% endblock %}

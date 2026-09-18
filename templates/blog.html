@@ -10,12 +10,37 @@
              'Về lập trình, về game, về những điều nhỏ nhặt mà tôi muốn nhớ lâu hơn một dòng trạng thái.') }}
 
 <section class="container pb-section">
+    <!-- Tìm kiếm + lọc theo thẻ -->
+    <div class="blog-tools reveal">
+        <form method="get" action="{{ url_for('blog') }}" class="search-box" role="search">
+            <i class="bi bi-search" aria-hidden="true"></i>
+            <input type="search" name="q" value="{{ q }}" placeholder="Tìm bài viết…" aria-label="Tìm bài viết">
+            {% if tag %}<input type="hidden" name="tag" value="{{ tag }}">{% endif %}
+        </form>
+        {% if all_tags %}
+        <nav class="chips" aria-label="Lọc theo thẻ">
+            <a class="chip{% if not tag %} is-active{% endif %}" href="{{ url_for('blog', q=q or None) }}">Tất cả</a>
+            {% for t in all_tags %}
+            <a class="chip{% if t == tag %} is-active{% endif %}" href="{{ url_for('blog', tag=t, q=q or None) }}">#{{ t }}</a>
+            {% endfor %}
+        </nav>
+        {% endif %}
+    </div>
+
+    {% if q or tag %}
+    <p class="result-note">
+        {{ posts | length }} / {{ total }} bài
+        {% if q %} khớp “{{ q }}”{% endif %}{% if tag %} trong #{{ tag }}{% endif %}
+        · <a href="{{ url_for('blog') }}">Xoá bộ lọc</a>
+    </p>
+    {% endif %}
+
     {% if posts %}
     {{ post_list(posts) }}
     {% else %}
     <div class="empty-state reveal">
         <i class="bi bi-journal-text"></i>
-        <p class="font-display">Bài viết đầu tiên sắp ra lò</p>
+        <p class="font-display">{{ 'Không tìm thấy bài nào' if (q or tag) else 'Bài viết đầu tiên sắp ra lò' }}</p>
     </div>
     {% endif %}
 </section>

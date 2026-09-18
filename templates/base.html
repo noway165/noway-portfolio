@@ -6,6 +6,8 @@
     <title>{% block title %}{{ profile.name }} — {{ profile.alias }}{% endblock %}</title>
     <meta name="description" content="{% block description %}Portfolio cá nhân của {{ profile.name }} ({{ profile.alias }}).{% endblock %}">
     <meta name="theme-color" content="#0b0b0e">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    {% block head %}{% endblock %}
     <link rel="icon" href="{{ url_for('static', filename='favicon.svg') }}" type="image/svg+xml">
 
     <!-- Chạy trước khi vẽ trang: chọn sáng/tối (đã lưu, hoặc theo máy) để không bị nháy màu -->
@@ -32,6 +34,7 @@
 
     <div class="scroll-progress" id="scrollProgress" aria-hidden="true"></div>
 
+    {% block nav %}
     <!-- ========================================================= MENU -->
     <nav class="navbar navbar-expand-lg sticky-top site-nav" id="siteNav">
         <div class="container">
@@ -79,11 +82,13 @@
             </div>
         </div>
     </nav>
+    {% endblock %}
 
     <main class="flex-grow-1">
         {% block content %}{% endblock %}
     </main>
 
+    {% block footer %}
     <!-- ==================================================== CHÂN TRANG -->
     <footer class="site-foot">
         <div class="container d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-3">
@@ -96,6 +101,7 @@
             <p class="foot-note m-0">© {{ year }}</p>
         </div>
     </footer>
+    {% endblock %}
 
     <button type="button" class="icon-btn to-top" id="toTop" aria-label="Lên đầu trang"><i class="bi bi-arrow-up"></i></button>
 

@@ -38,3 +38,23 @@
     {% endfor %}
 </div>
 {% endmacro %}
+
+{# Thông báo sau khi gửi form (flash) #}
+{% macro notices() %}
+{% with messages = get_flashed_messages(with_categories=true) %}
+{% for kind, text in messages %}
+<div class="notice notice-{{ kind }}" role="{{ 'alert' if kind == 'error' else 'status' }}">
+    <i class="bi {{ 'bi-exclamation-circle' if kind == 'error' else 'bi-check2-circle' }}"></i>
+    <span>{{ text }}</span>
+</div>
+{% endfor %}
+{% endwith %}
+{% endmacro %}
+
+{# Các ô ẩn mà form nào cũng cần: mã chống giả mạo + ô bẫy máy gửi rác #}
+{% macro form_guard(honeypot=false) %}
+<input type="hidden" name="_csrf" value="{{ csrf_token() }}">
+{% if honeypot %}
+<div class="hp" aria-hidden="true"><label>Website <input type="text" name="website" tabindex="-1" autocomplete="off"></label></div>
+{% endif %}
+{% endmacro %}

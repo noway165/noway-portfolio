@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% from "_macros.html" import notices, form_guard %}
 
 {% block title %}{{ post.title }} — Blog — {{ profile.name }}{% endblock %}
 {% block description %}{{ post.excerpt }}{% endblock %}
@@ -11,14 +12,15 @@
     <div class="post-meta reveal" data-delay="140">
         <span><i class="bi bi-calendar3"></i><time datetime="{{ post.date }}">{{ post.day | vndate }}</time></span>
         <span><i class="bi bi-clock"></i>{{ post.minutes }} phút đọc</span>
-        {% if post.tags %}<span><i class="bi bi-tag"></i>{{ post.tags | join(', ') }}</span>{% endif %}
+        <span><i class="bi bi-eye"></i>{{ post.views }} lượt xem</span>
+        {% for t in post.tags %}<a class="chip" href="{{ url_for('blog', tag=t) }}">#{{ t }}</a>{% endfor %}
     </div>
 </section>
 
 <section class="container pb-section">
     {# "## " -> tiêu đề nhỏ, "> " -> trích dẫn, còn lại là đoạn văn #}
     <article class="prose reveal" data-delay="200">
-        {% for block in post.body %}
+        {% for block in post.blocks %}
         {% if block.startswith('## ') %}
         <h2>{{ block[3:] }}</h2>
         {% elif block.startswith('> ') %}
@@ -28,6 +30,52 @@
         {% endif %}
         {% endfor %}
     </article>
+
+    <!-- Thả tim + chia sẻ -->
+    <div class="post-actions">
+        <button type="button" class="like-btn{% if liked %} is-liked{% endif %}" data-like="{{ url_for('toggle_like', post_id=post.id) }}"
+                aria-pressed="{{ 'true' if liked else 'false' }}" aria-label="Thích bài viết">
+            <i class="bi bi-heart"></i><i class="bi bi-heart-fill"></i>
+            <span data-like-count>{{ post.likes }}</span>
+        </button>
+        <button type="button" class="btn btn-lux btn-line" data-share data-title="{{ post.title }}">
+            Chia sẻ <i class="bi bi-share"></i>
+        </button>
+    </div>
+
+    <!-- Bình luận -->
+    <section class="comments" id="comments" aria-labelledby="commentsTitle">
+        <h2 class="font-display" id="commentsTitle">Bình luận <span>{{ comments | length }}</span></h2>
+
+        {% for c in comments %}
+        <article class="comment">
+            <span class="comment-avatar" aria-hidden="true">{{ c.name[:1] | upper }}</span>
+            <div>
+                <p class="comment-head"><b>{{ c.name }}</b> <time>{{ c.created }}</time></p>
+                <p class="comment-body">{{ c.body }}</p>
+            </div>
+        </article>
+        {% else %}
+        <p class="comments-empty">Chưa có bình luận nào — bạn mở màn nhé.</p>
+        {% endfor %}
+
+        {{ notices() }}
+        <form method="post" action="{{ url_for('add_comment', slug=post.slug) }}" class="lux-form comment-form">
+            {{ form_guard(honeypot=true) }}
+            <div class="row g-3">
+                <div class="col-sm-5">
+                    <label class="form-label" for="c-name">Tên</label>
+                    <input class="form-control" id="c-name" name="name" maxlength="60" required
+                           value="{{ session.get('comment_name', '') }}" autocomplete="nickname">
+                </div>
+                <div class="col-12">
+                    <label class="form-label" for="c-body">Bình luận</label>
+                    <textarea class="form-control" id="c-body" name="body" rows="3" maxlength="1500" required data-counter></textarea>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-lux btn-accent mt-3">Đăng bình luận <i class="bi bi-arrow-right"></i></button>
+        </form>
+    </section>
 
     {% if newer or older %}
     <nav class="pager" aria-label="Bài viết khác">

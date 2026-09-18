@@ -117,10 +117,10 @@ TIMELINE = [
      "text": "Học lập trình, làm nội dung và chơi game song song."},
 ]
 
-# ---------------------------------------------------------------- DỰ ÁN
-# "links": danh sách nút, ví dụ
-#     {"label": "GitHub", "icon": "bi-github", "url": "https://github.com/..."}
-PROJECTS = [
+# ------------------------------------------------ DỰ ÁN & BLOG (DỮ LIỆU MẪU)
+# Hai danh sách dưới chỉ được nạp vào database ở LẦN CHẠY ĐẦU TIÊN.
+# Sau đó thêm / sửa / xoá dự án và bài viết trong trang quản trị: /admin
+SEED_PROJECTS = [
     {
         "title": "Web cá nhân — bản Flask",
         "year": "2026",
@@ -129,7 +129,7 @@ PROJECTS = [
         "text": "Chính trang bạn đang xem. Flask phục vụ các trang từ một khung chung, "
                 "album ảnh tự quét thư mục, có chế độ sáng/tối và chạy tốt trên điện thoại.",
         "tags": ["Python", "Flask", "Jinja2", "Bootstrap 5", "JavaScript"],
-        "links": [],
+        "links": [{"label": "GitHub", "url": "https://github.com/noway165/noway-portfolio"}],
     },
     {
         "title": "Web cá nhân — bản HTML",
@@ -142,11 +142,7 @@ PROJECTS = [
     },
 ]
 
-# ---------------------------------------------------------------- BLOG
-# Mỗi bài: "slug" là đường dẫn (/blog/<slug>), chỉ dùng chữ thường không dấu và "-".
-# "body" là danh sách đoạn văn. Đoạn bắt đầu bằng "## " thành tiêu đề nhỏ,
-# bắt đầu bằng "> " thành trích dẫn.
-POSTS = [
+SEED_POSTS = [
     {
         "slug": "chao-mung",
         "title": "Chào mừng đến góc nhỏ của tôi",

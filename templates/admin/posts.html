@@ -1,0 +1,41 @@
+{% extends "admin/_layout.html" %}
+
+{% block admin_title %}Bài viết{% endblock %}
+{% block heading %}Bài viết{% endblock %}
+{% block actions %}
+<a class="btn btn-lux btn-accent" href="{{ url_for('admin.post_form') }}"><i class="bi bi-plus-lg"></i> Viết bài mới</a>
+{% endblock %}
+
+{% block body %}
+<div class="table-wrap">
+<table class="a-table">
+    <thead>
+        <tr>
+            <th>Tiêu đề</th><th>Ngày</th><th>Trạng thái</th>
+            <th class="num"><i class="bi bi-eye" title="Lượt xem"></i></th>
+            <th class="num"><i class="bi bi-heart" title="Lượt thích"></i></th>
+            <th class="num"><i class="bi bi-chat" title="Bình luận"></i></th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for p in posts %}
+        <tr>
+            <td><a href="{{ url_for('admin.post_form', post_id=p.id) }}"><b>{{ p.title }}</b></a><br><small class="muted">/blog/{{ p.slug }}</small></td>
+            <td>{{ p.date }}</td>
+            <td>{% if p.published %}<span class="pill pill-on">Đã đăng</span>{% else %}<span class="pill">Bản nháp</span>{% endif %}</td>
+            <td class="num">{{ p.views }}</td>
+            <td class="num">{{ p.likes }}</td>
+            <td class="num">{{ p.n_comments }}</td>
+            <td class="row-actions">
+                {% if p.published %}<a class="icon-btn" href="{{ url_for('post', slug=p.slug) }}" target="_blank" rel="noopener" aria-label="Xem"><i class="bi bi-eye"></i></a>{% endif %}
+                <a class="icon-btn" href="{{ url_for('admin.post_form', post_id=p.id) }}" aria-label="Sửa"><i class="bi bi-pencil"></i></a>
+            </td>
+        </tr>
+        {% else %}
+        <tr><td colspan="7" class="muted">Chưa có bài nào.</td></tr>
+        {% endfor %}
+    </tbody>
+</table>
+</div>
+{% endblock %}

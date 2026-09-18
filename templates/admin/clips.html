@@ -1,0 +1,58 @@
+{% extends "admin/_layout.html" %}
+
+{% block admin_title %}Clip{% endblock %}
+{% block heading %}Clip TikTok{% endblock %}
+
+{% block body %}
+<section class="panel mb-4">
+    <h2 class="font-display">Thêm clip</h2>
+    <form method="post" class="lux-form">
+        {{ form_guard() }}
+        <div class="row g-3 align-items-end">
+            <div class="col-lg-5">
+                <label class="form-label" for="url">Link video TikTok</label>
+                <input class="form-control" id="url" name="url" required placeholder="https://www.tiktok.com/@tlam_1605/video/…">
+            </div>
+            <div class="col-lg-3 col-sm-6">
+                <label class="form-label" for="title">Tên clip</label>
+                <input class="form-control" id="title" name="title" maxlength="100" placeholder="Pha clutch 1v4">
+            </div>
+            <div class="col-lg-2 col-sm-6">
+                <label class="form-label" for="game">Game</label>
+                <select class="form-select" id="game" name="game">
+                    <option value="">—</option>
+                    {% for g in games %}<option>{{ g }}</option>{% endfor %}
+                </select>
+            </div>
+            <div class="col-lg-2">
+                <button type="submit" class="btn btn-lux btn-accent w-100 justify-content-center"><i class="bi bi-plus-lg"></i> Thêm</button>
+            </div>
+        </div>
+        <p class="form-hint mt-3">Mở video trên máy tính rồi chép link trên thanh địa chỉ. Link rút gọn kiểu <code>vm.tiktok.com/…</code> không dùng được.
+            Clip hiện ở trang <a href="{{ url_for('gaming') }}" target="_blank" rel="noopener">Gaming</a>.</p>
+    </form>
+</section>
+
+<div class="table-wrap">
+<table class="a-table">
+    <thead><tr><th>Clip</th><th>Game</th><th>Thêm lúc</th><th></th></tr></thead>
+    <tbody>
+        {% for c in clips %}
+        <tr>
+            <td><a href="{{ c.url }}" target="_blank" rel="noopener"><b>{{ c.title }}</b></a><br><small class="muted">{{ c.video_id }}</small></td>
+            <td>{{ c.game or '—' }}</td>
+            <td>{{ c.created }}</td>
+            <td class="row-actions">
+                <form method="post" action="{{ url_for('admin.clip_delete', clip_id=c.id) }}" data-confirm="Xoá clip “{{ c.title }}”?">
+                    {{ form_guard() }}
+                    <button type="submit" class="icon-btn" aria-label="Xoá"><i class="bi bi-trash"></i></button>
+                </form>
+            </td>
+        </tr>
+        {% else %}
+        <tr><td colspan="4" class="muted">Chưa có clip nào.</td></tr>
+        {% endfor %}
+    </tbody>
+</table>
+</div>
+{% endblock %}

@@ -1,0 +1,28 @@
+{% extends "admin/_layout.html" %}
+
+{% block admin_title %}Dự án{% endblock %}
+{% block heading %}Dự án{% endblock %}
+{% block actions %}
+<a class="btn btn-lux btn-accent" href="{{ url_for('admin.project_form') }}"><i class="bi bi-plus-lg"></i> Thêm dự án</a>
+{% endblock %}
+
+{% block body %}
+<div class="table-wrap">
+<table class="a-table">
+    <thead><tr><th class="num">Thứ tự</th><th>Tên</th><th>Năm</th><th>Trạng thái</th><th></th></tr></thead>
+    <tbody>
+        {% for p in projects %}
+        <tr>
+            <td class="num">{{ p.position }}</td>
+            <td><a href="{{ url_for('admin.project_form', project_id=p.id) }}"><b>{{ p.title }}</b></a><br><small class="muted">{{ p.tags }}</small></td>
+            <td>{{ p.year }}</td>
+            <td>{{ p.status }}{% if p.live %} <span class="pill pill-on">đang làm</span>{% endif %}</td>
+            <td class="row-actions"><a class="icon-btn" href="{{ url_for('admin.project_form', project_id=p.id) }}" aria-label="Sửa"><i class="bi bi-pencil"></i></a></td>
+        </tr>
+        {% else %}
+        <tr><td colspan="5" class="muted">Chưa có dự án nào.</td></tr>
+        {% endfor %}
+    </tbody>
+</table>
+</div>
+{% endblock %}

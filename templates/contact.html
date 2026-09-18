@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% from "_macros.html" import page_head, cta %}
+{% from "_macros.html" import page_head, cta, notices, form_guard %}
 
 {% block title %}Liên hệ — {{ profile.name }}{% endblock %}
 {% block description %}Kết nối với {{ profile.name }} ({{ profile.alias }}) qua mạng xã hội và trong game.{% endblock %}
@@ -30,6 +30,43 @@
         </button>
             {% endif %}
         {% endfor %}
+    </div>
+</section>
+
+<!-- ==================================================== ĐỂ LẠI LỜI NHẮN -->
+<section class="section" id="form">
+    <div class="container">
+        <div class="row gy-5 gx-lg-5">
+            <div class="col-lg-5">
+                <div class="sec-head mb-0 reveal">
+                    <span class="sec-num">Hoặc</span>
+                    <h2 class="sec-title font-display">Để lại<br>lời nhắn</h2>
+                </div>
+                <p class="lede mt-4 reveal" data-delay="80">Không cần tài khoản gì cả. Để lại cách liên lạc nếu muốn tôi trả lời.</p>
+            </div>
+
+            <div class="col-lg-7 reveal" data-delay="120">
+                {{ notices() }}
+                <form method="post" action="{{ url_for('contact') }}" class="lux-form">
+                    {{ form_guard(honeypot=true) }}
+                    <div class="row g-3">
+                        <div class="col-sm-6">
+                            <label class="form-label" for="f-name">Tên bạn</label>
+                            <input class="form-control" id="f-name" name="name" maxlength="80" required autocomplete="name">
+                        </div>
+                        <div class="col-sm-6">
+                            <label class="form-label" for="f-contact">Liên lạc lại qua <small>(không bắt buộc)</small></label>
+                            <input class="form-control" id="f-contact" name="contact" maxlength="120" placeholder="Email, Facebook, Discord…">
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label" for="f-body">Lời nhắn</label>
+                            <textarea class="form-control" id="f-body" name="body" rows="5" maxlength="3000" required data-counter></textarea>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-lux btn-accent mt-4">Gửi lời nhắn <i class="bi bi-send"></i></button>
+                </form>
+            </div>
+        </div>
     </div>
 </section>
 

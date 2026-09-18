@@ -1,0 +1,57 @@
+{% extends "admin/_layout.html" %}
+
+{% block admin_title %}{{ 'Sửa dự án' if project_id else 'Dự án mới' }}{% endblock %}
+{% block heading %}{{ 'Sửa dự án' if project_id else 'Dự án mới' }}{% endblock %}
+{% block actions %}
+<a class="btn btn-lux btn-line" href="{{ url_for('admin.projects') }}"><i class="bi bi-arrow-left"></i> Danh sách</a>
+{% endblock %}
+
+{% block body %}
+<form method="post" class="lux-form">
+    {{ form_guard() }}
+    <div class="row g-4">
+        <div class="col-lg-8">
+            <label class="form-label" for="title">Tên dự án</label>
+            <input class="form-control form-control-lg" id="title" name="title" value="{{ project.title }}" required maxlength="160">
+
+            <label class="form-label mt-4" for="text">Mô tả</label>
+            <textarea class="form-control" id="text" name="text" rows="5">{{ project.text }}</textarea>
+
+            <label class="form-label mt-4" for="tags">Công nghệ <small>(cách nhau bằng dấu phẩy)</small></label>
+            <input class="form-control" id="tags" name="tags" value="{{ project.tags }}" placeholder="Python, Flask, JavaScript">
+
+            <label class="form-label mt-4" for="links">Nút liên kết <small>(mỗi dòng: Tên | https://…)</small></label>
+            <textarea class="form-control editor" id="links" name="links" rows="3" placeholder="GitHub | https://github.com/…&#10;Demo | https://…">{{ project.links }}</textarea>
+        </div>
+
+        <div class="col-lg-4">
+            <div class="panel">
+                <label class="form-label" for="year">Năm</label>
+                <input class="form-control" id="year" name="year" value="{{ project.year }}" maxlength="20">
+
+                <label class="form-label mt-3" for="status">Trạng thái</label>
+                <input class="form-control" id="status" name="status" value="{{ project.status }}" list="statuses" maxlength="40">
+                <datalist id="statuses"><option value="Đang phát triển"><option value="Đã hoàn thành"><option value="Tạm dừng"></datalist>
+
+                <label class="form-check form-switch mt-3">
+                    <input class="form-check-input" type="checkbox" name="live" value="1" {% if project.live %}checked{% endif %}>
+                    <span class="form-check-label">Chấm trạng thái nhấp nháy</span>
+                </label>
+
+                <label class="form-label mt-3" for="position">Thứ tự hiển thị <small>(số nhỏ lên trước)</small></label>
+                <input class="form-control" type="number" id="position" name="position" value="{{ project.position }}">
+
+                <button type="submit" class="btn btn-lux btn-accent w-100 justify-content-center mt-4"><i class="bi bi-check2"></i> Lưu dự án</button>
+            </div>
+        </div>
+    </div>
+</form>
+
+{% if project_id %}
+<form method="post" action="{{ url_for('admin.project_delete', project_id=project_id) }}" class="danger-zone"
+      data-confirm="Xoá dự án “{{ project.title }}”?">
+    {{ form_guard() }}
+    <button type="submit" class="btn btn-lux btn-danger-line"><i class="bi bi-trash"></i> Xoá dự án</button>
+</form>
+{% endif %}
+{% endblock %}

@@ -313,6 +313,98 @@
         document.querySelectorAll('iframe').forEach((f) => f.addEventListener('pointerenter', () => ring.classList.remove('is-on')));
     }
 
+    /* ---------------------------------------------- 10. TƯƠNG TÁC: TIM, CHIA SẺ, FORM */
+    const csrf = document.querySelector('meta[name="csrf-token"]')?.content || '';
+
+    function toastSay(text) {
+        const el = document.getElementById('copyToast');
+        if (!el || !window.bootstrap) return;
+        document.getElementById('copyToastText').textContent = text;
+        bootstrap.Toast.getOrCreateInstance(el, { delay: 2200 }).show();
+    }
+
+    // Thả tim bài viết — cập nhật ngay, gửi lên server sau
+    function initLikes() {
+        document.querySelectorAll('[data-like]').forEach((btn) => {
+            const count = btn.querySelector('[data-like-count]');
+            btn.addEventListener('click', async () => {
+                if (btn.disabled) return;
+                btn.disabled = true;
+                try {
+                    const res = await fetch(btn.dataset.like, {
+                        method: 'POST',
+                        headers: { 'X-CSRF-Token': csrf },
+                        credentials: 'same-origin',
+                    });
+                    if (!res.ok) throw new Error(res.status);
+                    const data = await res.json();
+                    count.textContent = data.likes;
+                    btn.classList.toggle('is-liked', data.liked);
+                    btn.setAttribute('aria-pressed', String(data.liked));
+                    if (data.liked && !reduceMotion) {
+                        btn.classList.remove('pop');
+                        void btn.offsetWidth;          // chạy lại hiệu ứng
+                        btn.classList.add('pop');
+                    }
+                } catch (_) {
+                    toastSay('Không gửi được — tải lại trang rồi thử lại.');
+                } finally {
+                    btn.disabled = false;
+                }
+            });
+        });
+    }
+
+    // Chia sẻ: điện thoại mở bảng chia sẻ của máy, máy tính thì chép link
+    function initShare() {
+        document.querySelectorAll('[data-share]').forEach((btn) => {
+            btn.addEventListener('click', async () => {
+                const url = location.href.split('#')[0];
+                if (navigator.share) {
+                    try { await navigator.share({ title: btn.dataset.title || document.title, url }); } catch (_) { /* người dùng huỷ */ }
+                    return;
+                }
+                toastSay(await copyText(url) ? 'Đã chép link bài viết' : url);
+            });
+        });
+    }
+
+    // Hỏi lại trước khi xoá
+    function initConfirm() {
+        document.querySelectorAll('form[data-confirm]').forEach((form) => {
+            form.addEventListener('submit', (e) => {
+                if (!window.confirm(form.dataset.confirm)) e.preventDefault();
+            });
+        });
+    }
+
+    // Ô chọn ảnh: hiện số ảnh đã chọn, sáng lên khi kéo thả vào
+    function initUpload() {
+        document.querySelectorAll('.upload-drop').forEach((drop) => {
+            const input = drop.querySelector('input[type=file]');
+            const label = drop.querySelector('[data-file-label]');
+            input.addEventListener('change', () => {
+                const n = input.files.length;
+                label.textContent = n ? `Đã chọn ${n} ảnh — bấm “Tải lên”` : 'Bấm để chọn ảnh, hoặc kéo thả vào đây';
+            });
+            ['dragenter', 'dragover'].forEach((t) => drop.addEventListener(t, () => drop.classList.add('is-over')));
+            ['dragleave', 'drop'].forEach((t) => drop.addEventListener(t, () => drop.classList.remove('is-over')));
+        });
+    }
+
+    // Đếm ký tự còn lại cho ô nhập dài
+    function initCharCount() {
+        document.querySelectorAll('textarea[data-counter][maxlength]').forEach((ta) => {
+            const out = document.createElement('small');
+            out.className = 'char-count';
+            ta.after(out);
+            const max = Number(ta.maxLength);
+            const update = () => { out.textContent = `${ta.value.length} / ${max}`; };
+            ta.addEventListener('input', update);
+            update();
+        });
+    }
+
     /* ---------------------------------------------------------- KHỞI ĐỘNG */
     initNavScroll();
     initReveal();
@@ -325,4 +417,9 @@
     initSpotlight();
     initHeroGlow();
     initCursor();
+    initLikes();
+    initShare();
+    initConfirm();
+    initUpload();
+    initCharCount();
 })();

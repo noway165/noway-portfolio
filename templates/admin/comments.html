@@ -1,0 +1,28 @@
+{% extends "admin/_layout.html" %}
+
+{% block admin_title %}Bình luận{% endblock %}
+{% block heading %}Bình luận{% endblock %}
+
+{% block body %}
+{% for c in comments %}
+<article class="panel msg">
+    <div class="msg-head">
+        <div>
+            <b>{{ c.name }}</b>
+            <span class="muted"> trong </span><a href="{{ url_for('post', slug=c.post_slug) }}#comments" target="_blank" rel="noopener">{{ c.post_title }}</a>
+            <br><small class="muted">{{ c.created }}</small>
+        </div>
+        <form method="post" action="{{ url_for('admin.comment_delete', comment_id=c.id) }}" data-confirm="Xoá bình luận của {{ c.name }}?">
+            {{ form_guard() }}
+            <button type="submit" class="icon-btn" aria-label="Xoá" title="Xoá"><i class="bi bi-trash"></i></button>
+        </form>
+    </div>
+    <p class="msg-body">{{ c.body }}</p>
+</article>
+{% else %}
+<div class="empty-state">
+    <i class="bi bi-chat-left-text"></i>
+    <p class="font-display">Chưa có bình luận nào</p>
+</div>
+{% endfor %}
+{% endblock %}
