@@ -13,14 +13,15 @@ PROFILE = {
     "alias": "Noway",
     "monogram": "TL",
     # Dòng chữ tự gõ ở trang chủ: "Tôi là ..."
-    "roles": ["cựu tuyển thủ PUBG Mobile", "sinh viên IT", "content creator"],
+    "roles": ["tuyển thủ PUBG Mobile", "sinh viên IT", "content creator"],
     "quote": "Love is the best thing we do.",
     # Ảnh đại diện: đặt file vào static/img/avatar.jpg (chưa có thì hiện chữ lồng TL)
     "avatar": "img/avatar.jpg",
     "bio": [
-        "Tôi là Tăng Thoại Lâm, mọi người hay gọi là Noway. Tôi thi đấu PUBG Mobile "
-        "chuyên nghiệp từ cuối năm 2024 qua các mùa PMNC và PMPL, rồi chuyển sang "
-        "làm huấn luyện viên. Hiện tôi không thi đấu — là sinh viên IT và người làm nội dung.",
+        "Tôi là Tăng Thoại Lâm, mọi người hay gọi là Noway — tuyển thủ PUBG Mobile "
+        "Việt Nam, thi đấu chuyên nghiệp từ cuối năm 2024 qua các mùa PMNC và PMPL, "
+        "từng kiêm vai trò huấn luyện viên. Hiện tôi đang tạm nghỉ, chờ giải tiếp theo. "
+        "Ngoài thi đấu, tôi là sinh viên IT và người làm nội dung.",
         "Trang này là nơi tôi gom lại những thứ mình quý: vài tấm ảnh, "
         "vài bài nhạc nghe hoài không chán, và cách để bạn tìm thấy tôi.",
     ],
@@ -118,8 +119,8 @@ TIMELINE = [
      "text": "Viết lại toàn bộ trang bằng Python + Flask, nội dung gom vào một file cho dễ sửa."},
     {"when": "2026", "title": "Web cá nhân đầu tiên",
      "text": "Tự dựng bản HTML/CSS/JavaScript thuần — nơi gom ảnh, nhạc và cách liên lạc."},
-    {"when": "2026", "title": "Từ tuyển thủ thành huấn luyện viên",
-     "text": "Thi đấu PMPL Spring 2026, rồi làm huấn luyện viên cho not team (not) ở PMPL Fall 2026."},
+    {"when": "2026", "title": "Lên sân chơi PMPL",
+     "text": "Thi đấu PMPL Spring 2026 và làm huấn luyện viên cho not team (not) ở PMPL Fall 2026."},
     {"when": "2025", "title": "Ba mùa PMNC, ba đội tuyển",
      "text": "Japan Gaming (JP), linncutii (lc) và Five Brothers (FBT) — nổi bật nhất là PMNC mùa Tổng kết 2025."},
     {"when": "Cuối 2024", "title": "Trở thành tuyển thủ PUBG Mobile",
@@ -206,18 +207,18 @@ GAMES = [
         "platform": "Mobile",
         "id_label": "Character ID",
         "copy": "5189112695",
-        "text": "Thi đấu chuyên nghiệp từ cuối 2024 ở PMNC và PMPL Việt Nam, sau đó làm "
-                "huấn luyện viên. Giờ vẫn chơi mỗi ngày — những pha xử lý hay được đăng lên TikTok.",
+        "text": "Tuyển thủ PUBG Mobile Việt Nam, thi đấu chuyên nghiệp từ cuối 2024 ở PMNC và PMPL. "
+                "Đang tạm nghỉ chờ giải tiếp theo, vẫn tập mỗi ngày — pha xử lý hay được đăng lên TikTok.",
         # Thêm dòng tuỳ ý, ví dụ {"label": "Vị trí sở trường", "value": "..."}
         "stats": [{"label": "Thi đấu từ", "value": "Cuối 2024"}, {"label": "Giải đã dự", "value": "5"},
-                  {"label": "Hiện tại", "value": "Không thi đấu"}],
+                  {"label": "Hiện tại", "value": "Chờ giải mới"}],
         # Hành trình thi đấu — hiện thành một mục riêng ở trang Gaming, mới nhất ở trên
         # "role": vai trò ở giải đó; "note": ghi chú kết quả; "highlight": True = đánh dấu nổi bật
         "career": [
-            {"when": "Hiện tại", "title": "Tạm dừng thi đấu", "team": "", "role": "",
-             "text": "Không thi đấu chuyên nghiệp — tập trung học và làm nội dung."},
+            {"when": "Hiện tại", "title": "Tạm nghỉ, chờ giải tiếp theo", "team": "", "role": "Tuyển thủ",
+             "text": "Chưa giải nghệ — vẫn tập luyện và sẵn sàng cho mùa giải tới."},
             {"when": "Fall 2026", "title": "PMPL Fall 2026", "team": "not team (not)",
-             "role": "Huấn luyện viên", "text": "Chuyển sang vai trò huấn luyện viên."},
+             "role": "Huấn luyện viên", "text": "Đảm nhận vai trò huấn luyện viên cho đội."},
             {"when": "Spring 2026", "title": "PMPL Spring 2026", "team": "not team (not)",
              "role": "Tuyển thủ", "text": "Lần đầu thi đấu ở PMPL.", "note": "Bị loại sớm"},
             {"when": "Tổng kết 2025", "title": "PMNC mùa Tổng kết 2025", "team": "Five Brothers (FBT)",
