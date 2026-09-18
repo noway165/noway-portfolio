@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% from "_macros.html" import page_head, cta %}
+
+{% block title %}Âm nhạc — {{ profile.name }}{% endblock %}
+{% block description %}Danh sách nhạc tuyển chọn của {{ profile.name }} ({{ profile.alias }}), phát trực tiếp qua Spotify.{% endblock %}
+
+{% block content %}
+
+{{ page_head('Playlist', 'Nhạc tôi nghe', 'mỗi ngày',
+             'Bấm play ngay tại đây. Đăng nhập Spotify để nghe trọn bài, không thì vẫn nghe được đoạn xem trước.') }}
+
+<section class="container pb-section">
+    <div class="row row-cols-1 row-cols-lg-2 g-4">
+        {% for track_id in tracks %}
+        <div class="col">
+            <article class="track reveal" data-delay="{{ loop.index0 * 70 }}">
+                <span class="track-no">{{ '%02d' | format(loop.index) }}</span>
+                <iframe src="https://open.spotify.com/embed/track/{{ track_id }}?utm_source=generator&theme=0"
+                        height="152" loading="lazy" title="Bài hát {{ loop.index }}"
+                        allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+                        allowfullscreen></iframe>
+            </article>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+
+{{ cta('Còn nữa', 'Xem thêm', 'thư viện ảnh', 'Mở thư viện', url_for('gallery')) }}
+
+{% endblock %}

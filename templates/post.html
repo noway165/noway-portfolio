@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block title %}{{ post.title }} — Blog — {{ profile.name }}{% endblock %}
+{% block description %}{{ post.excerpt }}{% endblock %}
+
+{% block content %}
+
+<section class="container page-head">
+    <a href="{{ url_for('blog') }}" class="back-link reveal"><i class="bi bi-arrow-left"></i> Tất cả bài viết</a>
+    <h1 class="page-title font-display reveal" data-delay="80">{{ post.title }}</h1>
+    <div class="post-meta reveal" data-delay="140">
+        <span><i class="bi bi-calendar3"></i><time datetime="{{ post.date }}">{{ post.day | vndate }}</time></span>
+        <span><i class="bi bi-clock"></i>{{ post.minutes }} phút đọc</span>
+        {% if post.tags %}<span><i class="bi bi-tag"></i>{{ post.tags | join(', ') }}</span>{% endif %}
+    </div>
+</section>
+
+<section class="container pb-section">
+    {# "## " -> tiêu đề nhỏ, "> " -> trích dẫn, còn lại là đoạn văn #}
+    <article class="prose reveal" data-delay="200">
+        {% for block in post.body %}
+        {% if block.startswith('## ') %}
+        <h2>{{ block[3:] }}</h2>
+        {% elif block.startswith('> ') %}
+        <blockquote>{{ block[2:] }}</blockquote>
+        {% else %}
+        <p>{{ block }}</p>
+        {% endif %}
+        {% endfor %}
+    </article>
+
+    {% if newer or older %}
+    <nav class="pager" aria-label="Bài viết khác">
+        {% if older %}
+        <a href="{{ url_for('post', slug=older.slug) }}">
+            <small><i class="bi bi-arrow-left"></i> Bài trước</small>
+            <span class="font-display">{{ older.title }}</span>
+        </a>
+        {% else %}<span></span>{% endif %}
+        {% if newer %}
+        <a href="{{ url_for('post', slug=newer.slug) }}" class="text-end">
+            <small>Bài sau <i class="bi bi-arrow-right"></i></small>
+            <span class="font-display">{{ newer.title }}</span>
+        </a>
+        {% endif %}
+    </nav>
+    {% endif %}
+</section>
+
+{% endblock %}

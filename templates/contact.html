@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% from "_macros.html" import page_head, cta %}
+
+{% block title %}Liên hệ — {{ profile.name }}{% endblock %}
+{% block description %}Kết nối với {{ profile.name }} ({{ profile.alias }}) qua mạng xã hội và trong game.{% endblock %}
+
+{% block content %}
+
+{{ page_head('Liên hệ', 'Cứ nhắn tôi,', 'tôi luôn đọc.',
+             'Chọn kênh nào bạn tiện nhất. Với tên Discord và mã trong game, bấm vào là tôi chép sẵn cho bạn.') }}
+
+<section class="container pb-section">
+    <div class="channels">
+        {% for s in socials %}
+        {% if s.url %}
+        <a class="channel reveal" data-delay="{{ loop.index0 * 60 }}" href="{{ s.url }}" target="_blank" rel="noopener">
+        {% else %}
+        <button type="button" class="channel reveal" data-delay="{{ loop.index0 * 60 }}" data-copy="{{ s['copy'] }}">
+        {% endif %}
+            <span class="ch-icon"><i class="bi {{ s.icon }}"></i></span>
+            <span class="ch-body">
+                <span class="ch-name font-display">{{ s.name }}</span>
+                <span class="ch-handle">{{ s.handle }}</span>
+            </span>
+            {% if s.url %}
+            <span class="ch-act">Mở trang <i class="bi bi-arrow-up-right"></i></span>
+        </a>
+            {% else %}
+            <span class="ch-act">Chép <i class="bi bi-copy"></i></span>
+        </button>
+            {% endif %}
+        {% endfor %}
+    </div>
+</section>
+
+{{ cta('Quay lại', 'Cảm ơn bạn', 'đã ghé qua.', 'Về trang chủ', url_for('index')) }}
+
+{% endblock %}

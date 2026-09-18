@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="vi" data-bs-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <title>{% block title %}{{ profile.name }} — {{ profile.alias }}{% endblock %}</title>
+    <meta name="description" content="{% block description %}Portfolio cá nhân của {{ profile.name }} ({{ profile.alias }}).{% endblock %}">
+    <meta name="theme-color" content="#0b0b0e">
+    <link rel="icon" href="{{ url_for('static', filename='favicon.svg') }}" type="image/svg+xml">
+
+    <!-- Chạy trước khi vẽ trang: chọn sáng/tối (đã lưu, hoặc theo máy) để không bị nháy màu -->
+    <script>
+        (function () {
+            var root = document.documentElement, t = null;
+            try { t = localStorage.getItem('theme'); } catch (e) {}
+            if (t !== 'light' && t !== 'dark') {
+                t = window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+            }
+            root.setAttribute('data-bs-theme', t);
+            root.classList.add('js');
+        })();
+    </script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
+</head>
+<body class="d-flex flex-column min-vh-100">
+
+    <div class="scroll-progress" id="scrollProgress" aria-hidden="true"></div>
+
+    <!-- ========================================================= MENU -->
+    <nav class="navbar navbar-expand-lg sticky-top site-nav" id="siteNav">
+        <div class="container">
+            <a class="navbar-brand brand" href="{{ url_for('index') }}">
+                <span class="brand-mark">{{ profile.monogram }}</span>
+                <span class="brand-name d-none d-sm-inline d-lg-none d-xl-inline">{{ profile.name }}</span>
+            </a>
+
+            <!-- Máy tính: dàn hàng ngang. Điện thoại: menu trượt toàn màn hình -->
+            <div class="offcanvas offcanvas-end site-menu" tabindex="-1" id="mainNav" aria-labelledby="mainNavLabel">
+                <div class="offcanvas-header">
+                    <span class="brand" id="mainNavLabel">
+                        <span class="brand-mark">{{ profile.monogram }}</span>
+                        <span class="brand-name">Menu</span>
+                    </span>
+                    <button type="button" class="icon-btn" data-bs-dismiss="offcanvas" aria-label="Đóng menu"><i class="bi bi-x-lg"></i></button>
+                </div>
+                <div class="offcanvas-body">
+                    <ul class="navbar-nav ms-auto">
+                        {% for item in nav %}
+                        <li class="nav-item" style="--i: {{ loop.index0 }}">
+                            <a class="nav-link{% if item.active %} active{% endif %}"
+                               href="{{ url_for(item.endpoint) }}"
+                               {% if item.active %}aria-current="page"{% endif %}><span class="nav-no">{{ '%02d' | format(loop.index) }}</span>{{ item.label }}</a>
+                        </li>
+                        {% endfor %}
+                    </ul>
+
+                    <div class="menu-foot">
+                        {% for s in social_links %}
+                        <a class="icon-btn" href="{{ s.url }}" target="_blank" rel="noopener" aria-label="{{ s.name }}"><i class="bi {{ s.icon }}"></i></a>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+
+            <div class="d-flex align-items-center gap-2 ms-auto ms-lg-4">
+                <button type="button" class="icon-btn theme-toggle" id="themeToggle" aria-label="Đổi giao diện sáng / tối">
+                    <i class="bi bi-sun"></i><i class="bi bi-moon-stars"></i>
+                </button>
+                <button type="button" class="icon-btn menu-btn d-lg-none" data-bs-toggle="offcanvas" data-bs-target="#mainNav"
+                        aria-controls="mainNav" aria-label="Mở menu">
+                    <span></span><span></span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <main class="flex-grow-1">
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- ==================================================== CHÂN TRANG -->
+    <footer class="site-foot">
+        <div class="container d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-3">
+            <p class="foot-brand m-0">{{ profile.name }} <em>— {{ profile.alias }}</em></p>
+            <ul class="foot-links list-unstyled d-flex flex-wrap gap-4 m-0">
+                {% for item in nav %}
+                <li><a href="{{ url_for(item.endpoint) }}">{{ item.label }}</a></li>
+                {% endfor %}
+            </ul>
+            <p class="foot-note m-0">© {{ year }}</p>
+        </div>
+    </footer>
+
+    <button type="button" class="icon-btn to-top" id="toTop" aria-label="Lên đầu trang"><i class="bi bi-arrow-up"></i></button>
+
+    <!-- Thông báo nhỏ khi chép ID / tên (mọi nút có data-copy đều dùng) -->
+    <div class="toast-container position-fixed bottom-0 start-50 translate-middle-x p-3">
+        <div id="copyToast" class="toast toast-lux align-items-center" role="status" aria-live="polite" aria-atomic="true">
+            <div class="d-flex">
+                <div class="toast-body"><i class="bi bi-check2 me-2"></i><span id="copyToastText">Đã chép</span></div>
+                <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Đóng"></button>
+            </div>
+        </div>
+    </div>
+
+    {% block overlays %}{% endblock %}
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>

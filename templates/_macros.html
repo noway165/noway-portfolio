@@ -1,0 +1,40 @@
+{# Các khối giao diện dùng lại ở nhiều trang #}
+
+{# Đầu trang phụ: nhãn nhỏ + tiêu đề 2 dòng (dòng 2 nghiêng màu đồng) + đoạn dẫn #}
+{% macro page_head(eyebrow, line1, line2, lede=None) %}
+<section class="container page-head">
+    <p class="eyebrow reveal">{{ eyebrow }}</p>
+    <h1 class="page-title font-display reveal" data-delay="80">{{ line1 }}<br><span class="serif-em">{{ line2 }}</span></h1>
+    {% if lede %}<p class="lede reveal" data-delay="140">{{ lede }}</p>{% endif %}
+</section>
+{% endmacro %}
+
+{# Dải kêu gọi hành động cuối trang #}
+{% macro cta(eyebrow, line1, line2, button, href, lede=None) %}
+<section class="section">
+    <div class="container cta text-center">
+        <p class="eyebrow eyebrow-plain reveal">{{ eyebrow }}</p>
+        <h2 class="font-display reveal" data-delay="80">{{ line1 }}<br><span class="serif-em">{{ line2 }}</span></h2>
+        {% if lede %}<p class="lede mx-auto reveal" data-delay="140">{{ lede }}</p>{% endif %}
+        <div class="mt-4 reveal" data-delay="200">
+            <a href="{{ href }}" class="btn btn-lux btn-accent">{{ button }} <i class="bi bi-arrow-right"></i></a>
+        </div>
+    </div>
+</section>
+{% endmacro %}
+
+{# Danh sách bài blog: ngày | tiêu đề + tóm tắt | số phút đọc #}
+{% macro post_list(posts) %}
+<div class="post-list">
+    {% for p in posts %}
+    <a href="{{ url_for('post', slug=p.slug) }}" class="post-row reveal" data-delay="{{ loop.index0 * 70 }}">
+        <time class="post-date" datetime="{{ p.date }}">{{ p.day | vndate }}</time>
+        <span>
+            <span class="post-title font-display">{{ p.title }}</span>
+            <span class="post-excerpt">{{ p.excerpt }}</span>
+        </span>
+        <span class="post-go">{{ p.minutes }} phút đọc <i class="bi bi-arrow-right"></i></span>
+    </a>
+    {% endfor %}
+</div>
+{% endmacro %}

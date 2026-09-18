@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+{% from "_macros.html" import page_head, cta %}
+
+{% block title %}Giới thiệu — {{ profile.name }}{% endblock %}
+{% block description %}Giới thiệu về {{ profile.name }} ({{ profile.alias }}): kỹ năng, hành trình và những điều tôi theo đuổi.{% endblock %}
+
+{% block content %}
+
+{{ page_head('Giới thiệu', 'Xin chào, tôi là', profile.alias ~ '.') }}
+
+<!-- ====================================================== CHÂN DUNG -->
+<section class="container pb-section">
+    <div class="row align-items-center gy-5 gx-lg-5">
+        <div class="col-lg-5 col-md-7 col-sm-9">
+            <figure class="portrait reveal">
+                {% if avatar %}
+                <img src="{{ avatar }}" alt="Chân dung {{ profile.name }}">
+                {% else %}
+                <span class="placeholder-mark">{{ profile.monogram }}</span>
+                {% endif %}
+            </figure>
+        </div>
+
+        <div class="col-lg-7 reveal" data-delay="120">
+            {% for para in profile.bio %}
+            <p class="lede{% if not loop.first %} mt-3{% endif %}">{{ para }}</p>
+            {% endfor %}
+
+            <dl class="facts">
+                <dt>Tên</dt>
+                <dd>{{ profile.name }}</dd>
+                <dt>Biệt danh</dt>
+                <dd>{{ profile.alias }}</dd>
+                <dt>Hiện là</dt>
+                <dd>{{ profile.roles | join(' · ') }}</dd>
+                <dt>Châm ngôn</dt>
+                <dd class="font-display fst-italic">“{{ profile.quote }}”</dd>
+            </dl>
+        </div>
+    </div>
+</section>
+
+<!-- ======================================================= KỸ NĂNG -->
+<section class="section">
+    <div class="container">
+        <div class="sec-head reveal">
+            <span class="sec-num">01 — Kỹ năng</span>
+            <h2 class="sec-title font-display">Những gì tôi làm được</h2>
+        </div>
+
+        <div class="row row-cols-1 row-cols-md-3 g-4">
+            {% for group in skills %}
+            <div class="col">
+                <article class="lux-card h-100 reveal" data-delay="{{ loop.index0 * 100 }}">
+                    <div class="skill-head">
+                        <i class="bi {{ group.icon }}"></i>
+                        <h3 class="font-display">{{ group.group }}</h3>
+                    </div>
+                    <ul class="chips">
+                        {% for item in group['items'] %}
+                        <li class="chip">{{ item }}</li>
+                        {% endfor %}
+                    </ul>
+                </article>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- ===================================================== HÀNH TRÌNH -->
+<section class="section">
+    <div class="container">
+        <div class="row gy-5 gx-lg-5">
+            <div class="col-lg-4">
+                <div class="sec-head mb-0 reveal">
+                    <span class="sec-num">02 — Hành trình</span>
+                    <h2 class="sec-title font-display">Từng bước<br>một</h2>
+                </div>
+            </div>
+            <div class="col-lg-8">
+                <ol class="timeline">
+                    {% for t in timeline %}
+                    <li class="tl-item reveal" data-delay="{{ loop.index0 * 90 }}">
+                        <span class="tl-when">{{ t.when }}</span>
+                        <div>
+                            <h3 class="font-display">{{ t.title }}</h3>
+                            <p>{{ t.text }}</p>
+                        </div>
+                    </li>
+                    {% endfor %}
+                </ol>
+            </div>
+        </div>
+    </div>
+</section>
+
+{{ cta('Tiếp theo', 'Xem những gì', 'tôi đã làm.', 'Tới trang dự án', url_for('projects')) }}
+
+{% endblock %}

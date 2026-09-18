@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block title %}Không tìm thấy trang — {{ profile.name }}{% endblock %}
+
+{% block content %}
+<section class="container page-head not-found">
+    <p class="eyebrow reveal">Lỗi 404</p>
+    <h1 class="page-title font-display reveal" data-delay="80">Trang này<br><span class="serif-em">không tồn tại.</span></h1>
+    <p class="lede reveal" data-delay="140">Có thể đường dẫn đã đổi, hoặc bị gõ nhầm.</p>
+    <div class="mt-4 reveal" data-delay="200">
+        <a href="{{ url_for('index') }}" class="btn btn-lux btn-accent">Về trang chủ <i class="bi bi-arrow-right"></i></a>
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+{% from "_macros.html" import page_head, cta %}
+
+{% block title %}Gaming — {{ profile.name }}{% endblock %}
+{% block description %}Góc chơi game của {{ profile.name }} ({{ profile.alias }}): PUBG Mobile, TFT và cách kết bạn trong game.{% endblock %}
+
+{% block content %}
+
+{{ page_head('Gaming', 'Ngoài giờ học,', 'tôi ở trong game.',
+             'Kết bạn với tôi bằng ID bên dưới — bấm vào là chép sẵn, chỉ việc dán vào game.') }}
+
+<section class="container pb-section">
+    <div class="row row-cols-1 row-cols-lg-2 g-4">
+        {% for g in games %}
+        <div class="col">
+            <article class="game-card reveal" data-delay="{{ loop.index0 * 120 }}">
+                <i class="bi {{ g.icon }} game-icon" aria-hidden="true"></i>
+                <span class="card-num">{{ '%02d' | format(loop.index) }} — {{ g.platform }}</span>
+                <h2 class="font-display">{{ g.name }}</h2>
+                <p>{{ g.text }}</p>
+
+                {% if g.stats %}
+                <dl class="game-stats">
+                    {% for s in g.stats %}
+                    <div><dt>{{ s.label }}</dt><dd>{{ s.value }}</dd></div>
+                    {% endfor %}
+                </dl>
+                {% endif %}
+
+                <button type="button" class="id-chip" data-copy="{{ g['copy'] }}" aria-label="Chép {{ g.id_label }} {{ g['copy'] }}">
+                    <span>
+                        <small>{{ g.id_label }}</small>
+                        <b>{{ g['copy'] }}</b>
+                    </span>
+                    <i class="bi bi-copy"></i>
+                </button>
+            </article>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+
+{% if clips or discord %}
+<section class="section">
+    <div class="container">
+        <div class="sec-head reveal">
+            <span class="sec-num">Ngoài trận</span>
+            <h2 class="sec-title font-display">Xem clip, hoặc vào chơi cùng</h2>
+        </div>
+
+        <div class="row row-cols-1 row-cols-md-2 g-4">
+            {% if clips %}
+            <div class="col">
+                <a href="{{ clips.url }}" target="_blank" rel="noopener" class="tile h-100 reveal">
+                    <h3 class="font-display">Clip trên {{ clips.name }}</h3>
+                    <p>Những pha xử lý, khoảnh khắc hài hước và highlight sau mỗi trận.</p>
+                    <span class="tile-go">{{ clips.handle }} <i class="bi bi-arrow-up-right"></i></span>
+                </a>
+            </div>
+            {% endif %}
+            {% if discord %}
+            <div class="col">
+                <button type="button" class="tile h-100 reveal" data-delay="120" data-copy="{{ discord['copy'] }}">
+                    <h3 class="font-display">Rủ tôi trên {{ discord.name }}</h3>
+                    <p>Cần thêm người leo rank hay chỉ muốn chơi cho vui? Nhắn tôi trên Discord.</p>
+                    <span class="tile-go">Chép {{ discord.handle }} <i class="bi bi-copy"></i></span>
+                </button>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</section>
+{% endif %}
+
+{{ cta('Kết nối', 'Muốn lập team?', 'Cứ nhắn tôi.', 'Tới trang liên hệ', url_for('contact')) }}
+
+{% endblock %}

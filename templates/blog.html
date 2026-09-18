@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% from "_macros.html" import page_head, post_list %}
+
+{% block title %}Blog — {{ profile.name }}{% endblock %}
+{% block description %}Blog của {{ profile.name }} ({{ profile.alias }}): lập trình, game và đời thường.{% endblock %}
+
+{% block content %}
+
+{{ page_head('Blog', 'Ghi chép', 'và suy nghĩ.',
+             'Về lập trình, về game, về những điều nhỏ nhặt mà tôi muốn nhớ lâu hơn một dòng trạng thái.') }}
+
+<section class="container pb-section">
+    {% if posts %}
+    {{ post_list(posts) }}
+    {% else %}
+    <div class="empty-state reveal">
+        <i class="bi bi-journal-text"></i>
+        <p class="font-display">Bài viết đầu tiên sắp ra lò</p>
+    </div>
+    {% endif %}
+</section>
+
+{% endblock %}

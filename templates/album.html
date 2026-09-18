@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+
+{% block title %}{{ album.title }} — Thư viện ảnh — {{ profile.name }}{% endblock %}
+{% block description %}Album “{{ album.title }}” trong thư viện ảnh của {{ profile.name }}.{% endblock %}
+
+{% block content %}
+
+<section class="container page-head">
+    <a href="{{ url_for('gallery') }}" class="back-link reveal"><i class="bi bi-arrow-left"></i> Tất cả album</a>
+    <h1 class="page-title font-display reveal" data-delay="80">{{ album.name }}<br><span class="serif-em">{{ album.title | lower }}</span></h1>
+    <p class="lede reveal" data-delay="140">{{ album.note }} · {{ album.photos | length }} ảnh</p>
+</section>
+
+<section class="container pb-section">
+    {% if album.photos %}
+    <div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 g-3">
+        {% for src in album.photos %}
+        <div class="col">
+            <button type="button" class="shot reveal" data-photo-index="{{ loop.index0 }}"
+                    data-delay="{{ (loop.index0 % 8) * 60 }}" aria-label="Phóng to ảnh {{ loop.index }}">
+                <img src="{{ src }}" alt="{{ album.title }}, ảnh {{ loop.index }}" loading="lazy">
+                <span class="shot-zoom"><i class="bi bi-arrows-angle-expand"></i></span>
+            </button>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="empty-state reveal">
+        <i class="bi bi-images"></i>
+        <p class="font-display">Album đang được cập nhật</p>
+        {% if config.DEBUG %}
+        <small>Chỉ hiện khi chạy thử: thả ảnh vào <code>static/img/gallery/{{ album.slug }}/</code> rồi tải lại trang.</small>
+        {% endif %}
+    </div>
+    {% endif %}
+
+    <!-- Chuyển qua album khác -->
+    <nav class="pager" aria-label="Album khác">
+        <a href="{{ url_for('album', slug=prev_album.slug) }}">
+            <small><i class="bi bi-arrow-left"></i> Album trước</small>
+            <span class="font-display">{{ prev_album.name }}</span>
+        </a>
+        <a href="{{ url_for('album', slug=next_album.slug) }}" class="text-end">
+            <small>Album sau <i class="bi bi-arrow-right"></i></small>
+            <span class="font-display">{{ next_album.name }}</span>
+        </a>
+    </nav>
+</section>
+
+{% endblock %}
+
+{% block overlays %}
+{% if album.photos %}
+<!-- ========================================= XEM ẢNH PHÓNG TO (Bootstrap Modal + Carousel) -->
+<div class="modal fade lightbox" id="lightbox" tabindex="-1" aria-label="Xem ảnh phóng to" aria-hidden="true">
+    <div class="modal-dialog modal-fullscreen">
+        <div class="modal-content">
+            <button type="button" class="lb-close" data-bs-dismiss="modal" aria-label="Đóng"><i class="bi bi-x-lg"></i></button>
+
+            <div class="modal-body">
+                <div id="lbCarousel" class="carousel slide carousel-fade w-100">
+                    <div class="carousel-inner">
+                        {% for src in album.photos %}
+                        <div class="carousel-item{% if loop.first %} active{% endif %}">
+                            <img src="{{ src }}" alt="{{ album.title }}, ảnh {{ loop.index }}" loading="lazy">
+                        </div>
+                        {% endfor %}
+                    </div>
+
+                    {% if album.photos | length > 1 %}
+                    <button class="carousel-control-prev" type="button" data-bs-target="#lbCarousel" data-bs-slide="prev">
+                        <span class="lb-arrow"><i class="bi bi-arrow-left"></i></span>
+                        <span class="visually-hidden">Ảnh trước</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#lbCarousel" data-bs-slide="next">
+                        <span class="lb-arrow"><i class="bi bi-arrow-right"></i></span>
+                        <span class="visually-hidden">Ảnh sau</span>
+                    </button>
+                    {% endif %}
+                </div>
+
+                <div class="lb-cap">
+                    <span>{{ album.title }}</span>
+                    <span id="lbCount">1 / {{ album.photos | length }}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endblock %}

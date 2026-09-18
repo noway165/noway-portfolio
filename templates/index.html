@@ -1,0 +1,161 @@
+{% extends "base.html" %}
+{% from "_macros.html" import cta, post_list %}
+
+{% block title %}{{ profile.name }} — {{ profile.alias }} | Portfolio{% endblock %}
+
+{% block content %}
+
+<!-- ============================================================ HERO -->
+<section class="hero">
+    <div class="container">
+        <div class="row align-items-center gy-5">
+            <div class="col-lg-7">
+                <p class="eyebrow reveal">Portfolio — {{ year }}</p>
+
+                {# Mỗi chữ cái một span để hiện lần lượt; trình đọc màn hình chỉ đọc aria-label #}
+                <h1 class="hero-name font-display" aria-label="{{ profile.name }}">
+                    {% set offset = profile.first | length %}
+                    {% for line in [profile.first, profile.last] %}{% set row = loop.index0 %}
+                    <span class="line" aria-hidden="true">{% for ch in line %}<span class="ch" style="--i: {{ row * offset + loop.index0 }}">{% if ch == ' ' %}&nbsp;{% else %}{{ ch }}{% endif %}</span>{% endfor %}</span>
+                    {% endfor %}
+                </h1>
+
+                <p class="hero-alias reveal" data-delay="160">{{ profile.alias }}</p>
+
+                <p class="hero-role reveal" data-delay="220">
+                    Tôi là <span class="type-out" id="typewriter"
+                        data-words="{{ profile.roles | join('|') }}">{{ profile.roles[0] }}</span><span class="caret"></span>
+                </p>
+
+                <p class="hero-quote reveal" data-delay="280">“{{ profile.quote }}”</p>
+
+                <div class="d-flex flex-wrap gap-3 mt-5 reveal" data-delay="340">
+                    <a href="{{ url_for('contact') }}" class="btn btn-lux btn-accent">Liên hệ <i class="bi bi-arrow-right"></i></a>
+                    <a href="{{ url_for('gallery') }}" class="btn btn-lux btn-line">Xem thư viện <i class="bi bi-arrow-right"></i></a>
+                </div>
+            </div>
+
+            <div class="col-lg-5 col-md-7 col-sm-9">
+                <figure class="portrait reveal" data-delay="200">
+                    {% if avatar %}
+                    <img src="{{ avatar }}" alt="Chân dung {{ profile.name }}">
+                    {% else %}
+                    <span class="placeholder-mark">{{ profile.monogram }}</span>
+                    {% endif %}
+                </figure>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ==================================================== DẢI CHỮ CHẠY -->
+{% set ticker = profile.roles + ['Photography', 'Music'] %}
+<div class="ticker" aria-hidden="true">
+    <div class="ticker-track">
+        {% for _ in range(2) %}
+        <span>{% for t in ticker %}{{ t }}<i>◆</i>{% endfor %}</span>
+        {% endfor %}
+    </div>
+</div>
+
+<!-- ====================================================== GIỚI THIỆU -->
+<section class="section">
+    <div class="container">
+        <div class="row gy-5 gx-lg-5">
+            <div class="col-lg-5">
+                <div class="sec-head mb-0 reveal">
+                    <span class="sec-num">01 — Giới thiệu</span>
+                    <h2 class="sec-title font-display">Một chút<br>về tôi</h2>
+                </div>
+            </div>
+
+            <div class="col-lg-7 reveal" data-delay="120">
+                {% for para in profile.bio %}
+                <p class="lede{% if not loop.first %} mt-3{% endif %}">{{ para }}</p>
+                {% endfor %}
+
+                <div class="stats">
+                    {% for s in stats %}
+                    <div class="stat">
+                        <b data-count="{{ s.value }}">{{ s.value }}</b>
+                        <span>{{ s.label }}</span>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ====================================================== SỞ TRƯỜNG -->
+<section class="section">
+    <div class="container">
+        <div class="sec-head reveal">
+            <span class="sec-num">02 — Sở trường</span>
+            <h2 class="sec-title font-display">Những thứ tôi theo đuổi</h2>
+        </div>
+
+        <div class="row row-cols-1 row-cols-md-3 g-4">
+            {% for f in focus %}
+            <div class="col">
+                <article class="lux-card h-100 reveal" data-delay="{{ loop.index0 * 100 }}">
+                    <span class="card-num">{{ '%02d' | format(loop.index) }}</span>
+                    <h3 class="font-display">{{ f.title }}</h3>
+                    <p>{{ f.text }}</p>
+                </article>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- ======================================================= KHÁM PHÁ -->
+<section class="section">
+    <div class="container">
+        <div class="sec-head reveal">
+            <span class="sec-num">03 — Khám phá</span>
+            <h2 class="sec-title font-display">Đi sâu hơn</h2>
+        </div>
+
+        <div class="row row-cols-1 row-cols-md-2 g-4">
+            {% set tiles = [
+                ('projects', 'Dự án', 'Những thứ tôi đã dựng bằng code — kể cả chính trang web này.', 'Xem dự án'),
+                ('blog', 'Blog', 'Ghi chép về lập trình, game và những điều nhỏ nhặt thường ngày.', 'Đọc bài viết'),
+                ('gallery', 'Thư viện ảnh', 'Ba album: bản thân, phong cảnh và bạn bè — những khoảnh khắc tôi giữ lại.', 'Mở thư viện'),
+                ('music', 'Danh sách nhạc', 'Những bài nghe đi nghe lại. Bấm play ngay trên trang, không cần rời đi.', 'Nghe thử'),
+            ] %}
+            {% for endpoint, title, text, go in tiles %}
+            <div class="col">
+                <a href="{{ url_for(endpoint) }}" class="tile h-100 reveal" data-delay="{{ (loop.index0 % 2) * 120 }}">
+                    <h3 class="font-display">{{ title }}</h3>
+                    <p>{{ text }}</p>
+                    <span class="tile-go">{{ go }} <i class="bi bi-arrow-right"></i></span>
+                </a>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+{% if latest_posts %}
+<!-- ==================================================== BÀI VIẾT MỚI -->
+<section class="section">
+    <div class="container">
+        <div class="sec-head reveal">
+            <span class="sec-num">04 — Bài viết mới</span>
+            <h2 class="sec-title font-display">Từ blog</h2>
+        </div>
+
+        {{ post_list(latest_posts) }}
+
+        <div class="mt-5 reveal">
+            <a href="{{ url_for('blog') }}" class="btn btn-lux btn-line">Tất cả bài viết <i class="bi bi-arrow-right"></i></a>
+        </div>
+    </div>
+</section>
+{% endif %}
+
+{{ cta('Kết nối', 'Có việc gì cần,', 'cứ nhắn tôi nhé.', 'Tới trang liên hệ', url_for('contact'),
+       lede='Facebook, Instagram, TikTok, Discord — chọn kênh nào bạn tiện nhất.') }}
+
+{% endblock %}

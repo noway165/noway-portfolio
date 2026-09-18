@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% from "_macros.html" import page_head, cta %}
+
+{% block title %}Dự án — {{ profile.name }}{% endblock %}
+{% block description %}Các dự án lập trình của {{ profile.name }} ({{ profile.alias }}).{% endblock %}
+
+{% block content %}
+
+{{ page_head('Dự án', 'Những thứ', 'tôi đã dựng.',
+             'Từ bài tập nhỏ đến sản phẩm chạy thật — mỗi dự án là một lần học thêm điều gì đó.') }}
+
+<section class="container pb-section">
+    <div class="projects">
+        {% for p in projects %}
+        <article class="project reveal" data-delay="{{ loop.index0 * 80 }}">
+            <div class="project-no">
+                <b>{{ '%02d' | format(loop.index) }}</b>{{ p.year }}
+            </div>
+
+            <div>
+                <h2 class="font-display">{{ p.title }}</h2>
+                <p>{{ p.text }}</p>
+                <ul class="chips">
+                    {% for tag in p.tags %}<li class="chip">{{ tag }}</li>{% endfor %}
+                </ul>
+            </div>
+
+            <div class="project-side">
+                <span class="badge-status{% if p.live %} is-live{% endif %}">{{ p.status }}</span>
+                {% if p.links %}
+                <div class="project-links">
+                    {% for l in p.links %}
+                    <a class="btn btn-lux btn-line" href="{{ l.url }}" target="_blank" rel="noopener">
+                        <i class="bi {{ l.icon }}"></i> {{ l.label }}
+                    </a>
+                    {% endfor %}
+                </div>
+                {% endif %}
+            </div>
+        </article>
+        {% endfor %}
+    </div>
+
+    <div class="project-next reveal">
+        <p class="font-display">Dự án tiếp theo</p>
+        <p>Đang được lên ý tưởng — sẽ sớm xuất hiện ở đây.</p>
+    </div>
+</section>
+
+{{ cta('Cùng làm', 'Có ý tưởng hay?', 'Kể tôi nghe.', 'Liên hệ với tôi', url_for('contact')) }}
+
+{% endblock %}
