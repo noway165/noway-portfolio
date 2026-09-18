@@ -216,7 +216,7 @@ GAMES = [
         # "role": vai trò ở giải đó; "note": ghi chú kết quả; "highlight": True = đánh dấu nổi bật
         "career": [
             {"when": "Hiện tại", "title": "Tạm nghỉ, chờ giải tiếp theo", "team": "", "role": "Tuyển thủ",
-             "text": "Chưa giải nghệ — vẫn tập luyện và sẵn sàng cho mùa giải tới."},
+             "text": "Vẫn tập luyện và sẵn sàng cho mùa giải tới."},
             {"when": "Fall 2026", "title": "PMPL Fall 2026", "team": "not team (not)",
              "role": "Huấn luyện viên", "text": "Đảm nhận vai trò huấn luyện viên cho đội."},
             {"when": "Spring 2026", "title": "PMPL Spring 2026", "team": "not team (not)",
